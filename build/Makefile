@@ -56,10 +56,10 @@ RM = "C:\Program Files\CMake\bin\cmake.exe" -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = C:\Users\Os\Desktop\TEST
+CMAKE_SOURCE_DIR = C:\Users\Os\Desktop\PBL2
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = C:\Users\Os\Desktop\TEST\build
+CMAKE_BINARY_DIR = C:\Users\Os\Desktop\PBL2\build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -86,9 +86,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\Os\Desktop\TEST\build\CMakeFiles C:\Users\Os\Desktop\TEST\build\\CMakeFiles\progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\Os\Desktop\PBL2\build\CMakeFiles C:\Users\Os\Desktop\PBL2\build\\CMakeFiles\progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\Os\Desktop\TEST\build\CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\Os\Desktop\PBL2\build\CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -112,6 +112,7 @@ preinstall/fast:
 
 # clear depends
 depend:
+	$(CMAKE_COMMAND) -P C:\Users\Os\Desktop\PBL2\build\CMakeFiles\VerifyGlobs.cmake
 	$(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles\Makefile.cmake 1
 .PHONY : depend
 
@@ -127,6 +128,78 @@ app: cmake_check_build_system
 app/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/build
 .PHONY : app/fast
+
+src/BookingScreen.obj: src/BookingScreen.cpp.obj
+.PHONY : src/BookingScreen.obj
+
+# target to build an object file
+src/BookingScreen.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/BookingScreen.cpp.obj
+.PHONY : src/BookingScreen.cpp.obj
+
+src/BookingScreen.i: src/BookingScreen.cpp.i
+.PHONY : src/BookingScreen.i
+
+# target to preprocess a source file
+src/BookingScreen.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/BookingScreen.cpp.i
+.PHONY : src/BookingScreen.cpp.i
+
+src/BookingScreen.s: src/BookingScreen.cpp.s
+.PHONY : src/BookingScreen.s
+
+# target to generate assembly for a file
+src/BookingScreen.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/BookingScreen.cpp.s
+.PHONY : src/BookingScreen.cpp.s
+
+src/HomeScreen.obj: src/HomeScreen.cpp.obj
+.PHONY : src/HomeScreen.obj
+
+# target to build an object file
+src/HomeScreen.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/HomeScreen.cpp.obj
+.PHONY : src/HomeScreen.cpp.obj
+
+src/HomeScreen.i: src/HomeScreen.cpp.i
+.PHONY : src/HomeScreen.i
+
+# target to preprocess a source file
+src/HomeScreen.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/HomeScreen.cpp.i
+.PHONY : src/HomeScreen.cpp.i
+
+src/HomeScreen.s: src/HomeScreen.cpp.s
+.PHONY : src/HomeScreen.s
+
+# target to generate assembly for a file
+src/HomeScreen.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/HomeScreen.cpp.s
+.PHONY : src/HomeScreen.cpp.s
+
+src/TextButton.obj: src/TextButton.cpp.obj
+.PHONY : src/TextButton.obj
+
+# target to build an object file
+src/TextButton.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/TextButton.cpp.obj
+.PHONY : src/TextButton.cpp.obj
+
+src/TextButton.i: src/TextButton.cpp.i
+.PHONY : src/TextButton.i
+
+# target to preprocess a source file
+src/TextButton.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/TextButton.cpp.i
+.PHONY : src/TextButton.cpp.i
+
+src/TextButton.s: src/TextButton.cpp.s
+.PHONY : src/TextButton.s
+
+# target to generate assembly for a file
+src/TextButton.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/TextButton.cpp.s
+.PHONY : src/TextButton.cpp.s
 
 src/UI.obj: src/UI.cpp.obj
 .PHONY : src/UI.obj
@@ -185,6 +258,15 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... app
+	@echo ... src/BookingScreen.obj
+	@echo ... src/BookingScreen.i
+	@echo ... src/BookingScreen.s
+	@echo ... src/HomeScreen.obj
+	@echo ... src/HomeScreen.i
+	@echo ... src/HomeScreen.s
+	@echo ... src/TextButton.obj
+	@echo ... src/TextButton.i
+	@echo ... src/TextButton.s
 	@echo ... src/UI.obj
 	@echo ... src/UI.i
 	@echo ... src/UI.s
@@ -202,6 +284,7 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
+	$(CMAKE_COMMAND) -P C:\Users\Os\Desktop\PBL2\build\CMakeFiles\VerifyGlobs.cmake
 	$(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles\Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

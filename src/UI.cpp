@@ -10,3 +10,4 @@ void PillButton::draw(RenderWindow& w) {
     w.draw(box);
     w.draw(label);
 }
+

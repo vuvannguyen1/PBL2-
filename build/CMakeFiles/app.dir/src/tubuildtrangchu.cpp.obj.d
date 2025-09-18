@@ -1,5 +1,5 @@
 CMakeFiles/app.dir/src/tubuildtrangchu.cpp.obj: \
- C:\Users\Os\Desktop\TEST\src\tubuildtrangchu.cpp \
+ C:\Users\Os\Desktop\PBL2\src\tubuildtrangchu.cpp \
  C:/SFML-master/install/include/SFML/Graphics.hpp \
  C:/SFML-master/install/include/SFML/Graphics/BlendMode.hpp \
  C:/SFML-master/install/include/SFML/Graphics/Export.hpp \
@@ -305,4 +305,7 @@ CMakeFiles/app.dir/src/tubuildtrangchu.cpp.obj: \
  C:/SFML-master/install/include/SFML/System/MemoryInputStream.hpp \
  C:/SFML-master/install/include/SFML/System/Sleep.hpp \
  C:/mingw64/include/c++/14.2.0/iostream \
- C:/Users/Os/Desktop/TEST/include/UI.h
+ C:/Users/Os/Desktop/PBL2/include/UI.h \
+ C:/Users/Os/Desktop/PBL2/include/TextButton.h \
+ C:/Users/Os/Desktop/PBL2/include/BookingScreen.h \
+ C:/Users/Os/Desktop/PBL2/include/HomeScreen.h

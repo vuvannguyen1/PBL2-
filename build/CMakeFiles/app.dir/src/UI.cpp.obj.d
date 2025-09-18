@@ -1,4 +1,4 @@
-CMakeFiles/app.dir/src/UI.cpp.obj: C:\Users\Os\Desktop\TEST\src\UI.cpp \
+CMakeFiles/app.dir/src/UI.cpp.obj: C:\Users\Os\Desktop\PBL2\src\UI.cpp \
  C:/SFML-master/install/include/SFML\Graphics.hpp \
  C:/SFML-master/install/include/SFML/Graphics/BlendMode.hpp \
  C:/SFML-master/install/include/SFML/Graphics/Export.hpp \
@@ -303,4 +303,4 @@ CMakeFiles/app.dir/src/UI.cpp.obj: C:\Users\Os\Desktop\TEST\src\UI.cpp \
  C:/SFML-master/install/include/SFML/System/InputStream.hpp \
  C:/SFML-master/install/include/SFML/System/MemoryInputStream.hpp \
  C:/SFML-master/install/include/SFML/System/Sleep.hpp \
- C:/Users/Os/Desktop/TEST/include/UI.h
+ C:/Users/Os/Desktop/PBL2/include/UI.h

@@ -52,10 +52,10 @@ RM = "C:\Program Files\CMake\bin\cmake.exe" -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = C:\Users\Os\Desktop\TEST
+CMAKE_SOURCE_DIR = C:\Users\Os\Desktop\PBL2
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = C:\Users\Os\Desktop\TEST\build
+CMAKE_BINARY_DIR = C:\Users\Os\Desktop\PBL2\build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/app.dir/depend.make
@@ -71,44 +71,95 @@ include CMakeFiles/app.dir/flags.make
 CMakeFiles/app.dir/codegen:
 .PHONY : CMakeFiles/app.dir/codegen
 
+CMakeFiles/app.dir/src/BookingScreen.cpp.obj: CMakeFiles/app.dir/flags.make
+CMakeFiles/app.dir/src/BookingScreen.cpp.obj: CMakeFiles/app.dir/includes_CXX.rsp
+CMakeFiles/app.dir/src/BookingScreen.cpp.obj: C:/Users/Os/Desktop/PBL2/src/BookingScreen.cpp
+CMakeFiles/app.dir/src/BookingScreen.cpp.obj: CMakeFiles/app.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\Os\Desktop\PBL2\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/app.dir/src/BookingScreen.cpp.obj"
+	C:\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/app.dir/src/BookingScreen.cpp.obj -MF CMakeFiles\app.dir\src\BookingScreen.cpp.obj.d -o CMakeFiles\app.dir\src\BookingScreen.cpp.obj -c C:\Users\Os\Desktop\PBL2\src\BookingScreen.cpp
+
+CMakeFiles/app.dir/src/BookingScreen.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/app.dir/src/BookingScreen.cpp.i"
+	C:\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Os\Desktop\PBL2\src\BookingScreen.cpp > CMakeFiles\app.dir\src\BookingScreen.cpp.i
+
+CMakeFiles/app.dir/src/BookingScreen.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/app.dir/src/BookingScreen.cpp.s"
+	C:\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\Os\Desktop\PBL2\src\BookingScreen.cpp -o CMakeFiles\app.dir\src\BookingScreen.cpp.s
+
+CMakeFiles/app.dir/src/HomeScreen.cpp.obj: CMakeFiles/app.dir/flags.make
+CMakeFiles/app.dir/src/HomeScreen.cpp.obj: CMakeFiles/app.dir/includes_CXX.rsp
+CMakeFiles/app.dir/src/HomeScreen.cpp.obj: C:/Users/Os/Desktop/PBL2/src/HomeScreen.cpp
+CMakeFiles/app.dir/src/HomeScreen.cpp.obj: CMakeFiles/app.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\Os\Desktop\PBL2\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/app.dir/src/HomeScreen.cpp.obj"
+	C:\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/app.dir/src/HomeScreen.cpp.obj -MF CMakeFiles\app.dir\src\HomeScreen.cpp.obj.d -o CMakeFiles\app.dir\src\HomeScreen.cpp.obj -c C:\Users\Os\Desktop\PBL2\src\HomeScreen.cpp
+
+CMakeFiles/app.dir/src/HomeScreen.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/app.dir/src/HomeScreen.cpp.i"
+	C:\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Os\Desktop\PBL2\src\HomeScreen.cpp > CMakeFiles\app.dir\src\HomeScreen.cpp.i
+
+CMakeFiles/app.dir/src/HomeScreen.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/app.dir/src/HomeScreen.cpp.s"
+	C:\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\Os\Desktop\PBL2\src\HomeScreen.cpp -o CMakeFiles\app.dir\src\HomeScreen.cpp.s
+
+CMakeFiles/app.dir/src/TextButton.cpp.obj: CMakeFiles/app.dir/flags.make
+CMakeFiles/app.dir/src/TextButton.cpp.obj: CMakeFiles/app.dir/includes_CXX.rsp
+CMakeFiles/app.dir/src/TextButton.cpp.obj: C:/Users/Os/Desktop/PBL2/src/TextButton.cpp
+CMakeFiles/app.dir/src/TextButton.cpp.obj: CMakeFiles/app.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\Os\Desktop\PBL2\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/app.dir/src/TextButton.cpp.obj"
+	C:\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/app.dir/src/TextButton.cpp.obj -MF CMakeFiles\app.dir\src\TextButton.cpp.obj.d -o CMakeFiles\app.dir\src\TextButton.cpp.obj -c C:\Users\Os\Desktop\PBL2\src\TextButton.cpp
+
+CMakeFiles/app.dir/src/TextButton.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/app.dir/src/TextButton.cpp.i"
+	C:\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Os\Desktop\PBL2\src\TextButton.cpp > CMakeFiles\app.dir\src\TextButton.cpp.i
+
+CMakeFiles/app.dir/src/TextButton.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/app.dir/src/TextButton.cpp.s"
+	C:\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\Os\Desktop\PBL2\src\TextButton.cpp -o CMakeFiles\app.dir\src\TextButton.cpp.s
+
 CMakeFiles/app.dir/src/UI.cpp.obj: CMakeFiles/app.dir/flags.make
 CMakeFiles/app.dir/src/UI.cpp.obj: CMakeFiles/app.dir/includes_CXX.rsp
-CMakeFiles/app.dir/src/UI.cpp.obj: C:/Users/Os/Desktop/TEST/src/UI.cpp
+CMakeFiles/app.dir/src/UI.cpp.obj: C:/Users/Os/Desktop/PBL2/src/UI.cpp
 CMakeFiles/app.dir/src/UI.cpp.obj: CMakeFiles/app.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\Os\Desktop\TEST\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/app.dir/src/UI.cpp.obj"
-	C:\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/app.dir/src/UI.cpp.obj -MF CMakeFiles\app.dir\src\UI.cpp.obj.d -o CMakeFiles\app.dir\src\UI.cpp.obj -c C:\Users\Os\Desktop\TEST\src\UI.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\Os\Desktop\PBL2\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/app.dir/src/UI.cpp.obj"
+	C:\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/app.dir/src/UI.cpp.obj -MF CMakeFiles\app.dir\src\UI.cpp.obj.d -o CMakeFiles\app.dir\src\UI.cpp.obj -c C:\Users\Os\Desktop\PBL2\src\UI.cpp
 
 CMakeFiles/app.dir/src/UI.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/app.dir/src/UI.cpp.i"
-	C:\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Os\Desktop\TEST\src\UI.cpp > CMakeFiles\app.dir\src\UI.cpp.i
+	C:\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Os\Desktop\PBL2\src\UI.cpp > CMakeFiles\app.dir\src\UI.cpp.i
 
 CMakeFiles/app.dir/src/UI.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/app.dir/src/UI.cpp.s"
-	C:\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\Os\Desktop\TEST\src\UI.cpp -o CMakeFiles\app.dir\src\UI.cpp.s
+	C:\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\Os\Desktop\PBL2\src\UI.cpp -o CMakeFiles\app.dir\src\UI.cpp.s
 
 CMakeFiles/app.dir/src/tubuildtrangchu.cpp.obj: CMakeFiles/app.dir/flags.make
 CMakeFiles/app.dir/src/tubuildtrangchu.cpp.obj: CMakeFiles/app.dir/includes_CXX.rsp
-CMakeFiles/app.dir/src/tubuildtrangchu.cpp.obj: C:/Users/Os/Desktop/TEST/src/tubuildtrangchu.cpp
+CMakeFiles/app.dir/src/tubuildtrangchu.cpp.obj: C:/Users/Os/Desktop/PBL2/src/tubuildtrangchu.cpp
 CMakeFiles/app.dir/src/tubuildtrangchu.cpp.obj: CMakeFiles/app.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\Os\Desktop\TEST\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/app.dir/src/tubuildtrangchu.cpp.obj"
-	C:\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/app.dir/src/tubuildtrangchu.cpp.obj -MF CMakeFiles\app.dir\src\tubuildtrangchu.cpp.obj.d -o CMakeFiles\app.dir\src\tubuildtrangchu.cpp.obj -c C:\Users\Os\Desktop\TEST\src\tubuildtrangchu.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\Os\Desktop\PBL2\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/app.dir/src/tubuildtrangchu.cpp.obj"
+	C:\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/app.dir/src/tubuildtrangchu.cpp.obj -MF CMakeFiles\app.dir\src\tubuildtrangchu.cpp.obj.d -o CMakeFiles\app.dir\src\tubuildtrangchu.cpp.obj -c C:\Users\Os\Desktop\PBL2\src\tubuildtrangchu.cpp
 
 CMakeFiles/app.dir/src/tubuildtrangchu.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/app.dir/src/tubuildtrangchu.cpp.i"
-	C:\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Os\Desktop\TEST\src\tubuildtrangchu.cpp > CMakeFiles\app.dir\src\tubuildtrangchu.cpp.i
+	C:\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Os\Desktop\PBL2\src\tubuildtrangchu.cpp > CMakeFiles\app.dir\src\tubuildtrangchu.cpp.i
 
 CMakeFiles/app.dir/src/tubuildtrangchu.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/app.dir/src/tubuildtrangchu.cpp.s"
-	C:\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\Os\Desktop\TEST\src\tubuildtrangchu.cpp -o CMakeFiles\app.dir\src\tubuildtrangchu.cpp.s
+	C:\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\Os\Desktop\PBL2\src\tubuildtrangchu.cpp -o CMakeFiles\app.dir\src\tubuildtrangchu.cpp.s
 
 # Object files for target app
 app_OBJECTS = \
+"CMakeFiles/app.dir/src/BookingScreen.cpp.obj" \
+"CMakeFiles/app.dir/src/HomeScreen.cpp.obj" \
+"CMakeFiles/app.dir/src/TextButton.cpp.obj" \
 "CMakeFiles/app.dir/src/UI.cpp.obj" \
 "CMakeFiles/app.dir/src/tubuildtrangchu.cpp.obj"
 
 # External object files for target app
 app_EXTERNAL_OBJECTS =
 
+app.exe: CMakeFiles/app.dir/src/BookingScreen.cpp.obj
+app.exe: CMakeFiles/app.dir/src/HomeScreen.cpp.obj
+app.exe: CMakeFiles/app.dir/src/TextButton.cpp.obj
 app.exe: CMakeFiles/app.dir/src/UI.cpp.obj
 app.exe: CMakeFiles/app.dir/src/tubuildtrangchu.cpp.obj
 app.exe: CMakeFiles/app.dir/build.make
@@ -123,7 +174,7 @@ app.exe: C:/SFML-master/install/lib/libsfml-system-s.a
 app.exe: CMakeFiles/app.dir/linkLibs.rsp
 app.exe: CMakeFiles/app.dir/objects1.rsp
 app.exe: CMakeFiles/app.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=C:\Users\Os\Desktop\TEST\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable app.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=C:\Users\Os\Desktop\PBL2\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable app.exe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\app.dir\link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -135,6 +186,6 @@ CMakeFiles/app.dir/clean:
 .PHONY : CMakeFiles/app.dir/clean
 
 CMakeFiles/app.dir/depend:
-	$(CMAKE_COMMAND) -E cmake_depends "MinGW Makefiles" C:\Users\Os\Desktop\TEST C:\Users\Os\Desktop\TEST C:\Users\Os\Desktop\TEST\build C:\Users\Os\Desktop\TEST\build C:\Users\Os\Desktop\TEST\build\CMakeFiles\app.dir\DependInfo.cmake "--color=$(COLOR)"
+	$(CMAKE_COMMAND) -E cmake_depends "MinGW Makefiles" C:\Users\Os\Desktop\PBL2 C:\Users\Os\Desktop\PBL2 C:\Users\Os\Desktop\PBL2\build C:\Users\Os\Desktop\PBL2\build C:\Users\Os\Desktop\PBL2\build\CMakeFiles\app.dir\DependInfo.cmake "--color=$(COLOR)"
 .PHONY : CMakeFiles/app.dir/depend
 

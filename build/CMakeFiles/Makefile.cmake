@@ -65,11 +65,13 @@ set(CMAKE_MAKEFILE_DEPENDS
   "C:/SFML-master/install/lib/cmake/freetype/freetype-config.cmake"
   "C:/SFML-master/install/lib/cmake/harfbuzz/harfbuzzConfig-release.cmake"
   "C:/SFML-master/install/lib/cmake/harfbuzz/harfbuzzConfig.cmake"
-  "C:/Users/Os/Desktop/TEST/CMakeLists.txt"
+  "C:/Users/Os/Desktop/PBL2/CMakeLists.txt"
   "CMakeFiles/4.1.1/CMakeCCompiler.cmake"
   "CMakeFiles/4.1.1/CMakeCXXCompiler.cmake"
   "CMakeFiles/4.1.1/CMakeRCCompiler.cmake"
   "CMakeFiles/4.1.1/CMakeSystem.cmake"
+  "CMakeFiles/VerifyGlobs.cmake"
+  "CMakeFiles/cmake.verify_globs"
   )
 
 # The corresponding makefile is:
