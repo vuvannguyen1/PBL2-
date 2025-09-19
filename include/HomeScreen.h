@@ -1,18 +1,23 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "TextButton.h"
+using namespace sf;
 
 enum class AppState {
-    HOME, 
+    HOME,
     BOOKING
 };
 
 class HomeScreen {
-    private:
-        static const int BTN_COUNT = 4;
-        TextButton buttons[BTN_COUNT];
-    public:
-        HomeScreen(const Font&);
-        void update(const Vector2f&, bool, AppState&);
-        void draw(RenderWindow&);
+private:
+    Font& font;
+    Text logo;
+    RectangleShape sidebarRect;
+    static const int BUTTON_COUNT = 4;
+    TextButton buttons[BUTTON_COUNT];
+
+public:
+    HomeScreen(Font&);
+    void update(Vector2f, bool, AppState&);
+    void draw(RenderWindow&);
 };

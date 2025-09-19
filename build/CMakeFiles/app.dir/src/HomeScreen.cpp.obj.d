@@ -305,5 +305,4 @@ CMakeFiles/app.dir/src/HomeScreen.cpp.obj: \
  C:/SFML-master/install/include/SFML/System/InputStream.hpp \
  C:/SFML-master/install/include/SFML/System/MemoryInputStream.hpp \
  C:/SFML-master/install/include/SFML/System/Sleep.hpp \
- C:/Users/Os/Desktop/PBL2/include/TextButton.h \
- C:/mingw64/include/c++/14.2.0/iostream
+ C:/Users/Os/Desktop/PBL2/include/TextButton.h

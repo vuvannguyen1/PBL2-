@@ -33,9 +33,9 @@ int main() {
         TextButton(font, "Music", 22, Vector2f({40, 270}))
     };
 
-    // AppState state = AppState::HOME;
-    // HomeScreen home(font);
-    // BookingScreen booking(font);
+    AppState state = AppState::HOME;
+    HomeScreen home(font);
+    BookingScreen booking(font);
 
     while (window.isOpen()) {
         bool mousePressed = false;
@@ -46,32 +46,26 @@ int main() {
         Vector2f mouse(Mouse::getPosition(window));
         for (int i = 0; i < BUTTON_COUNT; i++) {
             buttons[i].update(mouse);
-            // if (buttons[i].isClicked(mouse, mousePressed)) {
-            //     if (i == 2) { // nút Đặt Vé Online
-            //     state = AppState::BOOKING;
-            //     }
-            //     else if (i == 0) { // nút Dashboard về HOME
-            //     state = AppState::HOME;
-            //     }
-            // }
+            if (buttons[i].isClicked(mouse, mousePressed)) {
+                if (i == 2) { // nút Đặt Vé Online
+                state = AppState::BOOKING;
+                }
+                else if (i == 0) { // nút Dashboard về HOME
+                state = AppState::HOME;
+                }
+            }
         }
 
         window.clear(BgDark3);
-        
-        window.draw(rectangle1);
 
-        window.draw(text);
-
-        for (int i = 0; i < BUTTON_COUNT; i++) buttons[i].draw(window);
-
-        // if (state == AppState::HOME) {
-        //     home.update(mouse, mousePressed, state);
-        //     home.draw(window);
-        // } 
-        // else if (state == AppState::BOOKING) {
-        //     booking.update();
-        //     booking.draw(window);
-        // }
+        if (state == AppState::HOME) {
+            home.update(mouse, mousePressed, state);
+            home.draw(window);
+        } 
+        else if (state == AppState::BOOKING) {
+            booking.update(mouse, mousePressed, state);
+            booking.draw(window);
+        }
 
         window.display();
     }

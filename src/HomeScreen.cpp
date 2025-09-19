@@ -1,25 +1,43 @@
 #include "HomeScreen.h"
-#include <iostream>
 
-HomeScreen::HomeScreen(const Font& font) : buttons {
-    buttons[0] = TextButton(font, "Dashboard", 22, {40, 120}),
-    buttons[1] = TextButton(font, "Movie", 22, {40, 170}),
-    buttons[2] = TextButton(font, L"Đặt Vé Online", 22, {40, 220}),
-    buttons[3] = TextButton(font, "Music", 22, {40, 270})
-}  {}
+HomeScreen::HomeScreen(Font& f) : font(f),
+    buttons{
+        TextButton(font, L"Phim Đang Chiếu", 22, Vector2f(40, 120)),
+        TextButton(font, L"Vé Của Tôi", 22, Vector2f(40, 170)),
+        TextButton(font, L"Đặt Vé", 22, Vector2f(40, 220)),
+        TextButton(font, L"Đăng nhập/ Đăng ký", 22, Vector2f(40, 800))
+    },
+    logo(font, L"CINExínè", 30)
+{
+    Color sidebar_logo(20, 118, 172);
+    Color sidebar(13, 27, 42);
 
-void HomeScreen::update(const Vector2f& mousePos, bool mousePressed, AppState& state) {
-    for (int i = 0; i < BTN_COUNT; i++) {
-        buttons[i].update(mousePos);
-        if (buttons[i].isClicked(mousePos, mousePressed)) {
-            if (i == 2) state = AppState::BOOKING;
-            else state = AppState::HOME;
+    // sidebar background
+    sidebarRect.setSize({340.f, 1080.f});
+    sidebarRect.setFillColor(sidebar);
+    
+    logo.setFillColor(sidebar_logo);
+    logo.setPosition({40, 60});
+}
+
+void HomeScreen::update(Vector2f mouse, bool mousePressed, AppState& state) {
+    for (int i = 0; i < BUTTON_COUNT; i++) {
+        buttons[i].update(mouse);
+
+        if (buttons[i].isClicked(mouse, mousePressed)) {
+            if (i == 2) { // nút Đặt vé Online
+                state = AppState::BOOKING;
+            } else if (i == 0) { // Dashboard về HOME
+                state = AppState::HOME;
+            }
         }
     }
 }
 
 void HomeScreen::draw(RenderWindow& window) {
-    for (int i = 0; i < BTN_COUNT; i++) buttons[i].draw(window);
+    window.draw(sidebarRect);
+    window.draw(logo);
+    for (int i = 0; i < BUTTON_COUNT; i++) {
+        buttons[i].draw(window);
+    }
 }
-
-
