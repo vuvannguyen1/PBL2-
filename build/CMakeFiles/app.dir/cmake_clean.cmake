@@ -3,6 +3,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/app.dir/src/BookingScreen.cpp.obj.d"
   "CMakeFiles/app.dir/src/HomeScreen.cpp.obj"
   "CMakeFiles/app.dir/src/HomeScreen.cpp.obj.d"
+  "CMakeFiles/app.dir/src/PosterSlider.cpp.obj"
+  "CMakeFiles/app.dir/src/PosterSlider.cpp.obj.d"
   "CMakeFiles/app.dir/src/TextButton.cpp.obj"
   "CMakeFiles/app.dir/src/TextButton.cpp.obj.d"
   "CMakeFiles/app.dir/src/UI.cpp.obj"

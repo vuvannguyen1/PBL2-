@@ -10,6 +10,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "C:/Users/Os/Desktop/PBL2/src/BookingScreen.cpp" "CMakeFiles/app.dir/src/BookingScreen.cpp.obj" "gcc" "CMakeFiles/app.dir/src/BookingScreen.cpp.obj.d"
   "C:/Users/Os/Desktop/PBL2/src/HomeScreen.cpp" "CMakeFiles/app.dir/src/HomeScreen.cpp.obj" "gcc" "CMakeFiles/app.dir/src/HomeScreen.cpp.obj.d"
+  "C:/Users/Os/Desktop/PBL2/src/PosterSlider.cpp" "CMakeFiles/app.dir/src/PosterSlider.cpp.obj" "gcc" "CMakeFiles/app.dir/src/PosterSlider.cpp.obj.d"
   "C:/Users/Os/Desktop/PBL2/src/TextButton.cpp" "CMakeFiles/app.dir/src/TextButton.cpp.obj" "gcc" "CMakeFiles/app.dir/src/TextButton.cpp.obj.d"
   "C:/Users/Os/Desktop/PBL2/src/UI.cpp" "CMakeFiles/app.dir/src/UI.cpp.obj" "gcc" "CMakeFiles/app.dir/src/UI.cpp.obj.d"
   "C:/Users/Os/Desktop/PBL2/src/tubuildtrangchu.cpp" "CMakeFiles/app.dir/src/tubuildtrangchu.cpp.obj" "gcc" "CMakeFiles/app.dir/src/tubuildtrangchu.cpp.obj.d"

@@ -177,6 +177,30 @@ src/HomeScreen.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/HomeScreen.cpp.s
 .PHONY : src/HomeScreen.cpp.s
 
+src/PosterSlider.obj: src/PosterSlider.cpp.obj
+.PHONY : src/PosterSlider.obj
+
+# target to build an object file
+src/PosterSlider.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/PosterSlider.cpp.obj
+.PHONY : src/PosterSlider.cpp.obj
+
+src/PosterSlider.i: src/PosterSlider.cpp.i
+.PHONY : src/PosterSlider.i
+
+# target to preprocess a source file
+src/PosterSlider.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/PosterSlider.cpp.i
+.PHONY : src/PosterSlider.cpp.i
+
+src/PosterSlider.s: src/PosterSlider.cpp.s
+.PHONY : src/PosterSlider.s
+
+# target to generate assembly for a file
+src/PosterSlider.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/PosterSlider.cpp.s
+.PHONY : src/PosterSlider.cpp.s
+
 src/TextButton.obj: src/TextButton.cpp.obj
 .PHONY : src/TextButton.obj
 
@@ -264,6 +288,9 @@ help:
 	@echo ... src/HomeScreen.obj
 	@echo ... src/HomeScreen.i
 	@echo ... src/HomeScreen.s
+	@echo ... src/PosterSlider.obj
+	@echo ... src/PosterSlider.i
+	@echo ... src/PosterSlider.s
 	@echo ... src/TextButton.obj
 	@echo ... src/TextButton.i
 	@echo ... src/TextButton.s

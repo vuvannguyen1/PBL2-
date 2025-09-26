@@ -305,7 +305,23 @@ CMakeFiles/app.dir/src/tubuildtrangchu.cpp.obj: \
  C:/SFML-master/install/include/SFML/System/MemoryInputStream.hpp \
  C:/SFML-master/install/include/SFML/System/Sleep.hpp \
  C:/mingw64/include/c++/14.2.0/iostream \
+ C:/mingw64/include/c++/14.2.0/cmath \
+ C:/mingw64/x86_64-w64-mingw32/include/math.h \
+ C:/mingw64/include/c++/14.2.0/bits/specfun.h \
+ C:/mingw64/include/c++/14.2.0/tr1/gamma.tcc \
+ C:/mingw64/include/c++/14.2.0/tr1/special_function_util.h \
+ C:/mingw64/include/c++/14.2.0/tr1/bessel_function.tcc \
+ C:/mingw64/include/c++/14.2.0/tr1/beta_function.tcc \
+ C:/mingw64/include/c++/14.2.0/tr1/ell_integral.tcc \
+ C:/mingw64/include/c++/14.2.0/tr1/exp_integral.tcc \
+ C:/mingw64/include/c++/14.2.0/tr1/hypergeometric.tcc \
+ C:/mingw64/include/c++/14.2.0/tr1/legendre_function.tcc \
+ C:/mingw64/include/c++/14.2.0/tr1/modified_bessel_func.tcc \
+ C:/mingw64/include/c++/14.2.0/tr1/poly_hermite.tcc \
+ C:/mingw64/include/c++/14.2.0/tr1/poly_laguerre.tcc \
+ C:/mingw64/include/c++/14.2.0/tr1/riemann_zeta.tcc \
  C:/Users/Os/Desktop/PBL2/include/UI.h \
  C:/Users/Os/Desktop/PBL2/include/TextButton.h \
  C:/Users/Os/Desktop/PBL2/include/BookingScreen.h \
- C:/Users/Os/Desktop/PBL2/include/HomeScreen.h
+ C:/Users/Os/Desktop/PBL2/include/HomeScreen.h \
+ C:/Users/Os/Desktop/PBL2/include/PosterSlider.h

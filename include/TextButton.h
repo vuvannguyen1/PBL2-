@@ -11,4 +11,6 @@ class TextButton {
         void update(const Vector2f&);
         bool isClicked(const Vector2f&, bool) const;
         void draw(RenderWindow&) const;
+        void setOutlineColor(const sf::Color&);
+        void setOutlineThickness(float);
 };

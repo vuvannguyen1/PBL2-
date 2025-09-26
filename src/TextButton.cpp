@@ -8,11 +8,11 @@ TextButton::TextButton(const Font& font, const String& str, unsigned int size, V
 void TextButton::update(const Vector2f& mousePos) {
     if (text.getGlobalBounds().contains(mousePos)) {
         hovered = true;
-        text.setFillColor(Color(45, 156, 219));
+        text.setFillColor(Color::White);
     }
     else {
         hovered = false;
-        text.setFillColor(Color(170, 182, 197));
+        text.setFillColor(Color(214, 215, 230));
     }
 }
 
@@ -22,4 +22,12 @@ bool TextButton::isClicked(const Vector2f& mousePos, bool mousePressed) const {
 
 void TextButton::draw(RenderWindow& window) const {
     window.draw(text);
+}
+
+void TextButton::setOutlineColor(const sf::Color& color) {
+    text.setOutlineColor(color);
+}
+
+void TextButton::setOutlineThickness(float thickness) {
+    text.setOutlineThickness(thickness);
 }

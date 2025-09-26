@@ -2,22 +2,25 @@
 
 HomeScreen::HomeScreen(Font& f) : font(f),
     buttons{
-        TextButton(font, L"Phim Đang Chiếu", 22, Vector2f(40, 120)),
-        TextButton(font, L"Vé Của Tôi", 22, Vector2f(40, 170)),
-        TextButton(font, L"Đặt Vé", 22, Vector2f(40, 220)),
-        TextButton(font, L"Đăng nhập/ Đăng ký", 22, Vector2f(40, 800))
+        TextButton(font, L"CiNeXíNè", 50, Vector2f(60, 40)),
+        TextButton(font, L"Đăng nhập | Đăng ký", 22, Vector2f(1360, 50))
     },
-    logo(font, L"CINExínè", 30)
+    bg("../assets/background.png"),
+    searchbar("../assets/search_bar.png"),
+    sprite1(bg),
+    sprite2(searchbar)
 {
     Color sidebar_logo(20, 118, 172);
     Color sidebar(13, 27, 42);
 
-    // sidebar background
-    sidebarRect.setSize({340.f, 1080.f});
-    sidebarRect.setFillColor(sidebar);
-    
-    logo.setFillColor(sidebar_logo);
-    logo.setPosition({40, 60});
+    sprite2.setPosition({720, 50});
+    sprite2.setScale({0.2, 0.2});
+
+    for (int i = 0; i < BUTTON_COUNT; i++) {
+        buttons[i].setOutlineColor(sidebar_logo);
+        if (i == 0) buttons[i].setOutlineThickness({5.f});
+        else buttons[i].setOutlineThickness({2.f});
+    }
 }
 
 void HomeScreen::update(Vector2f mouse, bool mousePressed, AppState& state) {
@@ -25,19 +28,28 @@ void HomeScreen::update(Vector2f mouse, bool mousePressed, AppState& state) {
         buttons[i].update(mouse);
 
         if (buttons[i].isClicked(mouse, mousePressed)) {
-            if (i == 2) { // nút Đặt vé Online
-                state = AppState::BOOKING;
-            } else if (i == 0) { // Dashboard về HOME
-                state = AppState::HOME;
+            switch (i) {
+                case 0: 
+                    state = AppState::HOME;
+                    break;
+                case 1:
+
+                    break;
+                case 2:
+                    state = AppState::BOOKING;
+                    break;
+                default:
+                    break;
             }
         }
     }
 }
 
 void HomeScreen::draw(RenderWindow& window) {
-    window.draw(sidebarRect);
-    window.draw(logo);
+    window.draw(sprite1);
+    window.draw(sprite2);
     for (int i = 0; i < BUTTON_COUNT; i++) {
         buttons[i].draw(window);
     }
 }
+
