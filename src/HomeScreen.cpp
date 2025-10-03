@@ -3,7 +3,8 @@
 HomeScreen::HomeScreen(Font& f) : font(f),
     buttons{
         TextButton(font, L"CiNeXíNè", 50, Vector2f(60, 40)),
-        TextButton(font, L"Đăng nhập | Đăng ký", 22, Vector2f(1360, 50))
+        TextButton(font, L"Đăng nhập | Đăng ký", 22, Vector2f(1360, 50)),
+        TextButton(font, L"Đặt vé ngay", 23, Vector2f(1150, 50))
     },
     bg("../assets/background.png"),
     searchbar("../assets/search_bar.png"),
@@ -33,10 +34,10 @@ void HomeScreen::update(Vector2f mouse, bool mousePressed, AppState& state) {
                     state = AppState::HOME;
                     break;
                 case 1:
-
+                    state = AppState::LOGIN;
                     break;
                 case 2:
-                    state = AppState::BOOKING;
+                    // state = AppState::BOOKING;
                     break;
                 default:
                     break;
@@ -48,8 +49,6 @@ void HomeScreen::update(Vector2f mouse, bool mousePressed, AppState& state) {
 void HomeScreen::draw(RenderWindow& window) {
     window.draw(sprite1);
     window.draw(sprite2);
-    for (int i = 0; i < BUTTON_COUNT; i++) {
-        buttons[i].draw(window);
-    }
+    for (int i = 0; i < BUTTON_COUNT; i++) buttons[i].draw(window);
 }
 

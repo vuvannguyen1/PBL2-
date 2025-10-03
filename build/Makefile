@@ -153,6 +153,30 @@ src/BookingScreen.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/BookingScreen.cpp.s
 .PHONY : src/BookingScreen.cpp.s
 
+src/DetailScreen.obj: src/DetailScreen.cpp.obj
+.PHONY : src/DetailScreen.obj
+
+# target to build an object file
+src/DetailScreen.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/DetailScreen.cpp.obj
+.PHONY : src/DetailScreen.cpp.obj
+
+src/DetailScreen.i: src/DetailScreen.cpp.i
+.PHONY : src/DetailScreen.i
+
+# target to preprocess a source file
+src/DetailScreen.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/DetailScreen.cpp.i
+.PHONY : src/DetailScreen.cpp.i
+
+src/DetailScreen.s: src/DetailScreen.cpp.s
+.PHONY : src/DetailScreen.s
+
+# target to generate assembly for a file
+src/DetailScreen.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/DetailScreen.cpp.s
+.PHONY : src/DetailScreen.cpp.s
+
 src/HomeScreen.obj: src/HomeScreen.cpp.obj
 .PHONY : src/HomeScreen.obj
 
@@ -176,6 +200,30 @@ src/HomeScreen.s: src/HomeScreen.cpp.s
 src/HomeScreen.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/HomeScreen.cpp.s
 .PHONY : src/HomeScreen.cpp.s
+
+src/LoginScreen.obj: src/LoginScreen.cpp.obj
+.PHONY : src/LoginScreen.obj
+
+# target to build an object file
+src/LoginScreen.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/LoginScreen.cpp.obj
+.PHONY : src/LoginScreen.cpp.obj
+
+src/LoginScreen.i: src/LoginScreen.cpp.i
+.PHONY : src/LoginScreen.i
+
+# target to preprocess a source file
+src/LoginScreen.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/LoginScreen.cpp.i
+.PHONY : src/LoginScreen.cpp.i
+
+src/LoginScreen.s: src/LoginScreen.cpp.s
+.PHONY : src/LoginScreen.s
+
+# target to generate assembly for a file
+src/LoginScreen.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/LoginScreen.cpp.s
+.PHONY : src/LoginScreen.cpp.s
 
 src/PosterSlider.obj: src/PosterSlider.cpp.obj
 .PHONY : src/PosterSlider.obj
@@ -285,9 +333,15 @@ help:
 	@echo ... src/BookingScreen.obj
 	@echo ... src/BookingScreen.i
 	@echo ... src/BookingScreen.s
+	@echo ... src/DetailScreen.obj
+	@echo ... src/DetailScreen.i
+	@echo ... src/DetailScreen.s
 	@echo ... src/HomeScreen.obj
 	@echo ... src/HomeScreen.i
 	@echo ... src/HomeScreen.s
+	@echo ... src/LoginScreen.obj
+	@echo ... src/LoginScreen.i
+	@echo ... src/LoginScreen.s
 	@echo ... src/PosterSlider.obj
 	@echo ... src/PosterSlider.i
 	@echo ... src/PosterSlider.s

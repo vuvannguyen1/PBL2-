@@ -1,0 +1,5 @@
+﻿staff_id,user_id,username,password,role,full_name,email,phone,status
+S001,U1001,staff01,staff123,staff,Nguyễn Văn A,staff01@cinema.local,0901100001,active
+S002,U1002,staff02,staff123,staff,Trần Thị B,staff02@cinema.local,0901100002,active
+S003,U1003,staff03,staff123,staff,Lê Quốc C,staff03@cinema.local,0901100003,active
+S004,U1004,staff04,staff123,staff,Phạm Minh D,staff04@cinema.local,0901100004,active

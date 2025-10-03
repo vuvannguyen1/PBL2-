@@ -6,6 +6,7 @@ using namespace std;
 
 enum class AppState {
     HOME,
+    LOGIN,
     BOOKING
 };
 
@@ -14,10 +15,10 @@ class HomeScreen {
         Font& font;
         Texture bg, searchbar;
         Sprite sprite1, sprite2;
-        static const int BUTTON_COUNT = 2;
-        TextButton buttons[BUTTON_COUNT];
 
     public:
+        static const int BUTTON_COUNT = 3;
+        TextButton buttons[BUTTON_COUNT];
         HomeScreen(Font&);
         void update(Vector2f, bool, AppState&);
         void draw(RenderWindow&);

@@ -1,11 +1,14 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <cmath>
-#include "UI.h"
 #include "TextButton.h"
 #include "BookingScreen.h"
 #include "HomeScreen.h"
 #include "PosterSlider.h"
+#include "LoginScreen.h"   // thêm
+
+using namespace sf;
+using namespace std;
 
 int main() {
     RenderWindow window(
@@ -23,6 +26,7 @@ int main() {
     AppState state = AppState::HOME;
     HomeScreen home(font);
     BookingScreen booking(font);
+    LoginScreen login(font);  // thêm login
 
     vector<Texture> textures;
     vector<Slide> slides;
@@ -92,11 +96,16 @@ int main() {
 
         while (auto event = window.pollEvent()) {
             if (event->is<Event::Closed>()) window.close();
+            else if (auto key = event->getIf<Event::KeyPressed>()) {
+                if (key->code == Keyboard::Key::Escape && state == AppState::LOGIN) {
+                    state = AppState::HOME; // ESC thoát login
+                }
+            }
             else if (auto mouse = event->getIf<Event::MouseButtonPressed>()) {
                 Vector2f clickPos = {(float)mouse->position.x, (float)mouse->position.y};
                 mousePressed = true;
 
-                if (!animating) {
+                if (state != AppState::LOGIN && !animating) {
                     if (leftArrow.getGlobalBounds().contains(clickPos)) {
                         prevIndex = currentIndex;
                         targetIndex = (currentIndex > 0) ? currentIndex - 1 : slides.size() - 1;
@@ -123,6 +132,11 @@ int main() {
                     }
                 }
             }
+            if (state == AppState::LOGIN) {
+                if (login.update(Vector2f(Mouse::getPosition(window)), mousePressed)) {
+                    state = AppState::HOME; // đóng login khi click ngoài card hoặc bấm X
+                }
+            }
         }
 
         float dt = clock.restart().asSeconds();
@@ -135,11 +149,9 @@ int main() {
             int dir = 0, steps = 1;
 
             if (clickedDot) {
-                // Quy tắc mới khi click dot
                 dir = (targetIndex > prevIndex) ? 1 : -1;
                 steps = abs(targetIndex - prevIndex);
             } else {
-                // Trường hợp bấm arrow vẫn giữ wrap-around
                 int delta = targetIndex - prevIndex;
                 if (delta >  (int)slides.size()/2)  delta -= slides.size();
                 if (delta < -(int)slides.size()/2) delta += slides.size();
@@ -172,12 +184,23 @@ int main() {
         
         Vector2f mouse(Mouse::getPosition(window));
 
+        // update theo state
         if (state == AppState::HOME) {
             home.update(mouse, mousePressed, state);
-            home.draw(window);
         } 
         else if (state == AppState::BOOKING) {
             booking.update(mouse, mousePressed, state);
+        } 
+        else if (state == AppState::LOGIN) {
+            if (login.update(mouse, mousePressed)) state = AppState::HOME;
+        }
+
+        // draw
+        window.clear(Color::Black);
+
+        if (state == AppState::HOME || state == AppState::LOGIN) {
+            home.draw(window);
+        } else if (state == AppState::BOOKING) {
             booking.draw(window);
         }
 
@@ -195,9 +218,14 @@ int main() {
             window.draw(dots[i]);
         }        
 
+        if (state == AppState::LOGIN) {
+            login.draw(window); // phủ overlay + popup login
+        }
+
         window.display();
     }
 }
+
 
 // #include <SFML/Graphics.hpp>
 // #include <vector>

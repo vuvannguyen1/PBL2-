@@ -5,7 +5,9 @@
 file(GLOB NEW_GLOB LIST_DIRECTORIES true "C:/Users/Os/Desktop/PBL2/src/*.cpp")
 set(OLD_GLOB
   "C:/Users/Os/Desktop/PBL2/src/BookingScreen.cpp"
+  "C:/Users/Os/Desktop/PBL2/src/DetailScreen.cpp"
   "C:/Users/Os/Desktop/PBL2/src/HomeScreen.cpp"
+  "C:/Users/Os/Desktop/PBL2/src/LoginScreen.cpp"
   "C:/Users/Os/Desktop/PBL2/src/PosterSlider.cpp"
   "C:/Users/Os/Desktop/PBL2/src/TextButton.cpp"
   "C:/Users/Os/Desktop/PBL2/src/UI.cpp"

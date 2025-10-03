@@ -320,8 +320,8 @@ CMakeFiles/app.dir/src/tubuildtrangchu.cpp.obj: \
  C:/mingw64/include/c++/14.2.0/tr1/poly_hermite.tcc \
  C:/mingw64/include/c++/14.2.0/tr1/poly_laguerre.tcc \
  C:/mingw64/include/c++/14.2.0/tr1/riemann_zeta.tcc \
- C:/Users/Os/Desktop/PBL2/include/UI.h \
  C:/Users/Os/Desktop/PBL2/include/TextButton.h \
  C:/Users/Os/Desktop/PBL2/include/BookingScreen.h \
  C:/Users/Os/Desktop/PBL2/include/HomeScreen.h \
- C:/Users/Os/Desktop/PBL2/include/PosterSlider.h
+ C:/Users/Os/Desktop/PBL2/include/PosterSlider.h \
+ C:/Users/Os/Desktop/PBL2/include/LoginScreen.h
