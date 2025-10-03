@@ -273,30 +273,6 @@ src/TextButton.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/TextButton.cpp.s
 .PHONY : src/TextButton.cpp.s
 
-src/UI.obj: src/UI.cpp.obj
-.PHONY : src/UI.obj
-
-# target to build an object file
-src/UI.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/UI.cpp.obj
-.PHONY : src/UI.cpp.obj
-
-src/UI.i: src/UI.cpp.i
-.PHONY : src/UI.i
-
-# target to preprocess a source file
-src/UI.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/UI.cpp.i
-.PHONY : src/UI.cpp.i
-
-src/UI.s: src/UI.cpp.s
-.PHONY : src/UI.s
-
-# target to generate assembly for a file
-src/UI.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/UI.cpp.s
-.PHONY : src/UI.cpp.s
-
 src/tubuildtrangchu.obj: src/tubuildtrangchu.cpp.obj
 .PHONY : src/tubuildtrangchu.obj
 
@@ -348,9 +324,6 @@ help:
 	@echo ... src/TextButton.obj
 	@echo ... src/TextButton.i
 	@echo ... src/TextButton.s
-	@echo ... src/UI.obj
-	@echo ... src/UI.i
-	@echo ... src/UI.s
 	@echo ... src/tubuildtrangchu.obj
 	@echo ... src/tubuildtrangchu.i
 	@echo ... src/tubuildtrangchu.s

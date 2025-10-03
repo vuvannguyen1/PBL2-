@@ -23,4 +23,3 @@ class HomeScreen {
         void update(Vector2f, bool, AppState&);
         void draw(RenderWindow&);
 };
-

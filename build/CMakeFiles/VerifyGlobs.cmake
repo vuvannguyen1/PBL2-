@@ -10,7 +10,6 @@ set(OLD_GLOB
   "C:/Users/Os/Desktop/PBL2/src/LoginScreen.cpp"
   "C:/Users/Os/Desktop/PBL2/src/PosterSlider.cpp"
   "C:/Users/Os/Desktop/PBL2/src/TextButton.cpp"
-  "C:/Users/Os/Desktop/PBL2/src/UI.cpp"
   "C:/Users/Os/Desktop/PBL2/src/tubuildtrangchu.cpp"
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")

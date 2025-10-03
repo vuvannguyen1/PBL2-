@@ -11,8 +11,6 @@ file(REMOVE_RECURSE
   "CMakeFiles/app.dir/src/PosterSlider.cpp.obj.d"
   "CMakeFiles/app.dir/src/TextButton.cpp.obj"
   "CMakeFiles/app.dir/src/TextButton.cpp.obj.d"
-  "CMakeFiles/app.dir/src/UI.cpp.obj"
-  "CMakeFiles/app.dir/src/UI.cpp.obj.d"
   "CMakeFiles/app.dir/src/tubuildtrangchu.cpp.obj"
   "CMakeFiles/app.dir/src/tubuildtrangchu.cpp.obj.d"
   "app.exe"
