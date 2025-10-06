@@ -129,6 +129,30 @@ app/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/build
 .PHONY : app/fast
 
+src/AuthService.obj: src/AuthService.cpp.obj
+.PHONY : src/AuthService.obj
+
+# target to build an object file
+src/AuthService.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/AuthService.cpp.obj
+.PHONY : src/AuthService.cpp.obj
+
+src/AuthService.i: src/AuthService.cpp.i
+.PHONY : src/AuthService.i
+
+# target to preprocess a source file
+src/AuthService.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/AuthService.cpp.i
+.PHONY : src/AuthService.cpp.i
+
+src/AuthService.s: src/AuthService.cpp.s
+.PHONY : src/AuthService.s
+
+# target to generate assembly for a file
+src/AuthService.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/AuthService.cpp.s
+.PHONY : src/AuthService.cpp.s
+
 src/BookingScreen.obj: src/BookingScreen.cpp.obj
 .PHONY : src/BookingScreen.obj
 
@@ -249,6 +273,30 @@ src/PosterSlider.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/PosterSlider.cpp.s
 .PHONY : src/PosterSlider.cpp.s
 
+src/RegisterScreen.obj: src/RegisterScreen.cpp.obj
+.PHONY : src/RegisterScreen.obj
+
+# target to build an object file
+src/RegisterScreen.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/RegisterScreen.cpp.obj
+.PHONY : src/RegisterScreen.cpp.obj
+
+src/RegisterScreen.i: src/RegisterScreen.cpp.i
+.PHONY : src/RegisterScreen.i
+
+# target to preprocess a source file
+src/RegisterScreen.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/RegisterScreen.cpp.i
+.PHONY : src/RegisterScreen.cpp.i
+
+src/RegisterScreen.s: src/RegisterScreen.cpp.s
+.PHONY : src/RegisterScreen.s
+
+# target to generate assembly for a file
+src/RegisterScreen.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/RegisterScreen.cpp.s
+.PHONY : src/RegisterScreen.cpp.s
+
 src/TextButton.obj: src/TextButton.cpp.obj
 .PHONY : src/TextButton.obj
 
@@ -306,6 +354,9 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... app
+	@echo ... src/AuthService.obj
+	@echo ... src/AuthService.i
+	@echo ... src/AuthService.s
 	@echo ... src/BookingScreen.obj
 	@echo ... src/BookingScreen.i
 	@echo ... src/BookingScreen.s
@@ -321,6 +372,9 @@ help:
 	@echo ... src/PosterSlider.obj
 	@echo ... src/PosterSlider.i
 	@echo ... src/PosterSlider.s
+	@echo ... src/RegisterScreen.obj
+	@echo ... src/RegisterScreen.i
+	@echo ... src/RegisterScreen.s
 	@echo ... src/TextButton.obj
 	@echo ... src/TextButton.i
 	@echo ... src/TextButton.s

@@ -5,7 +5,8 @@
 #include "BookingScreen.h"
 #include "HomeScreen.h"
 #include "PosterSlider.h"
-#include "LoginScreen.h"   // thêm
+#include "LoginScreen.h"
+#include "AuthService.h"
 
 using namespace sf;
 using namespace std;
@@ -23,10 +24,13 @@ int main() {
 
     Font font("../assets/Montserrat_SemiBold.ttf");
 
+    AuthService auth("../data/users.csv");
+    auth.ensureSampleUser();  // testuser/123456
+
     AppState state = AppState::HOME;
     HomeScreen home(font);
     BookingScreen booking(font);
-    LoginScreen login(font);  // thêm login
+    LoginScreen login(font, auth);
 
     vector<Texture> textures;
     vector<Slide> slides;
@@ -48,34 +52,24 @@ int main() {
 
     for (auto& tex : textures) {
         Slide slide(tex, font);
-
         FloatRect bounds = slide.sprite.getGlobalBounds();
         slide.setPosition({
             (window.getSize().x - bounds.size.x) / 2.f,
             (window.getSize().y - bounds.size.y) / 2.f
         });
-
         slides.push_back(slide);
     }
 
     Clock clock;
     float animTime = 0.5f;
-    float elapsed = animTime; 
+    float elapsed = animTime;
     int currentIndex = 0, targetIndex = 0, prevIndex = 0;
     bool animating = false;
     bool clickedDot = false;
 
     auto easeInOutCubic = [](float x) {
-        return (x < 0.5f) ? 4*x*x*x : 1 - pow(-2*x+2, 3)/2;
+        return (x < 0.5f) ? 4*x*x*x : 1 - pow(-2*x + 2, 3)/2;
     };
-
-    Text leftArrow(font, "<", 50);
-    Text rightArrow(font, ">", 50);
-    leftArrow.setFillColor(Color::White);
-    rightArrow.setFillColor(Color::White);
-
-    leftArrow.setPosition({50.f, window.getSize().y / 2.f - 25.f});
-    rightArrow.setPosition({window.getSize().x - 80.f, window.getSize().y / 2.f - 25.f});
 
     vector<CircleShape> dots;
     float dotRadius = 8.f;
@@ -97,27 +91,30 @@ int main() {
         while (auto event = window.pollEvent()) {
             if (event->is<Event::Closed>()) window.close();
             else if (auto key = event->getIf<Event::KeyPressed>()) {
-                if (key->code == Keyboard::Key::Escape && state == AppState::LOGIN) {
+                if (key->code == Keyboard::Key::Escape && state == AppState::LOGIN)
                     state = AppState::HOME; // ESC thoát login
-                }
             }
             else if (auto mouse = event->getIf<Event::MouseButtonPressed>()) {
                 Vector2f clickPos = {(float)mouse->position.x, (float)mouse->position.y};
                 mousePressed = true;
 
                 if (state != AppState::LOGIN && !animating) {
-                    if (leftArrow.getGlobalBounds().contains(clickPos)) {
+
+                    // 🩵 Kiểm tra mũi tên trái/phải của slide hiện tại
+                    if (slides[currentIndex].isLeftArrowClicked(clickPos)) {
                         prevIndex = currentIndex;
                         targetIndex = (currentIndex > 0) ? currentIndex - 1 : slides.size() - 1;
                         animating = true;
                         elapsed = 0;
                     }
-                    if (rightArrow.getGlobalBounds().contains(clickPos)) {
+                    else if (slides[currentIndex].isRightArrowClicked(clickPos)) {
                         prevIndex = currentIndex;
                         targetIndex = (currentIndex + 1) % slides.size();
                         animating = true;
                         elapsed = 0;
                     }
+
+                    // 🟢 Dots chuyển nhanh
                     for (size_t i = 0; i < dots.size(); ++i) {
                         if (dots[i].getGlobalBounds().contains(clickPos) && i != currentIndex) {
                             prevIndex = currentIndex;
@@ -127,14 +124,18 @@ int main() {
                             clickedDot = true;
                         }
                     }
+
+                    // 🟣 Nút "Xem chi tiết"
                     if (slides[currentIndex].isButtonClicked(clickPos)) {
                         cout << "Xem chi tiết phim index: " << currentIndex << endl;
                     }
                 }
             }
+
+            // ====== xử lý LOGIN ======
             if (state == AppState::LOGIN) {
-                if (login.update(Vector2f(Mouse::getPosition(window)), mousePressed)) {
-                    state = AppState::HOME; // đóng login khi click ngoài card hoặc bấm X
+                if (login.update(Vector2f(Mouse::getPosition(window)), mousePressed, *event)) {
+                    state = AppState::HOME;
                 }
             }
         }
@@ -153,7 +154,7 @@ int main() {
                 steps = abs(targetIndex - prevIndex);
             } else {
                 int delta = targetIndex - prevIndex;
-                if (delta >  (int)slides.size()/2)  delta -= slides.size();
+                if (delta > (int)slides.size()/2)  delta -= slides.size();
                 if (delta < -(int)slides.size()/2) delta += slides.size();
                 dir = (delta > 0) ? 1 : -1;
                 steps = abs(delta);
@@ -181,28 +182,23 @@ int main() {
                 (window.getSize().y - s.sprite.getGlobalBounds().size.y)/2.f
             });
         }
-        
+
         Vector2f mouse(Mouse::getPosition(window));
 
-        // update theo state
         if (state == AppState::HOME) {
             home.update(mouse, mousePressed, state);
         } 
         else if (state == AppState::BOOKING) {
             booking.update(mouse, mousePressed, state);
-        } 
-        else if (state == AppState::LOGIN) {
-            if (login.update(mouse, mousePressed)) state = AppState::HOME;
         }
 
-        // draw
+        // ==== draw ====
         window.clear(Color::Black);
 
-        if (state == AppState::HOME || state == AppState::LOGIN) {
+        if (state == AppState::HOME || state == AppState::LOGIN)
             home.draw(window);
-        } else if (state == AppState::BOOKING) {
+        else if (state == AppState::BOOKING)
             booking.draw(window);
-        }
 
         if (animating) {
             slides[prevIndex].draw(window);
@@ -211,71 +207,15 @@ int main() {
             slides[currentIndex].draw(window);
         }
 
-        window.draw(leftArrow);
-        window.draw(rightArrow);
+        // Dots
         for (size_t i = 0; i < dots.size(); i++) {
             dots[i].setFillColor(i==currentIndex ? Color::White : Color(120,120,120));
             window.draw(dots[i]);
-        }        
-
-        if (state == AppState::LOGIN) {
-            login.draw(window); // phủ overlay + popup login
         }
+
+        if (state == AppState::LOGIN)
+            login.draw(window);
 
         window.display();
     }
 }
-
-
-// #include <SFML/Graphics.hpp>
-// #include <vector>
-// #include <string>
-
-// using namespace sf;
-// using namespace std;
-
-// void runMovieList() {
-//     RenderWindow window(VideoMode({800, 600}), L"Demo Scroll List", Style::Titlebar | Style::Close);
-
-//     Font font("../assets/Montserrat_SemiBold.ttf");
-//     vector<Text> movies;
-//     vector<string> names = {
-//         "Avengers", "Inception", "Avatar", "Oppenheimer",
-//         "Batman", "Spiderman", "Interstellar", "Frozen",
-//         "Kungfu Panda", "Zootopia", "Elemental", "Inside Out"
-//     };
-
-//     // khởi tạo text
-//     for (int i = 0; i < (int)names.size(); i++) {
-//         Text txt(font, names[i], 24);
-//         txt.setFillColor(Color::White);
-//         txt.setPosition({100.f, 50.f + i * 40.f}); // khoảng cách 40px
-//         movies.push_back(txt);
-//     }
-
-//     float scrollOffset = 0.f;
-
-//     while (window.isOpen()) {
-//         while (auto event = window.pollEvent()) {
-//             if (event->is<Event::Closed>()) window.close();
-
-//             if (auto* wheel = event->getIf<Event::MouseWheelScrolled>()) {
-//                 scrollOffset += wheel->delta * 30.f;  // mỗi nấc trượt 30px
-//             }
-//         }
-
-//         window.clear(Color(20, 37, 61));
-
-//         for (int i = 0; i < (int)movies.size(); i++) {
-//             movies[i].setPosition({100.f, 50.f + i * 40.f + scrollOffset});
-//             window.draw(movies[i]);
-//         }
-
-//         window.display();
-//     }
-// }
-
-// int main() {
-//     runMovieList();
-//     return 0;
-// }
