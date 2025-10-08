@@ -129,6 +129,30 @@ app/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/build
 .PHONY : app/fast
 
+src/App.obj: src/App.cpp.obj
+.PHONY : src/App.obj
+
+# target to build an object file
+src/App.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/App.cpp.obj
+.PHONY : src/App.cpp.obj
+
+src/App.i: src/App.cpp.i
+.PHONY : src/App.i
+
+# target to preprocess a source file
+src/App.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/App.cpp.i
+.PHONY : src/App.cpp.i
+
+src/App.s: src/App.cpp.s
+.PHONY : src/App.s
+
+# target to generate assembly for a file
+src/App.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/App.cpp.s
+.PHONY : src/App.cpp.s
+
 src/AuthService.obj: src/AuthService.cpp.obj
 .PHONY : src/AuthService.obj
 
@@ -297,6 +321,30 @@ src/RegisterScreen.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/RegisterScreen.cpp.s
 .PHONY : src/RegisterScreen.cpp.s
 
+src/Slide.obj: src/Slide.cpp.obj
+.PHONY : src/Slide.obj
+
+# target to build an object file
+src/Slide.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/Slide.cpp.obj
+.PHONY : src/Slide.cpp.obj
+
+src/Slide.i: src/Slide.cpp.i
+.PHONY : src/Slide.i
+
+# target to preprocess a source file
+src/Slide.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/Slide.cpp.i
+.PHONY : src/Slide.cpp.i
+
+src/Slide.s: src/Slide.cpp.s
+.PHONY : src/Slide.s
+
+# target to generate assembly for a file
+src/Slide.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/Slide.cpp.s
+.PHONY : src/Slide.cpp.s
+
 src/TextButton.obj: src/TextButton.cpp.obj
 .PHONY : src/TextButton.obj
 
@@ -354,6 +402,9 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... app
+	@echo ... src/App.obj
+	@echo ... src/App.i
+	@echo ... src/App.s
 	@echo ... src/AuthService.obj
 	@echo ... src/AuthService.i
 	@echo ... src/AuthService.s
@@ -375,6 +426,9 @@ help:
 	@echo ... src/RegisterScreen.obj
 	@echo ... src/RegisterScreen.i
 	@echo ... src/RegisterScreen.s
+	@echo ... src/Slide.obj
+	@echo ... src/Slide.i
+	@echo ... src/Slide.s
 	@echo ... src/TextButton.obj
 	@echo ... src/TextButton.i
 	@echo ... src/TextButton.s

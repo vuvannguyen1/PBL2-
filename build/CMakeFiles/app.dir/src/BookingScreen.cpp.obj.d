@@ -306,4 +306,5 @@ CMakeFiles/app.dir/src/BookingScreen.cpp.obj: \
  C:/SFML-master/install/include/SFML/System/MemoryInputStream.hpp \
  C:/SFML-master/install/include/SFML/System/Sleep.hpp \
  C:/Users/Os/Desktop/PBL2/include/HomeScreen.h \
- C:/Users/Os/Desktop/PBL2/include/TextButton.h
+ C:/Users/Os/Desktop/PBL2/include/TextButton.h \
+ C:/Users/Os/Desktop/PBL2/include/AppState.h

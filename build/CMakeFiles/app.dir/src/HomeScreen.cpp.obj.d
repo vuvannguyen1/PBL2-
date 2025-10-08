@@ -305,4 +305,5 @@ CMakeFiles/app.dir/src/HomeScreen.cpp.obj: \
  C:/SFML-master/install/include/SFML/System/FileInputStream.hpp \
  C:/SFML-master/install/include/SFML/System/InputStream.hpp \
  C:/SFML-master/install/include/SFML/System/MemoryInputStream.hpp \
- C:/SFML-master/install/include/SFML/System/Sleep.hpp
+ C:/SFML-master/install/include/SFML/System/Sleep.hpp \
+ C:/Users/Os/Desktop/PBL2/include/AppState.h

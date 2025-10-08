@@ -1,19 +1,34 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <vector>
+#include <string>
+#include "Slide.h"
+
+using namespace std;
 using namespace sf;
 
-class Slide {
-    private:
-        RectangleShape buttonBox;
-        Text buttonLabel;
-        Text leftArrow, rightArrow;
-    public:
-        Sprite sprite;
-        Slide(const Texture&, const Font&);
-        void setPosition(Vector2f);
-        void draw(RenderWindow&);
-        bool isButtonClicked(Vector2f);
-        bool isLeftArrowClicked(Vector2f);
-        bool isRightArrowClicked(Vector2f);
-};
+class PosterSlider {
+private:
+    vector<Texture> textures;
+    vector<Slide> slides;
+    vector<CircleShape> dots;
 
+    Text leftArrow, rightArrow;
+    Font font;
+    RectangleShape rightButton, leftButton;
+
+    int currentIndex = 0;
+    int targetIndex = 0;
+    bool animating = false;
+    bool clickedDot = false;
+    float animTime = 0.35;
+    float elapsed = 0;
+    float easeInOutCubic(float x) const;
+public:
+    PosterSlider(Font&, RenderWindow&);
+    void loadPosters(const vector<string>&, const Font&);
+    void update(float, RenderWindow&);
+    void draw(RenderWindow&);
+    void handleEvent(const Vector2f&, bool);
+    const Sprite& getSlidePosterSprite(int) const;
+};

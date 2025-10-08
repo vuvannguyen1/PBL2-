@@ -1,19 +1,13 @@
 #pragma once
 #include "TextButton.h"
+#include "AppState.h"
 #include <vector>
 #include <string>
-using namespace std;
-
-enum class AppState {
-    HOME,
-    LOGIN,
-    BOOKING
-};
 
 class HomeScreen {
     private:
         Font& font;
-        Texture bg, searchbar;
+        Texture background, searchbar;
         Sprite sprite1, sprite2;
 
     public:

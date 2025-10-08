@@ -1,5 +1,6 @@
 CMakeFiles/app.dir/src/tubuildtrangchu.cpp.obj: \
  C:\Users\Os\Desktop\PBL2\src\tubuildtrangchu.cpp \
+ C:/Users/Os/Desktop/PBL2/include/App.h \
  C:/SFML-master/install/include/SFML/Graphics.hpp \
  C:/SFML-master/install/include/SFML/Graphics/BlendMode.hpp \
  C:/SFML-master/install/include/SFML/Graphics/Export.hpp \
@@ -304,7 +305,6 @@ CMakeFiles/app.dir/src/tubuildtrangchu.cpp.obj: \
  C:/SFML-master/install/include/SFML/System/InputStream.hpp \
  C:/SFML-master/install/include/SFML/System/MemoryInputStream.hpp \
  C:/SFML-master/install/include/SFML/System/Sleep.hpp \
- C:/mingw64/include/c++/14.2.0/iostream \
  C:/mingw64/include/c++/14.2.0/cmath \
  C:/mingw64/x86_64-w64-mingw32/include/math.h \
  C:/mingw64/include/c++/14.2.0/bits/specfun.h \
@@ -321,8 +321,7 @@ CMakeFiles/app.dir/src/tubuildtrangchu.cpp.obj: \
  C:/mingw64/include/c++/14.2.0/tr1/poly_laguerre.tcc \
  C:/mingw64/include/c++/14.2.0/tr1/riemann_zeta.tcc \
  C:/Users/Os/Desktop/PBL2/include/TextButton.h \
- C:/Users/Os/Desktop/PBL2/include/BookingScreen.h \
  C:/Users/Os/Desktop/PBL2/include/HomeScreen.h \
+ C:/Users/Os/Desktop/PBL2/include/AppState.h \
  C:/Users/Os/Desktop/PBL2/include/PosterSlider.h \
- C:/Users/Os/Desktop/PBL2/include/LoginScreen.h \
- C:/Users/Os/Desktop/PBL2/include/AuthService.h
+ C:/Users/Os/Desktop/PBL2/include/Slide.h
