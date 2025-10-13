@@ -1,4 +1,6 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/app.dir/src/AccountScreen.cpp.obj"
+  "CMakeFiles/app.dir/src/AccountScreen.cpp.obj.d"
   "CMakeFiles/app.dir/src/App.cpp.obj"
   "CMakeFiles/app.dir/src/App.cpp.obj.d"
   "CMakeFiles/app.dir/src/AuthService.cpp.obj"
@@ -11,6 +13,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/app.dir/src/HomeScreen.cpp.obj.d"
   "CMakeFiles/app.dir/src/LoginScreen.cpp.obj"
   "CMakeFiles/app.dir/src/LoginScreen.cpp.obj.d"
+  "CMakeFiles/app.dir/src/Movie.cpp.obj"
+  "CMakeFiles/app.dir/src/Movie.cpp.obj.d"
   "CMakeFiles/app.dir/src/PosterSlider.cpp.obj"
   "CMakeFiles/app.dir/src/PosterSlider.cpp.obj.d"
   "CMakeFiles/app.dir/src/RegisterScreen.cpp.obj"

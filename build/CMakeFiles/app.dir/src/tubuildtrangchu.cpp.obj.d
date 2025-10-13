@@ -324,4 +324,6 @@ CMakeFiles/app.dir/src/tubuildtrangchu.cpp.obj: \
  C:/Users/Os/Desktop/PBL2/include/HomeScreen.h \
  C:/Users/Os/Desktop/PBL2/include/AppState.h \
  C:/Users/Os/Desktop/PBL2/include/PosterSlider.h \
- C:/Users/Os/Desktop/PBL2/include/Slide.h
+ C:/Users/Os/Desktop/PBL2/include/Slide.h \
+ C:/Users/Os/Desktop/PBL2/include/LoginScreen.h \
+ C:/Users/Os/Desktop/PBL2/include/AuthService.h

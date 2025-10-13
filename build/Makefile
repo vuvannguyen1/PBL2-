@@ -129,6 +129,30 @@ app/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/build
 .PHONY : app/fast
 
+src/AccountScreen.obj: src/AccountScreen.cpp.obj
+.PHONY : src/AccountScreen.obj
+
+# target to build an object file
+src/AccountScreen.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/AccountScreen.cpp.obj
+.PHONY : src/AccountScreen.cpp.obj
+
+src/AccountScreen.i: src/AccountScreen.cpp.i
+.PHONY : src/AccountScreen.i
+
+# target to preprocess a source file
+src/AccountScreen.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/AccountScreen.cpp.i
+.PHONY : src/AccountScreen.cpp.i
+
+src/AccountScreen.s: src/AccountScreen.cpp.s
+.PHONY : src/AccountScreen.s
+
+# target to generate assembly for a file
+src/AccountScreen.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/AccountScreen.cpp.s
+.PHONY : src/AccountScreen.cpp.s
+
 src/App.obj: src/App.cpp.obj
 .PHONY : src/App.obj
 
@@ -273,6 +297,30 @@ src/LoginScreen.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/LoginScreen.cpp.s
 .PHONY : src/LoginScreen.cpp.s
 
+src/Movie.obj: src/Movie.cpp.obj
+.PHONY : src/Movie.obj
+
+# target to build an object file
+src/Movie.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/Movie.cpp.obj
+.PHONY : src/Movie.cpp.obj
+
+src/Movie.i: src/Movie.cpp.i
+.PHONY : src/Movie.i
+
+# target to preprocess a source file
+src/Movie.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/Movie.cpp.i
+.PHONY : src/Movie.cpp.i
+
+src/Movie.s: src/Movie.cpp.s
+.PHONY : src/Movie.s
+
+# target to generate assembly for a file
+src/Movie.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/Movie.cpp.s
+.PHONY : src/Movie.cpp.s
+
 src/PosterSlider.obj: src/PosterSlider.cpp.obj
 .PHONY : src/PosterSlider.obj
 
@@ -402,6 +450,9 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... app
+	@echo ... src/AccountScreen.obj
+	@echo ... src/AccountScreen.i
+	@echo ... src/AccountScreen.s
 	@echo ... src/App.obj
 	@echo ... src/App.i
 	@echo ... src/App.s
@@ -420,6 +471,9 @@ help:
 	@echo ... src/LoginScreen.obj
 	@echo ... src/LoginScreen.i
 	@echo ... src/LoginScreen.s
+	@echo ... src/Movie.obj
+	@echo ... src/Movie.i
+	@echo ... src/Movie.s
 	@echo ... src/PosterSlider.obj
 	@echo ... src/PosterSlider.i
 	@echo ... src/PosterSlider.s

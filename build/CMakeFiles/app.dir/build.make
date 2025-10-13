@@ -71,11 +71,26 @@ include CMakeFiles/app.dir/flags.make
 CMakeFiles/app.dir/codegen:
 .PHONY : CMakeFiles/app.dir/codegen
 
+CMakeFiles/app.dir/src/AccountScreen.cpp.obj: CMakeFiles/app.dir/flags.make
+CMakeFiles/app.dir/src/AccountScreen.cpp.obj: CMakeFiles/app.dir/includes_CXX.rsp
+CMakeFiles/app.dir/src/AccountScreen.cpp.obj: C:/Users/Os/Desktop/PBL2/src/AccountScreen.cpp
+CMakeFiles/app.dir/src/AccountScreen.cpp.obj: CMakeFiles/app.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\Os\Desktop\PBL2\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/app.dir/src/AccountScreen.cpp.obj"
+	C:\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/app.dir/src/AccountScreen.cpp.obj -MF CMakeFiles\app.dir\src\AccountScreen.cpp.obj.d -o CMakeFiles\app.dir\src\AccountScreen.cpp.obj -c C:\Users\Os\Desktop\PBL2\src\AccountScreen.cpp
+
+CMakeFiles/app.dir/src/AccountScreen.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/app.dir/src/AccountScreen.cpp.i"
+	C:\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Os\Desktop\PBL2\src\AccountScreen.cpp > CMakeFiles\app.dir\src\AccountScreen.cpp.i
+
+CMakeFiles/app.dir/src/AccountScreen.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/app.dir/src/AccountScreen.cpp.s"
+	C:\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\Os\Desktop\PBL2\src\AccountScreen.cpp -o CMakeFiles\app.dir\src\AccountScreen.cpp.s
+
 CMakeFiles/app.dir/src/App.cpp.obj: CMakeFiles/app.dir/flags.make
 CMakeFiles/app.dir/src/App.cpp.obj: CMakeFiles/app.dir/includes_CXX.rsp
 CMakeFiles/app.dir/src/App.cpp.obj: C:/Users/Os/Desktop/PBL2/src/App.cpp
 CMakeFiles/app.dir/src/App.cpp.obj: CMakeFiles/app.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\Os\Desktop\PBL2\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/app.dir/src/App.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\Os\Desktop\PBL2\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/app.dir/src/App.cpp.obj"
 	C:\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/app.dir/src/App.cpp.obj -MF CMakeFiles\app.dir\src\App.cpp.obj.d -o CMakeFiles\app.dir\src\App.cpp.obj -c C:\Users\Os\Desktop\PBL2\src\App.cpp
 
 CMakeFiles/app.dir/src/App.cpp.i: cmake_force
@@ -90,7 +105,7 @@ CMakeFiles/app.dir/src/AuthService.cpp.obj: CMakeFiles/app.dir/flags.make
 CMakeFiles/app.dir/src/AuthService.cpp.obj: CMakeFiles/app.dir/includes_CXX.rsp
 CMakeFiles/app.dir/src/AuthService.cpp.obj: C:/Users/Os/Desktop/PBL2/src/AuthService.cpp
 CMakeFiles/app.dir/src/AuthService.cpp.obj: CMakeFiles/app.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\Os\Desktop\PBL2\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/app.dir/src/AuthService.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\Os\Desktop\PBL2\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/app.dir/src/AuthService.cpp.obj"
 	C:\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/app.dir/src/AuthService.cpp.obj -MF CMakeFiles\app.dir\src\AuthService.cpp.obj.d -o CMakeFiles\app.dir\src\AuthService.cpp.obj -c C:\Users\Os\Desktop\PBL2\src\AuthService.cpp
 
 CMakeFiles/app.dir/src/AuthService.cpp.i: cmake_force
@@ -105,7 +120,7 @@ CMakeFiles/app.dir/src/BookingScreen.cpp.obj: CMakeFiles/app.dir/flags.make
 CMakeFiles/app.dir/src/BookingScreen.cpp.obj: CMakeFiles/app.dir/includes_CXX.rsp
 CMakeFiles/app.dir/src/BookingScreen.cpp.obj: C:/Users/Os/Desktop/PBL2/src/BookingScreen.cpp
 CMakeFiles/app.dir/src/BookingScreen.cpp.obj: CMakeFiles/app.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\Os\Desktop\PBL2\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/app.dir/src/BookingScreen.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\Os\Desktop\PBL2\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/app.dir/src/BookingScreen.cpp.obj"
 	C:\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/app.dir/src/BookingScreen.cpp.obj -MF CMakeFiles\app.dir\src\BookingScreen.cpp.obj.d -o CMakeFiles\app.dir\src\BookingScreen.cpp.obj -c C:\Users\Os\Desktop\PBL2\src\BookingScreen.cpp
 
 CMakeFiles/app.dir/src/BookingScreen.cpp.i: cmake_force
@@ -120,7 +135,7 @@ CMakeFiles/app.dir/src/DetailScreen.cpp.obj: CMakeFiles/app.dir/flags.make
 CMakeFiles/app.dir/src/DetailScreen.cpp.obj: CMakeFiles/app.dir/includes_CXX.rsp
 CMakeFiles/app.dir/src/DetailScreen.cpp.obj: C:/Users/Os/Desktop/PBL2/src/DetailScreen.cpp
 CMakeFiles/app.dir/src/DetailScreen.cpp.obj: CMakeFiles/app.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\Os\Desktop\PBL2\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/app.dir/src/DetailScreen.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\Os\Desktop\PBL2\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/app.dir/src/DetailScreen.cpp.obj"
 	C:\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/app.dir/src/DetailScreen.cpp.obj -MF CMakeFiles\app.dir\src\DetailScreen.cpp.obj.d -o CMakeFiles\app.dir\src\DetailScreen.cpp.obj -c C:\Users\Os\Desktop\PBL2\src\DetailScreen.cpp
 
 CMakeFiles/app.dir/src/DetailScreen.cpp.i: cmake_force
@@ -135,7 +150,7 @@ CMakeFiles/app.dir/src/HomeScreen.cpp.obj: CMakeFiles/app.dir/flags.make
 CMakeFiles/app.dir/src/HomeScreen.cpp.obj: CMakeFiles/app.dir/includes_CXX.rsp
 CMakeFiles/app.dir/src/HomeScreen.cpp.obj: C:/Users/Os/Desktop/PBL2/src/HomeScreen.cpp
 CMakeFiles/app.dir/src/HomeScreen.cpp.obj: CMakeFiles/app.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\Os\Desktop\PBL2\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/app.dir/src/HomeScreen.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\Os\Desktop\PBL2\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/app.dir/src/HomeScreen.cpp.obj"
 	C:\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/app.dir/src/HomeScreen.cpp.obj -MF CMakeFiles\app.dir\src\HomeScreen.cpp.obj.d -o CMakeFiles\app.dir\src\HomeScreen.cpp.obj -c C:\Users\Os\Desktop\PBL2\src\HomeScreen.cpp
 
 CMakeFiles/app.dir/src/HomeScreen.cpp.i: cmake_force
@@ -150,7 +165,7 @@ CMakeFiles/app.dir/src/LoginScreen.cpp.obj: CMakeFiles/app.dir/flags.make
 CMakeFiles/app.dir/src/LoginScreen.cpp.obj: CMakeFiles/app.dir/includes_CXX.rsp
 CMakeFiles/app.dir/src/LoginScreen.cpp.obj: C:/Users/Os/Desktop/PBL2/src/LoginScreen.cpp
 CMakeFiles/app.dir/src/LoginScreen.cpp.obj: CMakeFiles/app.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\Os\Desktop\PBL2\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/app.dir/src/LoginScreen.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\Os\Desktop\PBL2\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/app.dir/src/LoginScreen.cpp.obj"
 	C:\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/app.dir/src/LoginScreen.cpp.obj -MF CMakeFiles\app.dir\src\LoginScreen.cpp.obj.d -o CMakeFiles\app.dir\src\LoginScreen.cpp.obj -c C:\Users\Os\Desktop\PBL2\src\LoginScreen.cpp
 
 CMakeFiles/app.dir/src/LoginScreen.cpp.i: cmake_force
@@ -161,11 +176,26 @@ CMakeFiles/app.dir/src/LoginScreen.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/app.dir/src/LoginScreen.cpp.s"
 	C:\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\Os\Desktop\PBL2\src\LoginScreen.cpp -o CMakeFiles\app.dir\src\LoginScreen.cpp.s
 
+CMakeFiles/app.dir/src/Movie.cpp.obj: CMakeFiles/app.dir/flags.make
+CMakeFiles/app.dir/src/Movie.cpp.obj: CMakeFiles/app.dir/includes_CXX.rsp
+CMakeFiles/app.dir/src/Movie.cpp.obj: C:/Users/Os/Desktop/PBL2/src/Movie.cpp
+CMakeFiles/app.dir/src/Movie.cpp.obj: CMakeFiles/app.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\Os\Desktop\PBL2\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/app.dir/src/Movie.cpp.obj"
+	C:\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/app.dir/src/Movie.cpp.obj -MF CMakeFiles\app.dir\src\Movie.cpp.obj.d -o CMakeFiles\app.dir\src\Movie.cpp.obj -c C:\Users\Os\Desktop\PBL2\src\Movie.cpp
+
+CMakeFiles/app.dir/src/Movie.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/app.dir/src/Movie.cpp.i"
+	C:\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Os\Desktop\PBL2\src\Movie.cpp > CMakeFiles\app.dir\src\Movie.cpp.i
+
+CMakeFiles/app.dir/src/Movie.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/app.dir/src/Movie.cpp.s"
+	C:\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\Os\Desktop\PBL2\src\Movie.cpp -o CMakeFiles\app.dir\src\Movie.cpp.s
+
 CMakeFiles/app.dir/src/PosterSlider.cpp.obj: CMakeFiles/app.dir/flags.make
 CMakeFiles/app.dir/src/PosterSlider.cpp.obj: CMakeFiles/app.dir/includes_CXX.rsp
 CMakeFiles/app.dir/src/PosterSlider.cpp.obj: C:/Users/Os/Desktop/PBL2/src/PosterSlider.cpp
 CMakeFiles/app.dir/src/PosterSlider.cpp.obj: CMakeFiles/app.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\Os\Desktop\PBL2\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/app.dir/src/PosterSlider.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\Os\Desktop\PBL2\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/app.dir/src/PosterSlider.cpp.obj"
 	C:\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/app.dir/src/PosterSlider.cpp.obj -MF CMakeFiles\app.dir\src\PosterSlider.cpp.obj.d -o CMakeFiles\app.dir\src\PosterSlider.cpp.obj -c C:\Users\Os\Desktop\PBL2\src\PosterSlider.cpp
 
 CMakeFiles/app.dir/src/PosterSlider.cpp.i: cmake_force
@@ -180,7 +210,7 @@ CMakeFiles/app.dir/src/RegisterScreen.cpp.obj: CMakeFiles/app.dir/flags.make
 CMakeFiles/app.dir/src/RegisterScreen.cpp.obj: CMakeFiles/app.dir/includes_CXX.rsp
 CMakeFiles/app.dir/src/RegisterScreen.cpp.obj: C:/Users/Os/Desktop/PBL2/src/RegisterScreen.cpp
 CMakeFiles/app.dir/src/RegisterScreen.cpp.obj: CMakeFiles/app.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\Os\Desktop\PBL2\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/app.dir/src/RegisterScreen.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\Os\Desktop\PBL2\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/app.dir/src/RegisterScreen.cpp.obj"
 	C:\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/app.dir/src/RegisterScreen.cpp.obj -MF CMakeFiles\app.dir\src\RegisterScreen.cpp.obj.d -o CMakeFiles\app.dir\src\RegisterScreen.cpp.obj -c C:\Users\Os\Desktop\PBL2\src\RegisterScreen.cpp
 
 CMakeFiles/app.dir/src/RegisterScreen.cpp.i: cmake_force
@@ -195,7 +225,7 @@ CMakeFiles/app.dir/src/Slide.cpp.obj: CMakeFiles/app.dir/flags.make
 CMakeFiles/app.dir/src/Slide.cpp.obj: CMakeFiles/app.dir/includes_CXX.rsp
 CMakeFiles/app.dir/src/Slide.cpp.obj: C:/Users/Os/Desktop/PBL2/src/Slide.cpp
 CMakeFiles/app.dir/src/Slide.cpp.obj: CMakeFiles/app.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\Os\Desktop\PBL2\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/app.dir/src/Slide.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\Os\Desktop\PBL2\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/app.dir/src/Slide.cpp.obj"
 	C:\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/app.dir/src/Slide.cpp.obj -MF CMakeFiles\app.dir\src\Slide.cpp.obj.d -o CMakeFiles\app.dir\src\Slide.cpp.obj -c C:\Users\Os\Desktop\PBL2\src\Slide.cpp
 
 CMakeFiles/app.dir/src/Slide.cpp.i: cmake_force
@@ -210,7 +240,7 @@ CMakeFiles/app.dir/src/TextButton.cpp.obj: CMakeFiles/app.dir/flags.make
 CMakeFiles/app.dir/src/TextButton.cpp.obj: CMakeFiles/app.dir/includes_CXX.rsp
 CMakeFiles/app.dir/src/TextButton.cpp.obj: C:/Users/Os/Desktop/PBL2/src/TextButton.cpp
 CMakeFiles/app.dir/src/TextButton.cpp.obj: CMakeFiles/app.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\Os\Desktop\PBL2\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/app.dir/src/TextButton.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\Os\Desktop\PBL2\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/app.dir/src/TextButton.cpp.obj"
 	C:\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/app.dir/src/TextButton.cpp.obj -MF CMakeFiles\app.dir\src\TextButton.cpp.obj.d -o CMakeFiles\app.dir\src\TextButton.cpp.obj -c C:\Users\Os\Desktop\PBL2\src\TextButton.cpp
 
 CMakeFiles/app.dir/src/TextButton.cpp.i: cmake_force
@@ -225,7 +255,7 @@ CMakeFiles/app.dir/src/tubuildtrangchu.cpp.obj: CMakeFiles/app.dir/flags.make
 CMakeFiles/app.dir/src/tubuildtrangchu.cpp.obj: CMakeFiles/app.dir/includes_CXX.rsp
 CMakeFiles/app.dir/src/tubuildtrangchu.cpp.obj: C:/Users/Os/Desktop/PBL2/src/tubuildtrangchu.cpp
 CMakeFiles/app.dir/src/tubuildtrangchu.cpp.obj: CMakeFiles/app.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\Os\Desktop\PBL2\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/app.dir/src/tubuildtrangchu.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\Os\Desktop\PBL2\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/app.dir/src/tubuildtrangchu.cpp.obj"
 	C:\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/app.dir/src/tubuildtrangchu.cpp.obj -MF CMakeFiles\app.dir\src\tubuildtrangchu.cpp.obj.d -o CMakeFiles\app.dir\src\tubuildtrangchu.cpp.obj -c C:\Users\Os\Desktop\PBL2\src\tubuildtrangchu.cpp
 
 CMakeFiles/app.dir/src/tubuildtrangchu.cpp.i: cmake_force
@@ -238,12 +268,14 @@ CMakeFiles/app.dir/src/tubuildtrangchu.cpp.s: cmake_force
 
 # Object files for target app
 app_OBJECTS = \
+"CMakeFiles/app.dir/src/AccountScreen.cpp.obj" \
 "CMakeFiles/app.dir/src/App.cpp.obj" \
 "CMakeFiles/app.dir/src/AuthService.cpp.obj" \
 "CMakeFiles/app.dir/src/BookingScreen.cpp.obj" \
 "CMakeFiles/app.dir/src/DetailScreen.cpp.obj" \
 "CMakeFiles/app.dir/src/HomeScreen.cpp.obj" \
 "CMakeFiles/app.dir/src/LoginScreen.cpp.obj" \
+"CMakeFiles/app.dir/src/Movie.cpp.obj" \
 "CMakeFiles/app.dir/src/PosterSlider.cpp.obj" \
 "CMakeFiles/app.dir/src/RegisterScreen.cpp.obj" \
 "CMakeFiles/app.dir/src/Slide.cpp.obj" \
@@ -253,12 +285,14 @@ app_OBJECTS = \
 # External object files for target app
 app_EXTERNAL_OBJECTS =
 
+app.exe: CMakeFiles/app.dir/src/AccountScreen.cpp.obj
 app.exe: CMakeFiles/app.dir/src/App.cpp.obj
 app.exe: CMakeFiles/app.dir/src/AuthService.cpp.obj
 app.exe: CMakeFiles/app.dir/src/BookingScreen.cpp.obj
 app.exe: CMakeFiles/app.dir/src/DetailScreen.cpp.obj
 app.exe: CMakeFiles/app.dir/src/HomeScreen.cpp.obj
 app.exe: CMakeFiles/app.dir/src/LoginScreen.cpp.obj
+app.exe: CMakeFiles/app.dir/src/Movie.cpp.obj
 app.exe: CMakeFiles/app.dir/src/PosterSlider.cpp.obj
 app.exe: CMakeFiles/app.dir/src/RegisterScreen.cpp.obj
 app.exe: CMakeFiles/app.dir/src/Slide.cpp.obj
@@ -276,7 +310,7 @@ app.exe: C:/SFML-master/install/lib/libsfml-system-s.a
 app.exe: CMakeFiles/app.dir/linkLibs.rsp
 app.exe: CMakeFiles/app.dir/objects1.rsp
 app.exe: CMakeFiles/app.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=C:\Users\Os\Desktop\PBL2\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Linking CXX executable app.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=C:\Users\Os\Desktop\PBL2\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Linking CXX executable app.exe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\app.dir\link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

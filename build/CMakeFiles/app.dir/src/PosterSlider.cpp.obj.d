@@ -305,7 +305,14 @@ CMakeFiles/app.dir/src/PosterSlider.cpp.obj: \
  C:/SFML-master/install/include/SFML/System/InputStream.hpp \
  C:/SFML-master/install/include/SFML/System/MemoryInputStream.hpp \
  C:/SFML-master/install/include/SFML/System/Sleep.hpp \
+ C:/Users/Os/Desktop/PBL2/include/AppState.h \
  C:/Users/Os/Desktop/PBL2/include/Slide.h \
+ C:/Users/Os/Desktop/PBL2/include/Movie.h \
+ C:/mingw64/include/c++/14.2.0/fstream \
+ C:/mingw64/include/c++/14.2.0/x86_64-w64-mingw32/bits/basic_file.h \
+ C:/mingw64/include/c++/14.2.0/x86_64-w64-mingw32/bits/c++io.h \
+ C:/mingw64/include/c++/14.2.0/bits/fstream.tcc \
+ C:/mingw64/include/c++/14.2.0/iostream \
  C:/mingw64/include/c++/14.2.0/cmath \
  C:/mingw64/x86_64-w64-mingw32/include/math.h \
  C:/mingw64/include/c++/14.2.0/bits/specfun.h \
