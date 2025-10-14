@@ -14,4 +14,8 @@ class TextButton {
         void draw(RenderWindow&) const;
         void setOutlineColor(const sf::Color&);
         void setOutlineThickness(float);
+        void setString(const String&);
+        void setPosition(Vector2f);
+        FloatRect getGlobalBounds() const;
+        Vector2f getPosition() const;
 };

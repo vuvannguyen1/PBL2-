@@ -1,6 +1,6 @@
 CMakeFiles/app.dir/src/Movie.cpp.obj: \
- C:\Users\Os\Desktop\PBL2\src\Movie.cpp \
- C:/Users/Os/Desktop/PBL2/include/Movie.h \
+ C:\Users\Cam\ Tuyen\Desktop\PBL2-\src\Movie.cpp \
+ C:/Users/CAMTUY~1/Desktop/PBL2-/include/Movie.h \
  C:/mingw64/include/c++/14.2.0/fstream \
  C:/mingw64/include/c++/14.2.0/bits/requires_hosted.h \
  C:/mingw64/include/c++/14.2.0/x86_64-w64-mingw32/bits/c++config.h \

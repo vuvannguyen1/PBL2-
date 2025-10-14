@@ -1,7 +1,0 @@
-﻿food_id,name,category,size,price,image_path,is_active
-F001,Bắp rang bơ,Popcorn,,45000,assets/foods/popcorn.png,1
-F002,Coca-Cola,Drink,,30000,assets/foods/coke.png,1
-F003,Nước suối,Drink,,20000,assets/foods/water.png,1
-F004,Hotdog,Snack,,40000,assets/foods/hotdog.png,1
-F005,Khoai tây chiên,Snack,,45000,assets/foods/fries.png,1
-F006,Combo (Bắp + Nước),Combo,,70000,assets/foods/combo.png,1

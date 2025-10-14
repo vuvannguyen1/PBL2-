@@ -3,5 +3,6 @@ enum class AppState {
     HOME, 
     LOGIN,
     REGISTER,
-    BOOKING
+    BOOKING,
+    MOVIE_DETAILS
 };

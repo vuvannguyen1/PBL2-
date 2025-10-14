@@ -1,60 +1,40 @@
-// #pragma once
-// #include <SFML/Graphics.hpp>
-// #include <string>
-// using namespace sf;
-// using namespace std;
-
-// class LoginScreen {
-// private:
-//     RectangleShape overlay, card;
-//     Text title;
-
-//     RectangleShape emailBox, passBox, btn;
-//     Text emailPH, passPH, btnText;
-//     Text linkForgot, linkCreate, closeX;
-
-//     wstring emailInput, passInput;   // lưu text nhập vào
-//     Text emailDisplay, passDisplay;  // text hiển thị
-//     bool emailActive = false;
-//     bool passActive  = false;
-
-// public:
-//     LoginScreen(const Font&);
-
-//     // phải có event để xử lý nhập ký tự
-//     bool update(Vector2f mouse, bool mousePressed, const Event& event);
-
-//     void draw(RenderWindow&);
-// };
-
 #pragma once
-#include <SFML/Graphics.hpp>
+#include <SFML/Graphics.hpp> 
 #include <string>
 #include "AuthService.h"
+#include "AppState.h"
+using namespace sf;
+using namespace std;
 
 class LoginScreen {
 public:
-    LoginScreen(const sf::Font& font, AuthService& auth);
+    // constructor: truyền Font và AuthService
+    LoginScreen(const Font&, AuthService&);
 
-    // return true nếu yêu cầu đóng modal (ESC/click ra ngoài/X)
-    bool update(sf::Vector2f mouse, bool mousePressed, const sf::Event& event);
+    // update: trả về true nếu người dùng bấm ra ngoài / đóng form
+    bool update(Vector2f, bool, const Event&, string&, AppState&);
 
-    void draw(sf::RenderWindow& window);
+    // draw giao diện
+    void draw(RenderWindow&);
 
 private:
     AuthService& auth;
-    // overlay + card
-    sf::RectangleShape overlay, card;
 
-    // inputs & labels
-    sf::RectangleShape emailBox, passBox, btn;
-    sf::Text title, emailPH, passPH, btnText, linkForgot, linkCreate, closeX;
-    sf::Text emailDisplay, passDisplay, msg;
+    RectangleShape overlay;
+    RectangleShape card;
+    RectangleShape emailBox, passBox, btn;
+    Text title, emailPH, passPH, btnText, linkForgot, linkCreate, closeX;
+    Text emailDisplay, passDisplay, msg;
 
-    // state
-    bool emailActive = false, passActive = false;
-    std::wstring emailInput, passInput;
+    wstring emailInput, passInput;
+    bool emailActive = false;
+    bool passActive = false;
 
-    // helpers
-    static std::wstring bullets(std::size_t n);
+    wstring bullets(size_t n);
+    Clock caretClock;
+    bool caretVisible = true;
+
+    bool loginSuccess = false;
+    Clock loginClock;
+    string loggedUser;
 };
