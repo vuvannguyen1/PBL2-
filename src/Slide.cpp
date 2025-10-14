@@ -1,4 +1,5 @@
 #include "Slide.h"
+using namespace std;
 
 Slide::Slide(const Texture& texture, const Font& font) : 
 buttonLabel(font, L"Xem chi tiết", 22),
@@ -54,7 +55,7 @@ void Slide::highlightButton(bool hovered) {
     }
 }
 
-const Sprite& Slide::getPosterSprite() const { 
+Sprite& Slide::getPosterSprite() { 
     return sprite;
 }
     

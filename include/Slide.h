@@ -15,6 +15,6 @@ public:
     bool isButtonHovered(Vector2f) const;
     bool isButtonClicked(Vector2f, bool) const;
     void highlightButton(bool);
-    const Sprite& getPosterSprite() const;
+    Sprite& getPosterSprite();
     const Texture& getPosterTexture() const;
 };

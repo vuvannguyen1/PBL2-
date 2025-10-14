@@ -10,7 +10,11 @@ HomeScreen::HomeScreen(Font& f)
   background("../assets/background.png"),
   searchbar("../assets/search_bar.png"),
   sprite1(background),
-  sprite2(searchbar)
+  sprite2(searchbar),
+  dropdownBox({210.f, 120.f}),
+  myticketsButton(font, L"Vé của tôi", 18, Vector2f(0.f, 0.f)),
+  accountButton(font, L"Tài khoản của tôi", 18, Vector2f(0.f, 0.f)),
+  logoutButton(font, L"Đăng xuất", 18, Vector2f(0.f, 0.f))
 {
     Color accent(20, 118, 172);
 
@@ -21,17 +25,78 @@ HomeScreen::HomeScreen(Font& f)
         buttons[i].setOutlineColor(accent);
         buttons[i].setOutlineThickness(i == 0 ? 5.f : 2.f);
     }
+
+    dropdownBox.setFillColor(Color(40, 40, 40, 240));
+    dropdownBox.setOutlineColor(Color(100, 100, 100));
+    dropdownBox.setOutlineThickness(1.f);
+}
+
+// ✅ Hàm phụ cập nhật vị trí dropdown ngay bên dưới nút "Xin chào"
+void HomeScreen::updateDropdownPosition() {
+    Vector2f loginButtonPos = buttons[1].getPosition();
+    FloatRect loginButtonBounds = buttons[1].getGlobalBounds();
+
+    float dropdownX = loginButtonBounds.position.x + loginButtonBounds.size.x - dropdownBox.getSize().x;
+    float dropdownY = loginButtonPos.y + 35.f;
+
+    Vector2f dropdownPos = {dropdownX, dropdownY};
+    dropdownBox.setPosition(dropdownPos);
+    myticketsButton.setPosition({dropdownPos.x + 15.f, dropdownPos.y + 15.f});
+    accountButton.setPosition({dropdownPos.x + 15.f, dropdownPos.y + 45.f});
+    logoutButton.setPosition({dropdownPos.x + 15.f, dropdownPos.y + 75.f});
 }
 
 void HomeScreen::update(Vector2f mouse, bool mousePressed, AppState& state) {
+    // Nếu dropdown đang bật thì cập nhật vị trí & xử lý click
+    if (isUserLoggedIn && showDropdown) {
+        updateDropdownPosition(); // ✅ đảm bảo luôn ở đúng vị trí
+
+        myticketsButton.update(mouse);
+        accountButton.update(mouse);
+        logoutButton.update(mouse);
+
+        if (mousePressed) {
+            if (myticketsButton.isClicked(mouse, mousePressed)) {
+                showDropdown = false;
+            }
+            else if (accountButton.isClicked(mouse, mousePressed)) {
+                showDropdown = false;
+            }
+            else if (logoutButton.isClicked(mouse, mousePressed)) {
+                setLoggedUser("");
+                showDropdown = false;
+            }
+            else if (!dropdownBox.getGlobalBounds().contains(mouse) &&
+                     !buttons[1].getGlobalBounds().contains(mouse)) {
+                showDropdown = false;
+            }
+        }
+    }
+
+    // Xử lý hover + click các nút header
     for (int i = 0; i < BUTTON_COUNT; i++) {
         buttons[i].update(mouse);
 
         if (buttons[i].isClicked(mouse, mousePressed)) {
             switch (i) {
-                case 0: state = AppState::HOME; break;
-                case 1: state = AppState::LOGIN; break;
-                case 2: state = AppState::BOOKING; break;
+                case 0:
+                    state = AppState::HOME;
+                    break;
+
+                case 1: // Nút "Đăng nhập | Đăng ký" hoặc "Xin chào"
+                    if (isUserLoggedIn) {
+                        showDropdown = !showDropdown;
+                        if (showDropdown) {
+                            updateDropdownPosition(); // ✅ cập nhật NGAY khi bật lần đầu
+                        }
+                    } else {
+                        state = AppState::LOGIN;
+                    }
+                    break;
+
+                case 2:
+                    state = AppState::BOOKING;
+                    break;
             }
         }
     }
@@ -40,6 +105,28 @@ void HomeScreen::update(Vector2f mouse, bool mousePressed, AppState& state) {
 void HomeScreen::draw(RenderWindow& window) {
     window.draw(sprite1);
     window.draw(sprite2);
+
     for (int i = 0; i < BUTTON_COUNT; i++)
         buttons[i].draw(window);
+}
+
+void HomeScreen::drawDropdown(RenderWindow& window) {
+    if (isUserLoggedIn && showDropdown) {
+        window.draw(dropdownBox);
+        myticketsButton.draw(window);
+        accountButton.draw(window);
+        logoutButton.draw(window);
+    }
+}
+
+void HomeScreen::setLoggedUser(const string& username) {
+    currentUser = username;
+    isUserLoggedIn = !username.empty();
+
+    if (isUserLoggedIn) {
+        buttons[1].setString(L"Xin chào, " + String::fromUtf8(username.begin(), username.end()) + L"!");
+    } else {
+        buttons[1].setString(L"Đăng nhập | Đăng ký");
+        showDropdown = false;
+    }
 }

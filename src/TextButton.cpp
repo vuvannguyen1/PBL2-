@@ -31,3 +31,19 @@ void TextButton::setOutlineColor(const sf::Color& color) {
 void TextButton::setOutlineThickness(float thickness) {
     text.setOutlineThickness(thickness);
 }
+
+void TextButton::setString(const sf::String& str) {
+    text.setString(str);
+}
+
+void TextButton::setPosition(Vector2f pos) {
+    text.setPosition(pos);
+}
+
+FloatRect TextButton::getGlobalBounds() const{
+    return text.getGlobalBounds();
+}
+
+Vector2f TextButton::getPosition() const {
+    return text.getPosition();
+}

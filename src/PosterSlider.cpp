@@ -1,4 +1,5 @@
 #include "PosterSlider.h"
+#include "Movie.h"
 #include <cmath>
 
 PosterSlider::PosterSlider(Font& font, RenderWindow& window) : 
@@ -18,11 +19,42 @@ PosterSlider::PosterSlider(Font& font, RenderWindow& window) :
     rightArrow.setFillColor(Color(255, 255, 255, 180));
     leftArrow.setPosition(leftButton.getPosition() + Vector2f(20.f, 15.f));
     rightArrow.setPosition(rightButton.getPosition() + Vector2f(20.f, 15.f));
+
+    setClip(268.f, 100.f, 1192.f, 900.f, window);
 }
 
 void PosterSlider::loadPosters(const vector<string>& paths, const Font& font) {
     textures.clear();
     slides.clear();
+
+    // // Đọc dữ liệu phim từ CSV
+    // vector<Movie> movies = loadMoviesFromCSV("../assets/data/movie_detail.csv");
+
+    // if (movies.empty()) {
+    //     std::cerr << "❌ Không tìm thấy dữ liệu phim trong CSV!" << std::endl;
+    //     return;
+    // }
+
+    // // Tải poster & tạo slide cho mỗi phim
+    // for (auto& m : movies) {
+    //     Texture tex;
+    //     if (!tex.loadFromFile(m.posterPath)) {
+    //         std::cerr << "⚠️ Không thể tải ảnh: " << m.posterPath << std::endl;
+    //         continue;
+    //     }
+    //     textures.push_back(std::move(tex));
+
+    //     // 🔹 slide nhận đầy đủ thông tin
+    //     slides.emplace_back(
+    //         textures.back(), font,
+    //         m.title,
+    //         m.genre,
+    //         m.duration,
+    //         m.country,
+    //         m.cast,
+    //         m.description
+    //     );
+    // }
 
     for (auto& p : paths) {
         Texture tex(p);
@@ -54,39 +86,43 @@ void PosterSlider::loadPosters(const vector<string>& paths, const Font& font) {
 void PosterSlider::update(float dt, RenderWindow& window) {
     if (slides.empty()) return;
 
-    elapsed += dt;
-    float t = min(elapsed / animTime, 1.f);
-    float p = easeInOutCubic(t);
-
     float slideWidth = slides[0].getPosterSprite().getGlobalBounds().size.x;
+    float gap = 40.f;
+    float totalItemWidth = slideWidth + gap;
     float centerY = (window.getSize().y - slides[0].getPosterSprite().getGlobalBounds().size.y) / 2.f;
     float centerX = window.getSize().x / 2.f;
+    
+    float mainSlotX = centerX - slideWidth - (gap / 2.f);
+    int numSlides = slides.size();
 
-    int dir = 0, steps = 1;
-
-    if (clickedDot) {
-        dir = (targetIndex > currentIndex) ? 1 : -1;
-        steps = abs(targetIndex - currentIndex);
-    } 
-    else {
-        int delta = targetIndex - currentIndex;
-        if (delta > (int)slides.size()/2)  delta -= slides.size();
-        if (delta < -(int)slides.size()/2) delta += slides.size();
-        dir = (delta > 0) ? 1 : -1;
-        steps = abs(delta);
-    }
-
+    auto calculateCircularOffset = [&](int index1, int index2) {
+        int delta = index1 - index2;
+        if (delta > numSlides / 2) delta -= numSlides;
+        if (delta < -numSlides / 2) delta += numSlides;
+        return delta;
+    };
 
     if (animating) {
-        // vị trí slide cũ (2 poster hiện tại)
-        slides[currentIndex].setPosition({centerX - slideWidth - 20.f - dir * p * slideWidth, centerY});
-        int nextOfCurrent = (currentIndex + 1) % slides.size();
-        slides[nextOfCurrent].setPosition({centerX + 20.f - dir * p * slideWidth, centerY});
+        elapsed += dt;
+        float t = min(elapsed / animTime, 1.f);
+        float p = easeInOutCubic(t);
 
-        // vị trí slide mới (2 poster kế tiếp)
-        slides[targetIndex].setPosition({centerX - slideWidth - 20.f + dir * (1 - p) * slideWidth, centerY});
-        int nextOfTarget = (targetIndex + 1) % slides.size();
-        slides[nextOfTarget].setPosition({centerX + 20.f + dir * (1 - p) * slideWidth, centerY});
+        int delta = targetIndex - currentIndex;
+        if (!clickedDot) {
+            delta = calculateCircularOffset(targetIndex, currentIndex);
+        }
+
+        // Tổng quãng đường cần di chuyển
+        float totalDisplacement = -delta * totalItemWidth;
+        // Quãng đường đã di chuyển được tại thời điểm t
+        float currentDisplacement = totalDisplacement * p;
+
+        for (int i = 0; i < numSlides; ++i) {
+            // Vị trí tương đối của mỗi slide so với slide chính
+            float initialOffset = calculateCircularOffset(i, currentIndex) * totalItemWidth;
+            // Vị trí mới = Vị trí gốc lúc bắt đầu anim + Vị trí tương đối + Quãng đường đã đi
+            slides[i].setPosition({startX_anim + initialOffset + currentDisplacement, centerY});
+        }
 
         if (t >= 1.f) {
             animating = false;
@@ -95,45 +131,50 @@ void PosterSlider::update(float dt, RenderWindow& window) {
         }
     } 
     else {
-        // Khi không animating, hiển thị 2 poster cố định
-        slides[currentIndex].setPosition({centerX - slideWidth - 20.f, centerY});
-        int nextIndex = (currentIndex + 1) % slides.size();
-        slides[nextIndex].setPosition({centerX + 20.f, centerY});
+        for (int i = 0; i < numSlides; i++) {
+            float offset = calculateCircularOffset(i, currentIndex) * totalItemWidth;
+            slides[i].setPosition({mainSlotX + offset, centerY});
+        }
     }
 }
 
-void PosterSlider::handleEvent(const sf::Vector2f& mousePos, bool mousePressed) {
+void PosterSlider::handleEvent(const Vector2f& mousePos, bool mousePressed, AppState& state) {
     if (animating) return;
 
     for (size_t i = 0; i < slides.size(); ++i) {
         if (slides[i].isButtonClicked(mousePos, mousePressed)) {
-            
+            state = AppState::MOVIE_DETAILS;
+            selectedIndex = i;
             return;
         }
     }
 
     if (!mousePressed) return;
 
-    if (leftArrow.getGlobalBounds().contains(mousePos) || leftButton.getGlobalBounds().contains(mousePos)) {
-        targetIndex = (currentIndex - 1 + slides.size()) % slides.size();
+    auto startAnimation = [this]() {
         animating = true;
         elapsed = 0.f;
+        startX_anim = slides[currentIndex].getPosterSprite().getPosition().x;
+    };
+
+    if (leftArrow.getGlobalBounds().contains(mousePos) || leftButton.getGlobalBounds().contains(mousePos)) {
+        targetIndex = (currentIndex - 1 + slides.size()) % slides.size();
+        startAnimation();
         return;
     }
 
     if (rightArrow.getGlobalBounds().contains(mousePos) || rightButton.getGlobalBounds().contains(mousePos)) {
         targetIndex = (currentIndex + 1) % slides.size();
-        animating = true;
-        elapsed = 0.f;
+        startAnimation();
         return;
     }
 
     for (size_t i = 0; i < dots.size(); ++i) {
         if (dots[i].getGlobalBounds().contains(mousePos)) {
+            if (i == currentIndex) return;
             targetIndex = i;
-            animating = true;
-            elapsed = 0.f;
             clickedDot = true;
+            startAnimation();
             return;
         }
     }
@@ -151,8 +192,12 @@ void PosterSlider::draw(RenderWindow& window) {
     int nextIndex = (currentIndex + 1) % slides.size();
     slides[nextIndex].highlightButton(slides[nextIndex].isButtonHovered(mousePos));
 
+    View defaultView = window.getView();
+
+    window.setView(sliderView);
     slides[currentIndex].draw(window);
     slides[nextIndex].draw(window);
+    window.setView(defaultView);
 
     Color idleColor(0, 0, 0, 60);   
     Color hoverColor(0, 0, 0, 180); 
@@ -185,6 +230,28 @@ float PosterSlider::easeInOutCubic(float x) const {
         : 1.f - pow(-2.f * x + 2.f, 3.f) / 2.2f;
 }
 
-const Sprite& PosterSlider::getSlidePosterSprite(int idx) const {
+Sprite& PosterSlider::getSlidePosterSprite(int idx){
     return slides[idx].getPosterSprite();
+}
+
+void PosterSlider::setClip(float x, float y, float w, float h, const RenderWindow& window) {
+    clipPx = FloatRect({x, y}, {w, h});
+    sliderView.setCenter(Vector2f(x + w / 2.f, y + h / 2.f));
+    sliderView.setSize(Vector2f(w, h));
+    updateViewport(window);
+}
+
+
+void PosterSlider::updateViewport(const RenderWindow& window) {
+    const auto ws = window.getSize();
+    sliderView.setViewport(FloatRect(
+        {clipPx.position.x   / static_cast<float>(ws.x),
+        clipPx.position.y    / static_cast<float>(ws.y)},
+        {clipPx.size.x  / static_cast<float>(ws.x),
+        clipPx.size.y / static_cast<float>(ws.y)}
+    ));
+}
+
+void PosterSlider::onResize(const RenderWindow& window) {
+    updateViewport(window);
 }

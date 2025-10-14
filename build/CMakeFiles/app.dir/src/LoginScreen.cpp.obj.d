@@ -305,4 +305,5 @@ CMakeFiles/app.dir/src/LoginScreen.cpp.obj: \
  C:/SFML-master/install/include/SFML/System/InputStream.hpp \
  C:/SFML-master/install/include/SFML/System/MemoryInputStream.hpp \
  C:/SFML-master/install/include/SFML/System/Sleep.hpp \
- C:/Users/Os/Desktop/PBL2/include/AuthService.h
+ C:/Users/Os/Desktop/PBL2/include/AuthService.h \
+ C:/Users/Os/Desktop/PBL2/include/AppState.h
