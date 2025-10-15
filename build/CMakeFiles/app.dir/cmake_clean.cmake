@@ -7,6 +7,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/app.dir/src/AuthService.cpp.obj.d"
   "CMakeFiles/app.dir/src/BookingScreen.cpp.obj"
   "CMakeFiles/app.dir/src/BookingScreen.cpp.obj.d"
+  "CMakeFiles/app.dir/src/CSVReader.cpp.obj"
+  "CMakeFiles/app.dir/src/CSVReader.cpp.obj.d"
   "CMakeFiles/app.dir/src/DetailScreen.cpp.obj"
   "CMakeFiles/app.dir/src/DetailScreen.cpp.obj.d"
   "CMakeFiles/app.dir/src/HomeScreen.cpp.obj"

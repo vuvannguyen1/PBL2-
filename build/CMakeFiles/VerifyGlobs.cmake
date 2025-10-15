@@ -8,6 +8,7 @@ set(OLD_GLOB
   "C:/Users/Os/Desktop/PBL2/src/App.cpp"
   "C:/Users/Os/Desktop/PBL2/src/AuthService.cpp"
   "C:/Users/Os/Desktop/PBL2/src/BookingScreen.cpp"
+  "C:/Users/Os/Desktop/PBL2/src/CSVReader.cpp"
   "C:/Users/Os/Desktop/PBL2/src/DetailScreen.cpp"
   "C:/Users/Os/Desktop/PBL2/src/HomeScreen.cpp"
   "C:/Users/Os/Desktop/PBL2/src/LoginScreen.cpp"

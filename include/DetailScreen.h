@@ -9,13 +9,22 @@ using namespace std;
 
 class DetailScreen : public HomeScreen {
 private:
+    Font titleFont, detailFont;
     Sprite poster;
     Texture posterTexture;
+    
     Text titleText, genreText, durationText, countryText, castText, descriptionText;
     Text ageRatingText, languageText, directorText, statusText, releaseDateText;
     Movie currentMovie;
     vector<Movie> allMovies;
 
+    CircleShape genreIcon;
+    CircleShape durationIcon;
+    CircleShape countryIcon;
+    CircleShape languageIcon;
+    CircleShape ageRatingIcon;
+
+    Text detailHeader, synopsisHeader;
 public:
     DetailScreen(Font&, int movieIndex, const string& username);
 

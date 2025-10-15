@@ -60,36 +60,88 @@ wstring wrapText(const wstring& text, const Font& font, unsigned int fontSize, f
 
 DetailScreen::DetailScreen(Font& font, int movieIndex, const string& username) : 
     HomeScreen(font),
+    titleFont("../assets/BEBAS_NEUE_ZSMALL.ttf"),
+    detailFont("../assets/quicksand_medium.ttf"),
     poster(posterTexture),
-    titleText(font, L"", 36),
-    genreText(font, L"", 22),
-    durationText(font, L"", 22),
-    countryText(font, L"", 22),
-    castText(font, L"", 22),
-    descriptionText(font, L"", 20),
-    ageRatingText(font, L"", 22),
-    languageText(font, L"", 22),
-    directorText(font, L"", 22),
-    statusText(font, L"", 22),
-    releaseDateText(font, L"", 22)
+    titleText(titleFont, L"", 62),              // ✅ Title size 58
+    ageRatingText(titleFont, L"", 62),          // ✅ Same font và size như title
+    genreText(detailFont, L"", 20),
+    durationText(detailFont, L"", 20),
+    countryText(detailFont, L"", 20),
+    languageText(detailFont, L"", 20),
+    directorText(detailFont, L"", 20),
+    castText(detailFont, L"", 20),
+    releaseDateText(detailFont, L"", 20),
+    statusText(detailFont, L"", 20),
+    descriptionText(detailFont, L"", 19),
+    detailHeader(titleFont, L"MÔ TẢ", 40),
+    synopsisHeader(titleFont, L"NỘI DUNG PHIM", 40),
+    genreIcon(12.f),
+    durationIcon(12.f),
+    countryIcon(12.f),
+    languageIcon(12.f),
+    ageRatingIcon(12.f)
 {
     setLoggedUser(username);
-    
-    // Load movie data from CSV
     loadMovieData(movieIndex);
+
+    titleText.setFillColor(Color::White);
+    titleText.setStyle(Text::Bold);
+    titleText.setPosition({804, 110});
     
-    // Set positions for all text elements with proper spacing for wrapped text
-    titleText.setPosition({804, 120});
-    ageRatingText.setPosition({804, 170});
-    genreText.setPosition({804, 200});
-    durationText.setPosition({804, 230});
-    countryText.setPosition({804, 260});
-    languageText.setPosition({804, 290});
-    directorText.setPosition({804, 320});
-    castText.setPosition({804, 350});        // Cast có thể xuống nhiều dòng
-    releaseDateText.setPosition({804, 420}); // Cách xa hơn để tránh cast text
-    statusText.setPosition({804, 450});
-    descriptionText.setPosition({804, 480}); // Description ở cuối và có thể dài
+    ageRatingText.setFillColor(Color::White);
+    ageRatingText.setStyle(Text::Bold);
+
+    FloatRect titleBounds = titleText.getGlobalBounds();
+    float titleEndX = titleBounds.position.x + titleBounds.size.x;
+    float titleEndY = titleBounds.position.y + titleBounds.size.y;
+
+    ageRatingText.setPosition({titleEndX + 20.f, titleText.getPosition().y});
+    
+    Color iconColor(255, 215, 0);
+    genreIcon.setFillColor(iconColor);
+    genreIcon.setPosition({804, titleEndY + 20});
+    durationIcon.setFillColor(iconColor);
+    durationIcon.setPosition({804, titleEndY + 50});
+    countryIcon.setFillColor(iconColor);
+    countryIcon.setPosition({804, titleEndY + 80});
+    languageIcon.setFillColor(iconColor);
+    languageIcon.setPosition({804, titleEndY + 110});
+    ageRatingIcon.setFillColor(iconColor);
+    ageRatingIcon.setPosition({804, titleEndY + 140});
+    
+    genreText.setPosition({834, titleEndY + 20});
+    durationText.setPosition({834, titleEndY + 50});
+    countryText.setPosition({834, titleEndY + 80});
+    languageText.setPosition({834, titleEndY + 110});
+    statusText.setPosition({834, titleEndY + 140});
+
+    // ✅ Detail texts màu trắng nhẹ
+    Color detailColor(230, 230, 230);
+    genreText.setFillColor(detailColor);
+    durationText.setFillColor(detailColor);
+    countryText.setFillColor(detailColor);
+    languageText.setFillColor(detailColor);
+    directorText.setFillColor(detailColor);
+    castText.setFillColor(detailColor);
+    releaseDateText.setFillColor(detailColor);
+    statusText.setFillColor(detailColor);
+    descriptionText.setFillColor(Color(200, 200, 200));
+    
+    // ✅ Section headers
+    detailHeader.setFillColor(Color::White);
+    detailHeader.setStyle(Text::Bold);
+    detailHeader.setPosition({804, titleEndY + 184});
+
+    directorText.setPosition({804, detailHeader.getGlobalBounds().position.y + detailHeader.getGlobalBounds().size.y + 14});
+    castText.setPosition({804, directorText.getGlobalBounds().position.y + directorText.getGlobalBounds().size.y + 9});
+    releaseDateText.setPosition({804, castText.getGlobalBounds().position.y + castText.getGlobalBounds().size.y + 9});
+    
+    synopsisHeader.setFillColor(Color::White);
+    synopsisHeader.setStyle(Text::Bold);
+    synopsisHeader.setPosition({804, releaseDateText.getGlobalBounds().position.y + releaseDateText.getGlobalBounds().size.y + 14});
+
+    descriptionText.setPosition({804, synopsisHeader.getGlobalBounds().position.y + synopsisHeader.getGlobalBounds().size.y + 14});
 
     poster.setPosition({168, 126});
     poster.setScale({0.36f, 0.36f});
@@ -119,46 +171,54 @@ void DetailScreen::loadMovieData(int movieIndex) {
     // Convert string to wstring for SFML Text
     wstring_convert<codecvt_utf8<wchar_t>> converter;
     
-    // Update all text elements with movie data
-    titleText.setString(converter.from_bytes(currentMovie.title));
+    // ✅ Title uppercase
+    wstring title = converter.from_bytes(currentMovie.title);
+    transform(title.begin(), title.end(), title.begin(), ::towupper);
+    titleText.setString(title);
     
-    wstring ageRating = L"Độ tuổi: " + converter.from_bytes(currentMovie.age_rating);
+    // ✅ Age rating trong ngoặc, đặt cạnh title
+    wstring ageRating = L"(" + converter.from_bytes(currentMovie.age_rating) + L")";
     ageRatingText.setString(ageRating);
     
-    wstring genres = L"Thể loại: " + converter.from_bytes(currentMovie.genres);
-    genreText.setString(genres);
+    // ✅ Detail info (without "Thể loại:", "Thời lượng:" labels, just values)
+    genreText.setString(converter.from_bytes(currentMovie.genres));
     
-    wstring duration = L"Thời lượng: " + converter.from_bytes(currentMovie.duration_min) + L" phút";
+    wstring duration = converter.from_bytes(currentMovie.duration_min) + L"'"; // 118'
     durationText.setString(duration);
     
-    wstring country = L"Quốc gia: " + converter.from_bytes(currentMovie.country);
-    countryText.setString(country);
+    countryText.setString(converter.from_bytes(currentMovie.country));
+    languageText.setString(converter.from_bytes(currentMovie.language));
     
-    wstring language = L"Ngôn ngữ: " + converter.from_bytes(currentMovie.language);
-    languageText.setString(language);
+    // ✅ Age rating description với background vàng (hiển thị mô tả đầy đủ)
+    wstring ageDesc = converter.from_bytes(currentMovie.age_rating) + 
+                     L": Phim dành cho khán giả từ đủ " + 
+                     converter.from_bytes(currentMovie.age_rating.substr(1)) + 
+                     L" tuổi trở lên (" + 
+                     converter.from_bytes(currentMovie.age_rating) + L"+)";
+    statusText.setString(ageDesc);
+    statusText.setFillColor(Color::Black); // Text màu đen
     
+    // Director
     wstring director = L"Đạo diễn: " + converter.from_bytes(currentMovie.director);
     directorText.setString(director);
     
-    // ✅ Wrap cast text to fit in display area (max width ~520px)
+    // ✅ Cast with wrapping
     wstring cast = L"Diễn viên: " + converter.from_bytes(currentMovie.cast);
-    wstring wrappedCast = wrapText(cast, castText.getFont(), castText.getCharacterSize(), 520.0f);
+    wstring wrappedCast = wrapText(cast, detailFont, 20, 620.0f);
     castText.setString(wrappedCast);
     
+    // Release date
     wstring releaseDate = L"Khởi chiếu: " + converter.from_bytes(currentMovie.release_date);
     releaseDateText.setString(releaseDate);
     
-    wstring status = L"Trạng thái: " + converter.from_bytes(currentMovie.status);
-    statusText.setString(status);
-    
-    // ✅ Wrap description/synopsis text to fit in display area (max width ~520px)
+    // ✅ Synopsis with wrapping
     wstring synopsis = converter.from_bytes(currentMovie.synopsis);
-    wstring wrappedSynopsis = wrapText(synopsis, descriptionText.getFont(), descriptionText.getCharacterSize(), 520.0f);
+    wstring wrappedSynopsis = wrapText(synopsis, detailFont, 19, 620.0f);
     descriptionText.setString(wrappedSynopsis);
     
     // Load poster image
     if (posterTexture.loadFromFile(currentMovie.poster_path)) {
-        poster.setTexture(posterTexture);
+        poster.setTexture(posterTexture, true); // ✅ true để reset texture rect
     } else {
         cout << "⚠️ Không thể tải poster: " << currentMovie.poster_path << endl;
     }
@@ -171,17 +231,31 @@ void DetailScreen::update(Vector2f mouse, bool mousePressed, AppState& state) {
 void DetailScreen::draw(RenderWindow& window) {
     HomeScreen::draw(window);
 
-    // Draw all text elements
+    // ✅ Draw icons first
+    window.draw(genreIcon);
+    window.draw(durationIcon);
+    window.draw(countryIcon);
+    window.draw(languageIcon);
+    window.draw(ageRatingIcon);
+    
+    // ✅ Draw title and age rating (same line)
     window.draw(titleText);
     window.draw(ageRatingText);
+    
+    // ✅ Draw section headers
+    window.draw(detailHeader);
+    window.draw(synopsisHeader);
+    
+    // ✅ Draw detail texts
     window.draw(genreText);
     window.draw(durationText);
     window.draw(countryText);
     window.draw(languageText);
+    window.draw(statusText);
     window.draw(directorText);
     window.draw(castText);
     window.draw(releaseDateText);
-    window.draw(statusText);
     window.draw(descriptionText);
+    
     window.draw(poster);
 }

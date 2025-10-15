@@ -4,6 +4,8 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include "CSVReader.h"
+
 using namespace std;
 
 struct Movie {
@@ -23,5 +25,5 @@ struct Movie {
 };
 
 vector<Movie> loadMoviesFromCSV(const string& filePath);
-void testMovieCSV();  // Hàm test đọc CSV
+vector<string> getMoviePosterPaths(const string& filePath);
 
