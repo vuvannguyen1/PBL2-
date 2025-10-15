@@ -313,6 +313,10 @@ CMakeFiles/app.dir/src/PosterSlider.cpp.obj: \
  C:/mingw64/include/c++/14.2.0/x86_64-w64-mingw32/bits/c++io.h \
  C:/mingw64/include/c++/14.2.0/bits/fstream.tcc \
  C:/mingw64/include/c++/14.2.0/iostream \
+ C:/Users/Os/Desktop/PBL2/include/CSVReader.h \
+ C:/mingw64/include/c++/14.2.0/algorithm \
+ C:/mingw64/include/c++/14.2.0/bits/ranges_algo.h \
+ C:/mingw64/include/c++/14.2.0/pstl/glue_algorithm_defs.h \
  C:/mingw64/include/c++/14.2.0/cmath \
  C:/mingw64/x86_64-w64-mingw32/include/math.h \
  C:/mingw64/include/c++/14.2.0/bits/specfun.h \

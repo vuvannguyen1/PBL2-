@@ -41,4 +41,5 @@ public:
 
     int selectedIndex = -1;
     const Slide& getSelectedSlide() const { return slides[selectedIndex]; }
+    int getSelectedIndex() const { return selectedIndex; }
 };

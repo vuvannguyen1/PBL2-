@@ -27,35 +27,6 @@ void PosterSlider::loadPosters(const vector<string>& paths, const Font& font) {
     textures.clear();
     slides.clear();
 
-    // // Đọc dữ liệu phim từ CSV
-    // vector<Movie> movies = loadMoviesFromCSV("../assets/data/movie_detail.csv");
-
-    // if (movies.empty()) {
-    //     std::cerr << "❌ Không tìm thấy dữ liệu phim trong CSV!" << std::endl;
-    //     return;
-    // }
-
-    // // Tải poster & tạo slide cho mỗi phim
-    // for (auto& m : movies) {
-    //     Texture tex;
-    //     if (!tex.loadFromFile(m.posterPath)) {
-    //         std::cerr << "⚠️ Không thể tải ảnh: " << m.posterPath << std::endl;
-    //         continue;
-    //     }
-    //     textures.push_back(std::move(tex));
-
-    //     // 🔹 slide nhận đầy đủ thông tin
-    //     slides.emplace_back(
-    //         textures.back(), font,
-    //         m.title,
-    //         m.genre,
-    //         m.duration,
-    //         m.country,
-    //         m.cast,
-    //         m.description
-    //     );
-    // }
-
     for (auto& p : paths) {
         Texture tex(p);
         textures.push_back(move(tex));

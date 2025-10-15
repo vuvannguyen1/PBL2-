@@ -1,5 +1,6 @@
 #include "App.h"
 #include "DetailScreen.h"
+#include "Movie.h"
 #include <fstream>
 #include <sstream>
 
@@ -13,26 +14,13 @@ App::App() :
     registerScreen(font, auth)
     { 
         window.setFramerateLimit(60);
-        
         Image icon("../assets/icon.png");
         window.setIcon(icon);
 
         auth.ensureFile();
         auth.ensureSampleUser();
 
-        vector<string> paths = {
-            "../assets/posters/blue-beetle.png",
-            "../assets/posters/dao-pho-va-piano.png",
-            "../assets/posters/dune-part-two.png",
-            "../assets/posters/godzilla-x-kong.png",
-            "../assets/posters/inside-out.png",
-            "../assets/posters/lat-mat-48h.png",
-            "../assets/posters/mai.png",
-            "../assets/posters/tu-chien-tren-khong.png",
-            "../assets/posters/spirited-away.png",
-            "../assets/posters/bo-gia-remastered.png"
-        };
-        
+        vector<string> paths = getMoviePosterPaths("../data/movies.csv");        
         slider.loadPosters(paths, font);
 
 }
@@ -110,7 +98,7 @@ void App::render() {
             break;
 
         case AppState::MOVIE_DETAILS: {
-            DetailScreen detail(font, slider.getSelectedSlide(), currentUser);
+            DetailScreen detail(font, slider.getSelectedIndex(), currentUser);
             detail.update(mousePos, mousePressed, state);
             detail.draw(window);
             break;
@@ -122,5 +110,3 @@ void App::render() {
 
     window.display();
 }
-
-// 

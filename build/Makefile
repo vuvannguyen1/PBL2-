@@ -225,6 +225,30 @@ src/BookingScreen.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/BookingScreen.cpp.s
 .PHONY : src/BookingScreen.cpp.s
 
+src/CSVReader.obj: src/CSVReader.cpp.obj
+.PHONY : src/CSVReader.obj
+
+# target to build an object file
+src/CSVReader.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/CSVReader.cpp.obj
+.PHONY : src/CSVReader.cpp.obj
+
+src/CSVReader.i: src/CSVReader.cpp.i
+.PHONY : src/CSVReader.i
+
+# target to preprocess a source file
+src/CSVReader.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/CSVReader.cpp.i
+.PHONY : src/CSVReader.cpp.i
+
+src/CSVReader.s: src/CSVReader.cpp.s
+.PHONY : src/CSVReader.s
+
+# target to generate assembly for a file
+src/CSVReader.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/CSVReader.cpp.s
+.PHONY : src/CSVReader.cpp.s
+
 src/DetailScreen.obj: src/DetailScreen.cpp.obj
 .PHONY : src/DetailScreen.obj
 
@@ -462,6 +486,9 @@ help:
 	@echo ... src/BookingScreen.obj
 	@echo ... src/BookingScreen.i
 	@echo ... src/BookingScreen.s
+	@echo ... src/CSVReader.obj
+	@echo ... src/CSVReader.i
+	@echo ... src/CSVReader.s
 	@echo ... src/DetailScreen.obj
 	@echo ... src/DetailScreen.i
 	@echo ... src/DetailScreen.s

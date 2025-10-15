@@ -162,4 +162,15 @@ CMakeFiles/app.dir/src/Movie.cpp.obj: \
  C:/mingw64/include/c++/14.2.0/bits/stl_uninitialized.h \
  C:/mingw64/include/c++/14.2.0/bits/stl_vector.h \
  C:/mingw64/include/c++/14.2.0/bits/stl_bvector.h \
- C:/mingw64/include/c++/14.2.0/bits/vector.tcc
+ C:/mingw64/include/c++/14.2.0/bits/vector.tcc \
+ C:/Users/Os/Desktop/PBL2/include/CSVReader.h \
+ C:/mingw64/include/c++/14.2.0/algorithm \
+ C:/mingw64/include/c++/14.2.0/bits/stl_algo.h \
+ C:/mingw64/include/c++/14.2.0/bits/algorithmfwd.h \
+ C:/mingw64/include/c++/14.2.0/bits/stl_heap.h \
+ C:/mingw64/include/c++/14.2.0/bits/uniform_int_dist.h \
+ C:/mingw64/include/c++/14.2.0/bits/stl_tempbuf.h \
+ C:/mingw64/include/c++/14.2.0/bits/ranges_algo.h \
+ C:/mingw64/include/c++/14.2.0/bits/ranges_algobase.h \
+ C:/mingw64/include/c++/14.2.0/pstl/glue_algorithm_defs.h \
+ C:/mingw64/include/c++/14.2.0/pstl/execution_defs.h
