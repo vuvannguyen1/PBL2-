@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 using namespace sf;
+using namespace std;
 
 class TextButton {
     private:
@@ -13,4 +14,8 @@ class TextButton {
         void draw(RenderWindow&) const;
         void setOutlineColor(const sf::Color&);
         void setOutlineThickness(float);
+        void setString(const String&);
+        void setPosition(Vector2f);
+        FloatRect getGlobalBounds() const;
+        Vector2f getPosition() const;
 };

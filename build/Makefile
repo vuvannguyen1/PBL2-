@@ -56,10 +56,10 @@ RM = "C:\Program Files\CMake\bin\cmake.exe" -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = C:\Users\Os\Desktop\PBL2
+CMAKE_SOURCE_DIR = "C:\Users\Cam Tuyen\Desktop\PBL2-"
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = C:\Users\Os\Desktop\PBL2\build
+CMAKE_BINARY_DIR = "C:\Users\Cam Tuyen\Desktop\PBL2-\build"
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -86,9 +86,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\Os\Desktop\PBL2\build\CMakeFiles C:\Users\Os\Desktop\PBL2\build\\CMakeFiles\progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start "C:\Users\Cam Tuyen\Desktop\PBL2-\build\CMakeFiles" "C:\Users\Cam Tuyen\Desktop\PBL2-\build\\CMakeFiles\progress.marks"
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\Os\Desktop\PBL2\build\CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start "C:\Users\Cam Tuyen\Desktop\PBL2-\build\CMakeFiles" 0
 .PHONY : all
 
 # The main clean target
@@ -112,7 +112,7 @@ preinstall/fast:
 
 # clear depends
 depend:
-	$(CMAKE_COMMAND) -P C:\Users\Os\Desktop\PBL2\build\CMakeFiles\VerifyGlobs.cmake
+	$(CMAKE_COMMAND) -P "C:\Users\Cam Tuyen\Desktop\PBL2-\build\CMakeFiles\VerifyGlobs.cmake"
 	$(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles\Makefile.cmake 1
 .PHONY : depend
 
@@ -128,6 +128,54 @@ app: cmake_check_build_system
 app/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/build
 .PHONY : app/fast
+
+src/AccountScreen.obj: src/AccountScreen.cpp.obj
+.PHONY : src/AccountScreen.obj
+
+# target to build an object file
+src/AccountScreen.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/AccountScreen.cpp.obj
+.PHONY : src/AccountScreen.cpp.obj
+
+src/AccountScreen.i: src/AccountScreen.cpp.i
+.PHONY : src/AccountScreen.i
+
+# target to preprocess a source file
+src/AccountScreen.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/AccountScreen.cpp.i
+.PHONY : src/AccountScreen.cpp.i
+
+src/AccountScreen.s: src/AccountScreen.cpp.s
+.PHONY : src/AccountScreen.s
+
+# target to generate assembly for a file
+src/AccountScreen.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/AccountScreen.cpp.s
+.PHONY : src/AccountScreen.cpp.s
+
+src/App.obj: src/App.cpp.obj
+.PHONY : src/App.obj
+
+# target to build an object file
+src/App.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/App.cpp.obj
+.PHONY : src/App.cpp.obj
+
+src/App.i: src/App.cpp.i
+.PHONY : src/App.i
+
+# target to preprocess a source file
+src/App.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/App.cpp.i
+.PHONY : src/App.cpp.i
+
+src/App.s: src/App.cpp.s
+.PHONY : src/App.s
+
+# target to generate assembly for a file
+src/App.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/App.cpp.s
+.PHONY : src/App.cpp.s
 
 src/AuthService.obj: src/AuthService.cpp.obj
 .PHONY : src/AuthService.obj
@@ -176,6 +224,30 @@ src/BookingScreen.s: src/BookingScreen.cpp.s
 src/BookingScreen.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/BookingScreen.cpp.s
 .PHONY : src/BookingScreen.cpp.s
+
+src/DataManager.obj: src/DataManager.cpp.obj
+.PHONY : src/DataManager.obj
+
+# target to build an object file
+src/DataManager.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/DataManager.cpp.obj
+.PHONY : src/DataManager.cpp.obj
+
+src/DataManager.i: src/DataManager.cpp.i
+.PHONY : src/DataManager.i
+
+# target to preprocess a source file
+src/DataManager.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/DataManager.cpp.i
+.PHONY : src/DataManager.cpp.i
+
+src/DataManager.s: src/DataManager.cpp.s
+.PHONY : src/DataManager.s
+
+# target to generate assembly for a file
+src/DataManager.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/DataManager.cpp.s
+.PHONY : src/DataManager.cpp.s
 
 src/DetailScreen.obj: src/DetailScreen.cpp.obj
 .PHONY : src/DetailScreen.obj
@@ -297,6 +369,30 @@ src/RegisterScreen.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/RegisterScreen.cpp.s
 .PHONY : src/RegisterScreen.cpp.s
 
+src/Slide.obj: src/Slide.cpp.obj
+.PHONY : src/Slide.obj
+
+# target to build an object file
+src/Slide.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/Slide.cpp.obj
+.PHONY : src/Slide.cpp.obj
+
+src/Slide.i: src/Slide.cpp.i
+.PHONY : src/Slide.i
+
+# target to preprocess a source file
+src/Slide.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/Slide.cpp.i
+.PHONY : src/Slide.cpp.i
+
+src/Slide.s: src/Slide.cpp.s
+.PHONY : src/Slide.s
+
+# target to generate assembly for a file
+src/Slide.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/Slide.cpp.s
+.PHONY : src/Slide.cpp.s
+
 src/TextButton.obj: src/TextButton.cpp.obj
 .PHONY : src/TextButton.obj
 
@@ -354,12 +450,21 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... app
+	@echo ... src/AccountScreen.obj
+	@echo ... src/AccountScreen.i
+	@echo ... src/AccountScreen.s
+	@echo ... src/App.obj
+	@echo ... src/App.i
+	@echo ... src/App.s
 	@echo ... src/AuthService.obj
 	@echo ... src/AuthService.i
 	@echo ... src/AuthService.s
 	@echo ... src/BookingScreen.obj
 	@echo ... src/BookingScreen.i
 	@echo ... src/BookingScreen.s
+	@echo ... src/DataManager.obj
+	@echo ... src/DataManager.i
+	@echo ... src/DataManager.s
 	@echo ... src/DetailScreen.obj
 	@echo ... src/DetailScreen.i
 	@echo ... src/DetailScreen.s
@@ -375,6 +480,9 @@ help:
 	@echo ... src/RegisterScreen.obj
 	@echo ... src/RegisterScreen.i
 	@echo ... src/RegisterScreen.s
+	@echo ... src/Slide.obj
+	@echo ... src/Slide.i
+	@echo ... src/Slide.s
 	@echo ... src/TextButton.obj
 	@echo ... src/TextButton.i
 	@echo ... src/TextButton.s
@@ -392,7 +500,7 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	$(CMAKE_COMMAND) -P C:\Users\Os\Desktop\PBL2\build\CMakeFiles\VerifyGlobs.cmake
+	$(CMAKE_COMMAND) -P "C:\Users\Cam Tuyen\Desktop\PBL2-\build\CMakeFiles\VerifyGlobs.cmake"
 	$(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles\Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

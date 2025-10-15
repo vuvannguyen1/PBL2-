@@ -1,13 +1,13 @@
 CMakeFiles/app.dir/src/LoginScreen.cpp.obj: \
- C:\Users\Os\Desktop\PBL2\src\LoginScreen.cpp \
- C:/Users/Os/Desktop/PBL2/include/LoginScreen.h \
- C:/SFML-master/install/include/SFML/Graphics.hpp \
- C:/SFML-master/install/include/SFML/Graphics/BlendMode.hpp \
- C:/SFML-master/install/include/SFML/Graphics/Export.hpp \
- C:/SFML-master/install/include/SFML/Config.hpp \
- C:/SFML-master/install/include/SFML/Graphics/CircleShape.hpp \
- C:/SFML-master/install/include/SFML/Graphics/Shape.hpp \
- C:/SFML-master/install/include/SFML/Graphics/Color.hpp \
+ C:\Users\Cam\ Tuyen\Desktop\PBL2-\src\LoginScreen.cpp \
+ C:/Users/CAMTUY~1/Desktop/PBL2-/include/LoginScreen.h \
+ C:/SFML-3.0.0/include/SFML/Graphics.hpp \
+ C:/SFML-3.0.0/include/SFML/Graphics/BlendMode.hpp \
+ C:/SFML-3.0.0/include/SFML/Graphics/Export.hpp \
+ C:/SFML-3.0.0/include/SFML/Config.hpp \
+ C:/SFML-3.0.0/include/SFML/Graphics/CircleShape.hpp \
+ C:/SFML-3.0.0/include/SFML/Graphics/Shape.hpp \
+ C:/SFML-3.0.0/include/SFML/Graphics/Color.hpp \
  C:/mingw64/include/c++/14.2.0/cstdint \
  C:/mingw64/include/c++/14.2.0/x86_64-w64-mingw32/bits/c++config.h \
  C:/mingw64/include/c++/14.2.0/x86_64-w64-mingw32/bits/os_defines.h \
@@ -24,14 +24,14 @@ CMakeFiles/app.dir/src/LoginScreen.cpp.obj: \
  C:/mingw64/x86_64-w64-mingw32/include/sdks/_mingw_ddk.h \
  C:/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/stddef.h \
  C:/mingw64/x86_64-w64-mingw32/include/stddef.h \
- C:/SFML-master/install/include/SFML/Graphics/Color.inl \
- C:/SFML-master/install/include/SFML/Graphics/Drawable.hpp \
- C:/SFML-master/install/include/SFML/Graphics/PrimitiveType.hpp \
- C:/SFML-master/install/include/SFML/Graphics/Rect.hpp \
- C:/SFML-master/install/include/SFML/System/Vector2.hpp \
- C:/SFML-master/install/include/SFML/System/Export.hpp \
- C:/SFML-master/install/include/SFML/System/Angle.hpp \
- C:/SFML-master/install/include/SFML/System/Angle.inl \
+ C:/SFML-3.0.0/include/SFML/Graphics/Color.inl \
+ C:/SFML-3.0.0/include/SFML/Graphics/Drawable.hpp \
+ C:/SFML-3.0.0/include/SFML/Graphics/PrimitiveType.hpp \
+ C:/SFML-3.0.0/include/SFML/Graphics/Rect.hpp \
+ C:/SFML-3.0.0/include/SFML/System/Vector2.hpp \
+ C:/SFML-3.0.0/include/SFML/System/Export.hpp \
+ C:/SFML-3.0.0/include/SFML/System/Angle.hpp \
+ C:/SFML-3.0.0/include/SFML/System/Angle.inl \
  C:/mingw64/include/c++/14.2.0/cassert \
  C:/mingw64/x86_64-w64-mingw32/include/assert.h \
  C:/mingw64/include/c++/14.2.0/stdlib.h \
@@ -46,7 +46,7 @@ CMakeFiles/app.dir/src/LoginScreen.cpp.obj: \
  C:/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/mm_malloc.h \
  C:/mingw64/x86_64-w64-mingw32/include/errno.h \
  C:/mingw64/include/c++/14.2.0/bits/std_abs.h \
- C:/SFML-master/install/include/SFML/System/Vector2.inl \
+ C:/SFML-3.0.0/include/SFML/System/Vector2.inl \
  C:/mingw64/include/c++/14.2.0/optional \
  C:/mingw64/include/c++/14.2.0/bits/version.h \
  C:/mingw64/include/c++/14.2.0/type_traits \
@@ -75,11 +75,11 @@ CMakeFiles/app.dir/src/LoginScreen.cpp.obj: \
  C:/mingw64/include/c++/14.2.0/bits/utility.h \
  C:/mingw64/include/c++/14.2.0/compare \
  C:/mingw64/include/c++/14.2.0/bits/invoke.h \
- C:/SFML-master/install/include/SFML/Graphics/Rect.inl \
- C:/SFML-master/install/include/SFML/Graphics/RenderStates.hpp \
- C:/SFML-master/install/include/SFML/Graphics/CoordinateType.hpp \
- C:/SFML-master/install/include/SFML/Graphics/StencilMode.hpp \
- C:/SFML-master/install/include/SFML/Graphics/Transform.hpp \
+ C:/SFML-3.0.0/include/SFML/Graphics/Rect.inl \
+ C:/SFML-3.0.0/include/SFML/Graphics/RenderStates.hpp \
+ C:/SFML-3.0.0/include/SFML/Graphics/CoordinateType.hpp \
+ C:/SFML-3.0.0/include/SFML/Graphics/StencilMode.hpp \
+ C:/SFML-3.0.0/include/SFML/Graphics/Transform.hpp \
  C:/mingw64/include/c++/14.2.0/array \
  C:/mingw64/include/c++/14.2.0/bits/functexcept.h \
  C:/mingw64/include/c++/14.2.0/bits/stl_algobase.h \
@@ -92,11 +92,11 @@ CMakeFiles/app.dir/src/LoginScreen.cpp.obj: \
  C:/mingw64/include/c++/14.2.0/bits/predefined_ops.h \
  C:/mingw64/include/c++/14.2.0/bit \
  C:/mingw64/include/c++/14.2.0/bits/range_access.h \
- C:/SFML-master/install/include/SFML/Graphics/Transform.inl \
+ C:/SFML-3.0.0/include/SFML/Graphics/Transform.inl \
  C:/mingw64/include/c++/14.2.0/cstddef \
- C:/SFML-master/install/include/SFML/Graphics/Transformable.hpp \
- C:/SFML-master/install/include/SFML/Graphics/VertexArray.hpp \
- C:/SFML-master/install/include/SFML/Graphics/Vertex.hpp \
+ C:/SFML-3.0.0/include/SFML/Graphics/Transformable.hpp \
+ C:/SFML-3.0.0/include/SFML/Graphics/VertexArray.hpp \
+ C:/SFML-3.0.0/include/SFML/Graphics/Vertex.hpp \
  C:/mingw64/include/c++/14.2.0/vector \
  C:/mingw64/include/c++/14.2.0/bits/requires_hosted.h \
  C:/mingw64/include/c++/14.2.0/bits/allocator.h \
@@ -120,12 +120,12 @@ CMakeFiles/app.dir/src/LoginScreen.cpp.obj: \
  C:/mingw64/include/c++/14.2.0/bits/ranges_base.h \
  C:/mingw64/include/c++/14.2.0/bits/max_size_type.h \
  C:/mingw64/include/c++/14.2.0/numbers \
- C:/SFML-master/install/include/SFML/Graphics/ConvexShape.hpp \
- C:/SFML-master/install/include/SFML/Graphics/Font.hpp \
- C:/SFML-master/install/include/SFML/Graphics/Glyph.hpp \
- C:/SFML-master/install/include/SFML/Graphics/Texture.hpp \
- C:/SFML-master/install/include/SFML/Window/GlResource.hpp \
- C:/SFML-master/install/include/SFML/Window/Export.hpp \
+ C:/SFML-3.0.0/include/SFML/Graphics/ConvexShape.hpp \
+ C:/SFML-3.0.0/include/SFML/Graphics/Font.hpp \
+ C:/SFML-3.0.0/include/SFML/Graphics/Glyph.hpp \
+ C:/SFML-3.0.0/include/SFML/Graphics/Texture.hpp \
+ C:/SFML-3.0.0/include/SFML/Window/GlResource.hpp \
+ C:/SFML-3.0.0/include/SFML/Window/Export.hpp \
  C:/mingw64/include/c++/14.2.0/memory \
  C:/mingw64/include/c++/14.2.0/bits/stl_tempbuf.h \
  C:/mingw64/include/c++/14.2.0/bits/stl_raw_storage_iter.h \
@@ -241,20 +241,20 @@ CMakeFiles/app.dir/src/LoginScreen.cpp.obj: \
  C:/mingw64/include/c++/14.2.0/bits/hashtable_policy.h \
  C:/mingw64/include/c++/14.2.0/bits/node_handle.h \
  C:/mingw64/include/c++/14.2.0/bits/erase_if.h \
- C:/SFML-master/install/include/SFML/Graphics/Image.hpp \
- C:/SFML-master/install/include/SFML/Graphics/RectangleShape.hpp \
- C:/SFML-master/install/include/SFML/Graphics/RenderTarget.hpp \
- C:/SFML-master/install/include/SFML/Graphics/View.hpp \
- C:/SFML-master/install/include/SFML/Graphics/RenderTexture.hpp \
- C:/SFML-master/install/include/SFML/Window/ContextSettings.hpp \
- C:/SFML-master/install/include/SFML/Graphics/RenderWindow.hpp \
- C:/SFML-master/install/include/SFML/Window/VideoMode.hpp \
- C:/SFML-master/install/include/SFML/Window/Window.hpp \
- C:/SFML-master/install/include/SFML/Window/WindowBase.hpp \
- C:/SFML-master/install/include/SFML/Window/Vulkan.hpp \
- C:/SFML-master/install/include/SFML/Window/WindowEnums.hpp \
- C:/SFML-master/install/include/SFML/Window/WindowHandle.hpp \
- C:/SFML-master/install/include/SFML/System/Time.hpp \
+ C:/SFML-3.0.0/include/SFML/Graphics/Image.hpp \
+ C:/SFML-3.0.0/include/SFML/Graphics/RectangleShape.hpp \
+ C:/SFML-3.0.0/include/SFML/Graphics/RenderTarget.hpp \
+ C:/SFML-3.0.0/include/SFML/Graphics/View.hpp \
+ C:/SFML-3.0.0/include/SFML/Graphics/RenderTexture.hpp \
+ C:/SFML-3.0.0/include/SFML/Window/ContextSettings.hpp \
+ C:/SFML-3.0.0/include/SFML/Graphics/RenderWindow.hpp \
+ C:/SFML-3.0.0/include/SFML/Window/VideoMode.hpp \
+ C:/SFML-3.0.0/include/SFML/Window/Window.hpp \
+ C:/SFML-3.0.0/include/SFML/Window/WindowBase.hpp \
+ C:/SFML-3.0.0/include/SFML/Window/Vulkan.hpp \
+ C:/SFML-3.0.0/include/SFML/Window/WindowEnums.hpp \
+ C:/SFML-3.0.0/include/SFML/Window/WindowHandle.hpp \
+ C:/SFML-3.0.0/include/SFML/System/Time.hpp \
  C:/mingw64/include/c++/14.2.0/chrono \
  C:/mingw64/include/c++/14.2.0/bits/stl_algo.h \
  C:/mingw64/include/c++/14.2.0/bits/algorithmfwd.h \
@@ -266,43 +266,42 @@ CMakeFiles/app.dir/src/LoginScreen.cpp.obj: \
  C:/mingw64/include/c++/14.2.0/span C:/mingw64/include/c++/14.2.0/variant \
  C:/mingw64/include/c++/14.2.0/bits/unicode.h \
  C:/mingw64/include/c++/14.2.0/bits/unicode-data.h \
- C:/SFML-master/install/include/SFML/System/Time.inl \
- C:/SFML-master/install/include/SFML/Window/WindowBase.inl \
- C:/SFML-master/install/include/SFML/Window/Event.hpp \
- C:/SFML-master/install/include/SFML/Window/Joystick.hpp \
- C:/SFML-master/install/include/SFML/System/String.hpp \
- C:/SFML-master/install/include/SFML/System/Utf.hpp \
- C:/SFML-master/install/include/SFML/System/Utf.inl \
+ C:/SFML-3.0.0/include/SFML/System/Time.inl \
+ C:/SFML-3.0.0/include/SFML/Window/WindowBase.inl \
+ C:/SFML-3.0.0/include/SFML/Window/Event.hpp \
+ C:/SFML-3.0.0/include/SFML/Window/Joystick.hpp \
+ C:/SFML-3.0.0/include/SFML/System/String.hpp \
+ C:/SFML-3.0.0/include/SFML/System/Utf.hpp \
+ C:/SFML-3.0.0/include/SFML/System/Utf.inl \
+ C:/SFML-3.0.0/include/SFML/System/String.inl \
  C:/mingw64/include/c++/14.2.0/iterator \
  C:/mingw64/include/c++/14.2.0/bits/stream_iterator.h \
- C:/SFML-master/install/include/SFML/System/String.inl \
- C:/SFML-master/install/include/SFML/Window/Keyboard.hpp \
- C:/SFML-master/install/include/SFML/Window/Mouse.hpp \
- C:/SFML-master/install/include/SFML/Window/Sensor.hpp \
- C:/SFML-master/install/include/SFML/System/Vector3.hpp \
- C:/SFML-master/install/include/SFML/System/Vector3.inl \
- C:/SFML-master/install/include/SFML/Window/Event.inl \
+ C:/SFML-3.0.0/include/SFML/Window/Keyboard.hpp \
+ C:/SFML-3.0.0/include/SFML/Window/Mouse.hpp \
+ C:/SFML-3.0.0/include/SFML/Window/Sensor.hpp \
+ C:/SFML-3.0.0/include/SFML/System/Vector3.hpp \
+ C:/SFML-3.0.0/include/SFML/System/Vector3.inl \
+ C:/SFML-3.0.0/include/SFML/Window/Event.inl \
  C:/mingw64/include/c++/14.2.0/utility \
  C:/mingw64/include/c++/14.2.0/bits/stl_relops.h \
- C:/SFML-master/install/include/SFML/System/Clock.hpp \
- C:/SFML-master/install/include/SFML/Graphics/Shader.hpp \
- C:/SFML-master/install/include/SFML/Graphics/Glsl.hpp \
- C:/SFML-master/install/include/SFML/Graphics/Glsl.inl \
- C:/SFML-master/install/include/SFML/Graphics/Sprite.hpp \
- C:/SFML-master/install/include/SFML/Graphics/Text.hpp \
- C:/mingw64/include/c++/14.2.0/functional \
- C:/mingw64/include/c++/14.2.0/bits/std_function.h \
- C:/SFML-master/install/include/SFML/Graphics/VertexBuffer.hpp \
- C:/SFML-master/install/include/SFML/Window.hpp \
- C:/SFML-master/install/include/SFML/Window/Clipboard.hpp \
- C:/SFML-master/install/include/SFML/Window/Context.hpp \
- C:/SFML-master/install/include/SFML/Window/Cursor.hpp \
- C:/SFML-master/install/include/SFML/Window/Touch.hpp \
- C:/SFML-master/install/include/SFML/System.hpp \
- C:/SFML-master/install/include/SFML/System/Err.hpp \
- C:/SFML-master/install/include/SFML/System/Exception.hpp \
- C:/SFML-master/install/include/SFML/System/FileInputStream.hpp \
- C:/SFML-master/install/include/SFML/System/InputStream.hpp \
- C:/SFML-master/install/include/SFML/System/MemoryInputStream.hpp \
- C:/SFML-master/install/include/SFML/System/Sleep.hpp \
- C:/Users/Os/Desktop/PBL2/include/AuthService.h
+ C:/SFML-3.0.0/include/SFML/System/Clock.hpp \
+ C:/SFML-3.0.0/include/SFML/Graphics/Shader.hpp \
+ C:/SFML-3.0.0/include/SFML/Graphics/Glsl.hpp \
+ C:/SFML-3.0.0/include/SFML/Graphics/Glsl.inl \
+ C:/SFML-3.0.0/include/SFML/Graphics/Sprite.hpp \
+ C:/SFML-3.0.0/include/SFML/Graphics/Text.hpp \
+ C:/SFML-3.0.0/include/SFML/Graphics/VertexBuffer.hpp \
+ C:/SFML-3.0.0/include/SFML/Window.hpp \
+ C:/SFML-3.0.0/include/SFML/Window/Clipboard.hpp \
+ C:/SFML-3.0.0/include/SFML/Window/Context.hpp \
+ C:/SFML-3.0.0/include/SFML/Window/Cursor.hpp \
+ C:/SFML-3.0.0/include/SFML/Window/Touch.hpp \
+ C:/SFML-3.0.0/include/SFML/System.hpp \
+ C:/SFML-3.0.0/include/SFML/System/Err.hpp \
+ C:/SFML-3.0.0/include/SFML/System/Exception.hpp \
+ C:/SFML-3.0.0/include/SFML/System/FileInputStream.hpp \
+ C:/SFML-3.0.0/include/SFML/System/InputStream.hpp \
+ C:/SFML-3.0.0/include/SFML/System/MemoryInputStream.hpp \
+ C:/SFML-3.0.0/include/SFML/System/Sleep.hpp \
+ C:/Users/CAMTUY~1/Desktop/PBL2-/include/AuthService.h \
+ C:/Users/CAMTUY~1/Desktop/PBL2-/include/AppState.h

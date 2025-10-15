@@ -1,3 +1,0 @@
-﻿admin_id,user_id,username,password,role,full_name,email,phone,status
-A001,U0001,admin,admin123,admin,Super Admin,admin@cinema.local,0900000001,active
-A002,U0002,admin2,admin123,admin,Second Admin,admin2@cinema.local,0900000002,active
