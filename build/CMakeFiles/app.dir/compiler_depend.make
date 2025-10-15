@@ -544,6 +544,7 @@ CMakeFiles/app.dir/src/App.cpp.obj: C:/Users/Cam\ Tuyen/Desktop/PBL2-/src/App.cp
   C:/mingw64/include/c++/14.2.0/iomanip \
   C:/mingw64/include/c++/14.2.0/ios \
   C:/mingw64/include/c++/14.2.0/iosfwd \
+  C:/mingw64/include/c++/14.2.0/iostream \
   C:/mingw64/include/c++/14.2.0/istream \
   C:/mingw64/include/c++/14.2.0/iterator \
   C:/mingw64/include/c++/14.2.0/limits \
@@ -4548,6 +4549,8 @@ C:/mingw64/include/c++/14.2.0/bits/specfun.h:
 
 C:/mingw64/include/c++/14.2.0/fstream:
 
+C:/mingw64/include/c++/14.2.0/iostream:
+
 C:/mingw64/include/c++/14.2.0/tr1/beta_function.tcc:
 
 C:/mingw64/include/c++/14.2.0/tr1/exp_integral.tcc:
@@ -4577,8 +4580,6 @@ C:/mingw64/include/c++/14.2.0/random:
 C:/mingw64/include/c++/14.2.0/x86_64-w64-mingw32/bits/opt_random.h:
 
 C:/Users/Cam\ Tuyen/Desktop/PBL2-/src/HomeScreen.cpp:
-
-C:/mingw64/include/c++/14.2.0/iostream:
 
 C:/Users/Cam\ Tuyen/Desktop/PBL2-/src/PosterSlider.cpp:
 
