@@ -7,14 +7,21 @@
 using namespace std;
 
 struct Movie {
+    string film_id;
     string title;
-    string genre;
-    string duration;
+    string age_rating;
     string country;
+    string language;
+    string genres;
+    string duration_min;
+    string release_date;
+    string director;
     string cast;
-    string description;
-    string posterPath;
+    string synopsis;
+    string poster_path;
+    string status;
 };
 
-std::vector<Movie> loadMoviesFromCSV(const std::string& filePath);
+vector<Movie> loadMoviesFromCSV(const string& filePath);
+void testMovieCSV();  // Hàm test đọc CSV
 

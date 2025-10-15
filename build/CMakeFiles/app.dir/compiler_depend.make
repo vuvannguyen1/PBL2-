@@ -397,6 +397,7 @@ CMakeFiles/app.dir/src/App.cpp.obj: C:/Users/Os/Desktop/PBL2/src/App.cpp \
   C:/Users/Os/Desktop/PBL2/include/DetailScreen.h \
   C:/Users/Os/Desktop/PBL2/include/HomeScreen.h \
   C:/Users/Os/Desktop/PBL2/include/LoginScreen.h \
+  C:/Users/Os/Desktop/PBL2/include/Movie.h \
   C:/Users/Os/Desktop/PBL2/include/PosterSlider.h \
   C:/Users/Os/Desktop/PBL2/include/RegisterScreen.h \
   C:/Users/Os/Desktop/PBL2/include/Slide.h \
@@ -548,6 +549,7 @@ CMakeFiles/app.dir/src/App.cpp.obj: C:/Users/Os/Desktop/PBL2/src/App.cpp \
   C:/mingw64/include/c++/14.2.0/iomanip \
   C:/mingw64/include/c++/14.2.0/ios \
   C:/mingw64/include/c++/14.2.0/iosfwd \
+  C:/mingw64/include/c++/14.2.0/iostream \
   C:/mingw64/include/c++/14.2.0/istream \
   C:/mingw64/include/c++/14.2.0/iterator \
   C:/mingw64/include/c++/14.2.0/limits \
@@ -1272,6 +1274,7 @@ CMakeFiles/app.dir/src/DetailScreen.cpp.obj: C:/Users/Os/Desktop/PBL2/src/Detail
   C:/Users/Os/Desktop/PBL2/include/AppState.h \
   C:/Users/Os/Desktop/PBL2/include/DetailScreen.h \
   C:/Users/Os/Desktop/PBL2/include/HomeScreen.h \
+  C:/Users/Os/Desktop/PBL2/include/Movie.h \
   C:/Users/Os/Desktop/PBL2/include/Slide.h \
   C:/Users/Os/Desktop/PBL2/include/TextButton.h \
   C:/mingw64/include/c++/14.2.0/array \
@@ -1308,6 +1311,7 @@ CMakeFiles/app.dir/src/DetailScreen.cpp.obj: C:/Users/Os/Desktop/PBL2/src/Detail
   C:/mingw64/include/c++/14.2.0/bits/fs_fwd.h \
   C:/mingw64/include/c++/14.2.0/bits/fs_ops.h \
   C:/mingw64/include/c++/14.2.0/bits/fs_path.h \
+  C:/mingw64/include/c++/14.2.0/bits/fstream.tcc \
   C:/mingw64/include/c++/14.2.0/bits/functexcept.h \
   C:/mingw64/include/c++/14.2.0/bits/functional_hash.h \
   C:/mingw64/include/c++/14.2.0/bits/hash_bytes.h \
@@ -1412,11 +1416,13 @@ CMakeFiles/app.dir/src/DetailScreen.cpp.obj: C:/Users/Os/Desktop/PBL2/src/Detail
   C:/mingw64/include/c++/14.2.0/ext/type_traits.h \
   C:/mingw64/include/c++/14.2.0/filesystem \
   C:/mingw64/include/c++/14.2.0/format \
+  C:/mingw64/include/c++/14.2.0/fstream \
   C:/mingw64/include/c++/14.2.0/functional \
   C:/mingw64/include/c++/14.2.0/initializer_list \
   C:/mingw64/include/c++/14.2.0/iomanip \
   C:/mingw64/include/c++/14.2.0/ios \
   C:/mingw64/include/c++/14.2.0/iosfwd \
+  C:/mingw64/include/c++/14.2.0/iostream \
   C:/mingw64/include/c++/14.2.0/istream \
   C:/mingw64/include/c++/14.2.0/iterator \
   C:/mingw64/include/c++/14.2.0/limits \
@@ -1446,8 +1452,10 @@ CMakeFiles/app.dir/src/DetailScreen.cpp.obj: C:/Users/Os/Desktop/PBL2/src/Detail
   C:/mingw64/include/c++/14.2.0/variant \
   C:/mingw64/include/c++/14.2.0/vector \
   C:/mingw64/include/c++/14.2.0/x86_64-w64-mingw32/bits/atomic_word.h \
+  C:/mingw64/include/c++/14.2.0/x86_64-w64-mingw32/bits/basic_file.h \
   C:/mingw64/include/c++/14.2.0/x86_64-w64-mingw32/bits/c++allocator.h \
   C:/mingw64/include/c++/14.2.0/x86_64-w64-mingw32/bits/c++config.h \
+  C:/mingw64/include/c++/14.2.0/x86_64-w64-mingw32/bits/c++io.h \
   C:/mingw64/include/c++/14.2.0/x86_64-w64-mingw32/bits/c++locale.h \
   C:/mingw64/include/c++/14.2.0/x86_64-w64-mingw32/bits/cpu_defines.h \
   C:/mingw64/include/c++/14.2.0/x86_64-w64-mingw32/bits/ctype_base.h \
@@ -4566,6 +4574,8 @@ C:/Users/Os/Desktop/PBL2/include/HomeScreen.h:
 
 C:/Users/Os/Desktop/PBL2/include/LoginScreen.h:
 
+C:/Users/Os/Desktop/PBL2/include/Movie.h:
+
 C:/Users/Os/Desktop/PBL2/include/RegisterScreen.h:
 
 C:/Users/Os/Desktop/PBL2/include/Slide.h:
@@ -4607,7 +4617,5 @@ C:/Users/Os/Desktop/PBL2/include/BookingScreen.h:
 C:/Users/Os/Desktop/PBL2/src/DetailScreen.cpp:
 
 C:/Users/Os/Desktop/PBL2/src/HomeScreen.cpp:
-
-C:/Users/Os/Desktop/PBL2/include/Movie.h:
 
 C:/Users/Os/Desktop/PBL2/src/tubuildtrangchu.cpp:

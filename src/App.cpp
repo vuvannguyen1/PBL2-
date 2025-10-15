@@ -20,17 +20,18 @@ App::App() :
         auth.ensureFile();
         auth.ensureSampleUser();
 
+        // ✅ FIX: Sắp xếp theo đúng thứ tự trong CSV để đồng bộ index
         vector<string> paths = {
-            "../assets/posters/blue-beetle.png",
-            "../assets/posters/dao-pho-va-piano.png",
-            "../assets/posters/dune-part-two.png",
-            "../assets/posters/godzilla-x-kong.png",
-            "../assets/posters/inside-out.png",
-            "../assets/posters/lat-mat-48h.png",
-            "../assets/posters/mai.png",
-            "../assets/posters/tu-chien-tren-khong.png",
-            "../assets/posters/spirited-away.png",
-            "../assets/posters/bo-gia-remastered.png"
+            "../assets/posters/tu-chien-tren-khong.png",    // 0: TỬ CHIẾN TRÊN KHÔNG
+            "../assets/posters/mai.png",                    // 1: MAI
+            "../assets/posters/dao-pho-va-piano.png",       // 2: ĐÀO, PHỞ VÀ PIANO
+            "../assets/posters/lat-mat-48h.png",            // 3: LẬT MẶT: 48H
+            "../assets/posters/dune-part-two.png",          // 4: DUNE: PART TWO
+            "../assets/posters/inside-out.png",             // 5: INSIDE OUT 2
+            "../assets/posters/godzilla-x-kong.png",        // 6: GODZILLA X KONG
+            "../assets/posters/spirited-away.png",          // 7: SPIRITED AWAY
+            "../assets/posters/bo-gia-remastered.png",      // 8: BỐ GIÀ
+            "../assets/posters/blue-beetle.png"             // 9: BLUE BEETLE
         };
         
         slider.loadPosters(paths, font);
@@ -110,7 +111,7 @@ void App::render() {
             break;
 
         case AppState::MOVIE_DETAILS: {
-            DetailScreen detail(font, slider.getSelectedSlide(), currentUser);
+            DetailScreen detail(font, slider.getSelectedIndex(), currentUser);
             detail.update(mousePos, mousePressed, state);
             detail.draw(window);
             break;

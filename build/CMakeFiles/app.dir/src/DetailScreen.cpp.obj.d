@@ -308,4 +308,10 @@ CMakeFiles/app.dir/src/DetailScreen.cpp.obj: \
  C:/Users/Os/Desktop/PBL2/include/Slide.h \
  C:/Users/Os/Desktop/PBL2/include/HomeScreen.h \
  C:/Users/Os/Desktop/PBL2/include/TextButton.h \
- C:/Users/Os/Desktop/PBL2/include/AppState.h
+ C:/Users/Os/Desktop/PBL2/include/AppState.h \
+ C:/Users/Os/Desktop/PBL2/include/Movie.h \
+ C:/mingw64/include/c++/14.2.0/fstream \
+ C:/mingw64/include/c++/14.2.0/x86_64-w64-mingw32/bits/basic_file.h \
+ C:/mingw64/include/c++/14.2.0/x86_64-w64-mingw32/bits/c++io.h \
+ C:/mingw64/include/c++/14.2.0/bits/fstream.tcc \
+ C:/mingw64/include/c++/14.2.0/iostream
