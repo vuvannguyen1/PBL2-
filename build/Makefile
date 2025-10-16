@@ -225,30 +225,6 @@ src/BookingScreen.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/BookingScreen.cpp.s
 .PHONY : src/BookingScreen.cpp.s
 
-src/DataManager.obj: src/DataManager.cpp.obj
-.PHONY : src/DataManager.obj
-
-# target to build an object file
-src/DataManager.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/DataManager.cpp.obj
-.PHONY : src/DataManager.cpp.obj
-
-src/DataManager.i: src/DataManager.cpp.i
-.PHONY : src/DataManager.i
-
-# target to preprocess a source file
-src/DataManager.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/DataManager.cpp.i
-.PHONY : src/DataManager.cpp.i
-
-src/DataManager.s: src/DataManager.cpp.s
-.PHONY : src/DataManager.s
-
-# target to generate assembly for a file
-src/DataManager.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/DataManager.cpp.s
-.PHONY : src/DataManager.cpp.s
-
 src/DetailScreen.obj: src/DetailScreen.cpp.obj
 .PHONY : src/DetailScreen.obj
 
@@ -320,6 +296,30 @@ src/LoginScreen.s: src/LoginScreen.cpp.s
 src/LoginScreen.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/LoginScreen.cpp.s
 .PHONY : src/LoginScreen.cpp.s
+
+src/Movie.obj: src/Movie.cpp.obj
+.PHONY : src/Movie.obj
+
+# target to build an object file
+src/Movie.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/Movie.cpp.obj
+.PHONY : src/Movie.cpp.obj
+
+src/Movie.i: src/Movie.cpp.i
+.PHONY : src/Movie.i
+
+# target to preprocess a source file
+src/Movie.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/Movie.cpp.i
+.PHONY : src/Movie.cpp.i
+
+src/Movie.s: src/Movie.cpp.s
+.PHONY : src/Movie.s
+
+# target to generate assembly for a file
+src/Movie.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\app.dir\build.make CMakeFiles/app.dir/src/Movie.cpp.s
+.PHONY : src/Movie.cpp.s
 
 src/PosterSlider.obj: src/PosterSlider.cpp.obj
 .PHONY : src/PosterSlider.obj
@@ -462,9 +462,6 @@ help:
 	@echo ... src/BookingScreen.obj
 	@echo ... src/BookingScreen.i
 	@echo ... src/BookingScreen.s
-	@echo ... src/DataManager.obj
-	@echo ... src/DataManager.i
-	@echo ... src/DataManager.s
 	@echo ... src/DetailScreen.obj
 	@echo ... src/DetailScreen.i
 	@echo ... src/DetailScreen.s
@@ -474,6 +471,9 @@ help:
 	@echo ... src/LoginScreen.obj
 	@echo ... src/LoginScreen.i
 	@echo ... src/LoginScreen.s
+	@echo ... src/Movie.obj
+	@echo ... src/Movie.i
+	@echo ... src/Movie.s
 	@echo ... src/PosterSlider.obj
 	@echo ... src/PosterSlider.i
 	@echo ... src/PosterSlider.s
