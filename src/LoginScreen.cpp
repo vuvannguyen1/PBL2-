@@ -17,7 +17,7 @@ LoginScreen::LoginScreen(const Font& font, AuthService& authRef)
       emailBox({360.f, 44.f}),
       passBox({360.f, 44.f}),
       btn({360.f, 44.f}),
-      emailPH(font, L"Nhập a của bạn", 18),
+      emailPH(font, L"Nhập email của bạn", 18),
       passPH(font, L"Nhập mật khẩu", 18),
       btnText(font, L"Tiếp tục", 20),
       linkForgot(font, L"Quên mật khẩu?", 16),
