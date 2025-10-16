@@ -63,8 +63,8 @@ DetailScreen::DetailScreen(Font& font, int movieIndex, const string& username) :
     titleFont("../assets/BEBAS_NEUE_ZSMALL.ttf"),
     detailFont("../assets/quicksand_medium.ttf"),
     poster(posterTexture),
-    titleText(titleFont, L"", 62),              // ✅ Title size 58
-    ageRatingText(titleFont, L"", 62),          // ✅ Same font và size như title
+    titleText(titleFont, L"", 62),
+    ageRatingText(titleFont, L"", 62),
     genreText(detailFont, L"", 20),
     durationText(detailFont, L"", 20),
     countryText(detailFont, L"", 20),
@@ -76,11 +76,16 @@ DetailScreen::DetailScreen(Font& font, int movieIndex, const string& username) :
     descriptionText(detailFont, L"", 19),
     detailHeader(titleFont, L"MÔ TẢ", 40),
     synopsisHeader(titleFont, L"NỘI DUNG PHIM", 40),
-    genreIcon(12.f),
-    durationIcon(12.f),
-    countryIcon(12.f),
-    languageIcon(12.f),
-    ageRatingIcon(12.f)
+    icon1("../assets/genres.png"),
+    genreIcon(icon1),
+    icon2("../assets/duration_time.png"),
+    durationIcon(icon2),
+    icon3("../assets/country.png"),
+    countryIcon(icon3),
+    icon4("../assets/language.png"),
+    languageIcon(icon4),
+    icon5("../assets/ageRating.png"),
+    ageRatingIcon(icon5)
 {
     setLoggedUser(username);
     loadMovieData(movieIndex);
@@ -98,17 +103,17 @@ DetailScreen::DetailScreen(Font& font, int movieIndex, const string& username) :
 
     ageRatingText.setPosition({titleEndX + 20.f, titleText.getPosition().y});
     
-    Color iconColor(255, 215, 0);
-    genreIcon.setFillColor(iconColor);
     genreIcon.setPosition({804, titleEndY + 20});
-    durationIcon.setFillColor(iconColor);
     durationIcon.setPosition({804, titleEndY + 50});
-    countryIcon.setFillColor(iconColor);
     countryIcon.setPosition({804, titleEndY + 80});
-    languageIcon.setFillColor(iconColor);
     languageIcon.setPosition({804, titleEndY + 110});
-    ageRatingIcon.setFillColor(iconColor);
     ageRatingIcon.setPosition({804, titleEndY + 140});
+
+    genreIcon.setScale({0.048f, 0.048f});
+    durationIcon.setScale({0.048f, 0.048f});
+    countryIcon.setScale({0.048f, 0.048f});
+    languageIcon.setScale({0.048f, 0.048f});
+    ageRatingIcon.setScale({0.048f, 0.048f});
     
     genreText.setPosition({834, titleEndY + 20});
     durationText.setPosition({834, titleEndY + 50});

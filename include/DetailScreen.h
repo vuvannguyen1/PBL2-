@@ -18,11 +18,8 @@ private:
     Movie currentMovie;
     vector<Movie> allMovies;
 
-    CircleShape genreIcon;
-    CircleShape durationIcon;
-    CircleShape countryIcon;
-    CircleShape languageIcon;
-    CircleShape ageRatingIcon;
+    Texture icon1, icon2, icon3, icon4, icon5;
+    Sprite genreIcon, durationIcon, countryIcon, languageIcon, ageRatingIcon;
 
     Text detailHeader, synopsisHeader;
 public:
