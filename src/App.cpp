@@ -108,6 +108,11 @@ void App::render() {
                 DetailScreen detail(font, searchMovieIdx, currentUser);
                 detail.update(mousePos, mousePressed, state);
                 detail.draw(window);
+                
+                // Clear the selection when returning to home
+                if (state != AppState::MOVIE_DETAILS) {
+                    home.clearSelectedMovieIndex();
+                }
             } else {
                 DetailScreen detail(font, slider.getSelectedIndex(), currentUser);
                 detail.update(mousePos, mousePressed, state);

@@ -3,8 +3,11 @@
 #include "AppState.h"
 #include "SearchBox.h"
 #include "MovieSearchManager.h"
+#include <SFML/Graphics.hpp>
 #include <vector>
 #include <string>
+
+using namespace sf;
 
 class HomeScreen {
     protected:
@@ -34,4 +37,5 @@ class HomeScreen {
         void setLoggedUser(const string& username);
         void updateDropdownPosition();
         int getSelectedMovieIndex() const { return selectedMovieIndex; }
+        void clearSelectedMovieIndex() { selectedMovieIndex = -1; }
 };
