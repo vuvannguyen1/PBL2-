@@ -22,6 +22,10 @@ App::App() :
 
         vector<string> paths = getMoviePosterPaths("../data/movies.csv");        
         slider.loadPosters(paths, font);
+        
+        // Load movies for search functionality
+        vector<Movie> movies = loadMoviesFromCSV("../data/movies.csv");
+        home.initializeSearch(movies);
 
 }
 
@@ -49,7 +53,7 @@ void App::processEvents() {
         switch (state) {
             case AppState::HOME:
                 home.setLoggedUser(currentUser);
-                home.update(mousePos, mousePressed, state);
+                home.update(mousePos, mousePressed, state, &event);
                 break;
 
             case AppState::LOGIN:
@@ -98,9 +102,17 @@ void App::render() {
             break;
 
         case AppState::MOVIE_DETAILS: {
-            DetailScreen detail(font, slider.getSelectedIndex(), currentUser);
-            detail.update(mousePos, mousePressed, state);
-            detail.draw(window);
+            // Check if navigation came from search
+            int searchMovieIdx = home.getSelectedMovieIndex();
+            if (searchMovieIdx >= 0) {
+                DetailScreen detail(font, searchMovieIdx, currentUser);
+                detail.update(mousePos, mousePressed, state);
+                detail.draw(window);
+            } else {
+                DetailScreen detail(font, slider.getSelectedIndex(), currentUser);
+                detail.update(mousePos, mousePressed, state);
+                detail.draw(window);
+            }
             break;
         }
 

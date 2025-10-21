@@ -14,7 +14,10 @@ HomeScreen::HomeScreen(Font& f)
   dropdownBox({210.f, 120.f}),
   myticketsButton(font, L"Vé của tôi", 18, Vector2f(0.f, 0.f)),
   accountButton(font, L"Tài khoản của tôi", 18, Vector2f(0.f, 0.f)),
-  logoutButton(font, L"Đăng xuất", 18, Vector2f(0.f, 0.f))
+  logoutButton(font, L"Đăng xuất", 18, Vector2f(0.f, 0.f)),
+  searchBox(nullptr),
+  searchManager(nullptr),
+  selectedMovieIndex(-1)
 {
     Color accent(20, 118, 172);
 
@@ -29,6 +32,22 @@ HomeScreen::HomeScreen(Font& f)
     dropdownBox.setFillColor(Color(40, 40, 40, 240));
     dropdownBox.setOutlineColor(Color(100, 100, 100));
     dropdownBox.setOutlineThickness(1.f);
+    
+    // Initialize search box (positioned over the search bar image)
+    searchBox = new SearchBox(font, Vector2f(750.f, 55.f), Vector2f(350.f, 40.f));
+}
+
+HomeScreen::~HomeScreen() {
+    delete searchBox;
+    delete searchManager;
+}
+
+void HomeScreen::initializeSearch(const vector<Movie>& movies) {
+    if (!searchManager) {
+        searchManager = new MovieSearchManager();
+    }
+    searchManager->loadMovies(movies);
+    searchBox->setSearchManager(searchManager);
 }
 
 // ✅ Hàm phụ cập nhật vị trí dropdown ngay bên dưới nút "Xin chào"
@@ -46,7 +65,28 @@ void HomeScreen::updateDropdownPosition() {
     logoutButton.setPosition({dropdownPos.x + 15.f, dropdownPos.y + 75.f});
 }
 
-void HomeScreen::update(Vector2f mouse, bool mousePressed, AppState& state) {
+void HomeScreen::update(Vector2f mouse, bool mousePressed, AppState& state, const Event* event) {
+    // Handle search box events and updates
+    if (searchBox) {
+        if (event) {
+            searchBox->handleEvent(*event);
+        }
+        searchBox->update(mouse, mousePressed);
+        
+        // Check if a movie was selected from search
+        int movieIdx;
+        if (searchBox->hasSelectedMovie(movieIdx)) {
+            selectedMovieIndex = movieIdx;
+            state = AppState::MOVIE_DETAILS;
+            return;
+        }
+    }
+    
+    // Don't process other UI if search box is active
+    if (searchBox && searchBox->isInputActive()) {
+        return;
+    }
+    
     // Nếu dropdown đang bật thì cập nhật vị trí & xử lý click
     if (isUserLoggedIn && showDropdown) {
         updateDropdownPosition(); // ✅ đảm bảo luôn ở đúng vị trí
@@ -108,6 +148,11 @@ void HomeScreen::draw(RenderWindow& window) {
 
     for (int i = 0; i < BUTTON_COUNT; i++)
         buttons[i].draw(window);
+    
+    // Draw search box
+    if (searchBox) {
+        searchBox->draw(window);
+    }
 }
 
 void HomeScreen::drawDropdown(RenderWindow& window) {
