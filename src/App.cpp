@@ -42,9 +42,12 @@ void App::run() {
 
 void App::processEvents() {
     mousePressed = false;
+    currentEvent = nullptr;
 
     while (auto optEvent = window.pollEvent()) {
         const Event& event = *optEvent;
+        currentEvent = &event; // Lưu event để dùng trong render()
+        
         if (event.is<Event::Closed>()) window.close();
         if (event.is<Event::MouseButtonPressed>()) mousePressed = true;
 
@@ -57,6 +60,8 @@ void App::processEvents() {
                 break;
 
             case AppState::LOGIN:
+                // Cho phép SearchBox hoạt động ở màn LOGIN
+                home.update(mousePos, mousePressed, state, &event);
                 if (login.update(mousePos, mousePressed, event, currentUser, state)) {
                     home.setLoggedUser(currentUser);
                     state = AppState::HOME;
@@ -64,8 +69,11 @@ void App::processEvents() {
                 break;
             
             case AppState::REGISTER:
+                // Cho phép SearchBox hoạt động ở màn REGISTER
+                home.update(mousePos, mousePressed, state, &event);
                 if (registerScreen.update(mousePos, mousePressed, event))
                     state = AppState::LOGIN;
+                break;
 
             default:
                 break;
@@ -86,18 +94,21 @@ void App::render() {
         case AppState::HOME:
             home.draw(window);
             slider.draw(window);
+            home.drawSearchBox(window); // Vẽ SearchBox SAU slider
             home.drawDropdown(window);
             break;
 
         case AppState::LOGIN:
             home.draw(window);
             slider.draw(window);
+            home.drawSearchBox(window); // Vẽ SearchBox SAU slider
             login.draw(window);
             break;
 
         case AppState::REGISTER:
             home.draw(window);
             slider.draw(window);
+            home.drawSearchBox(window); // Vẽ SearchBox SAU slider
             registerScreen.draw(window);
             break;
 
@@ -106,7 +117,7 @@ void App::render() {
             int searchMovieIdx = home.getSelectedMovieIndex();
             if (searchMovieIdx >= 0) {
                 DetailScreen detail(font, searchMovieIdx, currentUser);
-                detail.update(mousePos, mousePressed, state);
+                detail.update(mousePos, mousePressed, state, currentEvent);
                 detail.draw(window);
                 
                 // Clear the selection when returning to home
@@ -115,7 +126,7 @@ void App::render() {
                 }
             } else {
                 DetailScreen detail(font, slider.getSelectedIndex(), currentUser);
-                detail.update(mousePos, mousePressed, state);
+                detail.update(mousePos, mousePressed, state, currentEvent);
                 detail.draw(window);
             }
             break;

@@ -231,6 +231,10 @@ void DetailScreen::loadMovieData(int movieIndex) {
 
 void DetailScreen::update(Vector2f mouse, bool mousePressed, AppState& state) {
     HomeScreen::update(mouse, mousePressed, state);
+}
+
+void DetailScreen::update(Vector2f mouse, bool mousePressed, AppState& state, const Event* event) {
+    HomeScreen::update(mouse, mousePressed, state, event);
 } 
 
 void DetailScreen::draw(RenderWindow& window) {

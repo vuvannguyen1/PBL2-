@@ -33,6 +33,7 @@ class HomeScreen {
         void initializeSearch(const vector<Movie>& movies);
         void update(Vector2f, bool, AppState&, const Event* event = nullptr);
         void draw(RenderWindow&);
+        void drawSearchBox(RenderWindow&);
         void drawDropdown(RenderWindow& window);
         void setLoggedUser(const string& username);
         void updateDropdownPosition();

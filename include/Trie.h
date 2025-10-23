@@ -1,13 +1,15 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <map>
 using namespace std;
 
 class TrieNode  {
     public: 
         bool isEnd;
-        TrieNode* children[26];
+        map<unsigned char, TrieNode*> children; // Dùng map thay vì array để hỗ trợ UTF-8
         TrieNode();
+        ~TrieNode();
 };
 
 class Trie {
@@ -16,6 +18,7 @@ class Trie {
         void dfs(TrieNode*, string, vector<string>&, int);    
     public: 
         Trie();
+        ~Trie();
         void insert(const string&);
         bool search(const string&);
         bool startsWith(const string&);

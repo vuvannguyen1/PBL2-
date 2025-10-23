@@ -2,34 +2,31 @@
 #include <iostream>
 
 SearchBox::SearchBox(Font& f, Vector2f position, Vector2f size) 
-    : font(f), isActive(false), showSuggestions(false), 
+    : font(f), inputText(f), placeholderText(f), isActive(false), showSuggestions(false), 
       selectedSuggestion(-1), searchManager(nullptr), showCursor(false) {
     
-    // Input box styling (matching dark theme)
+    // Input box styling - TRANSPARENT (chỉ thấy ảnh search_bar.png)
     inputBox.setSize(size);
     inputBox.setPosition(position);
-    inputBox.setFillColor(Color(40, 40, 40, 220));
-    inputBox.setOutlineColor(Color(100, 100, 100));
-    inputBox.setOutlineThickness(2.f);
+    inputBox.setFillColor(Color::Transparent); // Trong suốt hoàn toàn
+    inputBox.setOutlineThickness(0.f); // Không có viền
     
-    // Input text
-    inputText.setFont(font);
+    // Input text - căn chỉnh vào giữa search bar với font size lớn hơn
     inputText.setCharacterSize(18);
-    inputText.setFillColor(Color::White);
-    inputText.setPosition(position.x + 15.f, position.y + 10.f);
+    inputText.setFillColor(Color::Black); // Chữ màu đen để thấy trên nền trắng
+    inputText.setPosition(Vector2f(position.x + 45.f, position.y + 9.f)); // Dịch vào trong, căn giữa dọc
     
     // Placeholder text
-    placeholderText.setFont(font);
     placeholderText.setCharacterSize(18);
-    placeholderText.setFillColor(Color(150, 150, 150));
-    placeholderText.setString("Search movies...");
-    placeholderText.setPosition(position.x + 15.f, position.y + 10.f);
+    placeholderText.setFillColor(Color(120, 120, 120)); // Màu xám đậm hơn
+    placeholderText.setString("Search...");
+    placeholderText.setPosition(Vector2f(position.x + 45.f, position.y + 9.f));
     
-    // Suggestion box
-    suggestionBox.setFillColor(Color(30, 30, 30, 240));
-    suggestionBox.setOutlineColor(Color(100, 100, 100));
+    // Suggestion box - HIỂN THỊ PHÍA TRÊN thay vì phía dưới
+    suggestionBox.setFillColor(Color(255, 255, 255, 250)); // Nền trắng
+    suggestionBox.setOutlineColor(Color(200, 200, 200));
     suggestionBox.setOutlineThickness(1.f);
-    suggestionBox.setPosition(position.x, position.y + size.y + 2.f);
+    // Position sẽ được set động trong update() khi có suggestions
 }
 
 void SearchBox::setSearchManager(MovieSearchManager* manager) {
@@ -41,49 +38,31 @@ void SearchBox::handleEvent(const Event& event) {
     
     if (event.is<Event::TextEntered>()) {
         const auto& textEvent = *event.getIf<Event::TextEntered>();
-        Uint32 unicode = textEvent.unicode;
+        uint32_t unicode = textEvent.unicode;
         
         // Handle backspace
         if (unicode == 8) {
             if (!inputString.empty()) {
-                // Handle UTF-8 backspace properly
-                size_t len = inputString.length();
-                if (len > 0) {
-                    // Find the start of the last character
-                    size_t pos = len - 1;
-                    while (pos > 0 && (inputString[pos] & 0xC0) == 0x80) {
-                        pos--;
-                    }
-                    inputString.erase(pos);
+                // Use SFML String to handle UTF-8 properly
+                String temp = String::fromUtf8(inputString.begin(), inputString.end());
+                if (!temp.isEmpty()) {
+                    temp.erase(temp.getSize() - 1);
+                    auto utf8 = temp.toUtf8();
+                    inputString = std::string(reinterpret_cast<const char*>(utf8.c_str()));
                 }
             }
         }
-        // Handle printable characters
-        else if (unicode >= 32 && unicode < 127) {
-            inputString += static_cast<char>(unicode);
-        }
-        // Handle UTF-8 characters (Vietnamese, etc.)
-        else if (unicode >= 128) {
-            // Convert unicode to UTF-8
-            if (unicode < 0x80) {
-                inputString += static_cast<char>(unicode);
-            } else if (unicode < 0x800) {
-                inputString += static_cast<char>((unicode >> 6) | 0xC0);
-                inputString += static_cast<char>((unicode & 0x3F) | 0x80);
-            } else if (unicode < 0x10000) {
-                inputString += static_cast<char>((unicode >> 12) | 0xE0);
-                inputString += static_cast<char>(((unicode >> 6) & 0x3F) | 0x80);
-                inputString += static_cast<char>((unicode & 0x3F) | 0x80);
-            } else {
-                inputString += static_cast<char>((unicode >> 18) | 0xF0);
-                inputString += static_cast<char>(((unicode >> 12) & 0x3F) | 0x80);
-                inputString += static_cast<char>(((unicode >> 6) & 0x3F) | 0x80);
-                inputString += static_cast<char>((unicode & 0x3F) | 0x80);
-            }
+        // Handle printable characters (including Vietnamese)
+        else if (unicode >= 32 && unicode != 127) {
+            // Convert unicode to UTF-8 string
+            String temp;
+            temp += static_cast<char32_t>(unicode);
+            auto utf8 = temp.toUtf8();
+            inputString += std::string(reinterpret_cast<const char*>(utf8.c_str()));
         }
         
         // Update text display
-        inputText.setString(inputString);
+        inputText.setString(String::fromUtf8(inputString.begin(), inputString.end()));
         
         // Update suggestions
         if (searchManager && !inputString.empty()) {
@@ -146,10 +125,15 @@ void SearchBox::update(Vector2f mousePos, bool mousePressed) {
         }
     }
     
-    // Update suggestion box size based on number of suggestions
+    // Update suggestion box size and position - HIỂN THỊ PHÍA DƯỚI
     if (showSuggestions && !suggestions.empty()) {
         float boxHeight = suggestions.size() * 40.f;
         suggestionBox.setSize(Vector2f(inputBox.getSize().x, boxHeight));
+        
+        // Đặt suggestion box PHÍA DƯỚI search bar
+        Vector2f inputPos = inputBox.getPosition();
+        Vector2f inputSize = inputBox.getSize();
+        suggestionBox.setPosition(Vector2f(inputPos.x, inputPos.y + inputSize.y + 2.f));
     }
 }
 
@@ -166,9 +150,9 @@ void SearchBox::draw(RenderWindow& window) {
         // Draw cursor if active
         if (isActive && showCursor) {
             FloatRect textBounds = inputText.getGlobalBounds();
-            RectangleShape cursor(Vector2f(2.f, 20.f));
-            cursor.setPosition(textBounds.position.x + textBounds.size.x + 2.f, inputText.getPosition().y + 5.f);
-            cursor.setFillColor(Color::White);
+            RectangleShape cursor(Vector2f(2.f, 18.f));
+            cursor.setPosition(Vector2f(textBounds.position.x + textBounds.size.x + 3.f, inputText.getPosition().y + 2.f));
+            cursor.setFillColor(Color::Black); // Cursor màu đen
             window.draw(cursor);
         }
     }
@@ -179,23 +163,23 @@ void SearchBox::draw(RenderWindow& window) {
         
         suggestionTexts.clear();
         for (size_t i = 0; i < suggestions.size(); i++) {
-            Text suggestionText;
-            suggestionText.setFont(font);
+            Text suggestionText(font);
             suggestionText.setCharacterSize(16);
-            suggestionText.setString(suggestions[i].title);
+            // Convert string to SFML String with UTF-8 support
+            suggestionText.setString(String::fromUtf8(suggestions[i].title.begin(), suggestions[i].title.end()));
             
             Vector2f pos = suggestionBox.getPosition();
-            suggestionText.setPosition(pos.x + 15.f, pos.y + 10.f + i * 40.f);
+            suggestionText.setPosition(Vector2f(pos.x + 15.f, pos.y + 10.f + i * 40.f));
             
             // Highlight selected suggestion
             if ((int)i == selectedSuggestion) {
                 RectangleShape highlight(Vector2f(suggestionBox.getSize().x, 40.f));
-                highlight.setPosition(pos.x, pos.y + i * 40.f);
-                highlight.setFillColor(Color(60, 60, 60));
+                highlight.setPosition(Vector2f(pos.x, pos.y + i * 40.f));
+                highlight.setFillColor(Color(230, 230, 230)); // Highlight màu xám sáng
                 window.draw(highlight);
-                suggestionText.setFillColor(Color::White);
+                suggestionText.setFillColor(Color::Black); // Chữ đen khi highlight
             } else {
-                suggestionText.setFillColor(Color(200, 200, 200));
+                suggestionText.setFillColor(Color(50, 50, 50)); // Chữ đen nhạt
             }
             
             window.draw(suggestionText);

@@ -151,7 +151,8 @@ bool RegisterScreen::update(Vector2f mouse, bool mousePressed, const Event& even
     }
 
     if (event.is<Event::KeyPressed>()) {
-        auto code = event.getIf<Event::KeyPressed>()->code;
+        auto keyEvent = event.getIf<Event::KeyPressed>();
+        auto code = keyEvent->code;
 
         if (code == Keyboard::Key::Escape) return true;
         if (code == Keyboard::Key::Tab) {

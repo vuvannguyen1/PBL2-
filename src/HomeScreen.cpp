@@ -34,7 +34,14 @@ HomeScreen::HomeScreen(Font& f)
     dropdownBox.setOutlineThickness(1.f);
     
     // Initialize search box (positioned over the search bar image)
-    searchBox = new SearchBox(font, Vector2f(750.f, 55.f), Vector2f(350.f, 40.f));
+    // search_bar.png is at position 720,50 with scale 0.2
+    // Calculate the actual size of the scaled image and position the search box on it
+    FloatRect searchBarBounds = sprite2.getGlobalBounds();
+    float searchBoxX = searchBarBounds.position.x + 10.f; // Small padding from left edge
+    float searchBoxY = searchBarBounds.position.y + (searchBarBounds.size.y - 40.f) / 2.f; // Center vertically
+    float searchBoxWidth = searchBarBounds.size.x - 20.f; // Full width minus padding
+    
+    searchBox = new SearchBox(font, Vector2f(searchBoxX, searchBoxY), Vector2f(searchBoxWidth, 40.f));
 }
 
 HomeScreen::~HomeScreen() {
@@ -149,7 +156,11 @@ void HomeScreen::draw(RenderWindow& window) {
     for (int i = 0; i < BUTTON_COUNT; i++)
         buttons[i].draw(window);
     
-    // Draw search box
+    // Note: SearchBox sẽ được vẽ sau slider trong App::render() để không bị che
+}
+
+void HomeScreen::drawSearchBox(RenderWindow& window) {
+    // Vẽ search box SAU CÙNG để không bị che bởi poster
     if (searchBox) {
         searchBox->draw(window);
     }

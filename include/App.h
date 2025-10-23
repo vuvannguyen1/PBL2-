@@ -27,6 +27,7 @@ class App {
         bool mousePressed = false;
         Vector2f mousePos;
         string currentUser;
+        const Event* currentEvent = nullptr;
 
         void processEvents();
         void update(float);

@@ -26,6 +26,7 @@ public:
     DetailScreen(Font&, int movieIndex, const string& username);
 
     void update(Vector2f, bool, AppState&);
+    void update(Vector2f, bool, AppState&, const Event* event);
     void draw(RenderWindow&);
     void loadMovieData(int movieIndex);
 };
