@@ -1,106 +1,211 @@
 #include "BookingScreen.h"
-using namespace std;
 
-BookingScreen::BookingScreen(const Font& font)
-: title(font, "Select Seats", 22),
-  screenLbl(font, "SCREEN", 16),
-  legend(font, "Legend: Green = Available | Gray = Booked | Yellow = Selected", 16),
-  searchHint(font, "Search movie, time...", 18),
-  movieHdr(font, "Now Showing", 22),
-  logo(font, L"CINExínè", 30)
+BookingScreen::BookingScreen(Font& font) : 
+    HomeScreen(font),
+    buttons_font("../assets/BEBAS_NEUE_ZSMALL.ttf"), 
+    current_step(BookingStep::SELECT_DATE),
+    suat_chieu(buttons_font, L"SUẤT CHIẾU", 36),
+    ghe_ngoi(buttons_font, L"GHẾ NGỒI", 36),
+    food(buttons_font, L"ĐỒ ĂN", 36),
+    thanh_toan(buttons_font, L"THANH TOÁN", 36),
+    xac_nhan(buttons_font, L"XÁC NHẬN", 36),
+    tex("../assets/trangchumau1.jpg"),
+    sprite(tex)
 {
-    // Panel box
-    box.setSize({600.f, 630.f});
-    box.setPosition({380.f, 90.f});
-    box.setFillColor(Color(24, 24, 28));
-    box.setOutlineThickness(2);
-    box.setOutlineColor(Color(60, 60, 70));
+    // ✅ Setup step buttons (navigation bar) - Centered at top
+    float startX = 278.f;  // Center: (1728 - (5*180 + 4*10)) / 2
+    float startY = 155.f;
+    float buttonWidth = 160.f;
+    float buttonHeight = 50.f;
+    float spacing = 100;
 
-    // Title
-    title.setFillColor(Color(220, 220, 230));
-    title.setPosition(box.getPosition() + Vector2f{16.f, 12.f});
-
-    logo.setFillColor(Color(20, 118, 172));
-    logo.setPosition({30, 15});
-
-    // Seats
-    Vector2f seatOrigin = box.getPosition() + Vector2f{32.f, 80.f};
-    Vector2f seatSize   = {38.f, 32.f};
-
-    for (int r = 0; r < ROWS; r++) {
-        for (int c = 0; c < COLS; c++) {
-            seats[r][c].rect.setSize(seatSize);
-            seats[r][c].rect.setPosition(
-                {seatOrigin.x + c * (seatSize.x + 8.f), seatOrigin.y + r * (seatSize.y + 10.f)}
-            );
-            seats[r][c].booked = (r == 2 && (c == 5 || c == 6)) || (r == 3 && c % 4 == 0) || (r == 6 && c > 8);
-            seats[r][c].selected = false;
-            seats[r][c].rect.setFillColor(seats[r][c].booked ? Color(100,100,110) : Color(40,160,80));
-            seats[r][c].rect.setOutlineThickness(2);
-            seats[r][c].rect.setOutlineColor(Color(70,70,80));
+    for (int i = 0; i < 5; i++) {
+        buttons_box[i].setSize({buttonWidth, buttonHeight});
+        buttons_box[i].setPosition({startX + i * (buttonWidth + spacing), startY});
+        
+        // Step 1 is active by default
+        if (i == 0) {
+            buttons_box[i].setFillColor(Color(52, 62, 209)); // Active color
+        } else {
+            buttons_box[i].setFillColor(Color(80, 80, 90)); // Inactive color
         }
+        
+        buttons_box[i].setOutlineThickness(2.f);
+        buttons_box[i].setOutlineColor(Color(100, 100, 110));
     }
 
-    // Screen
-    screen.setSize({box.getSize().x - 52.f, 4.f});
-    screen.setPosition(box.getPosition() + Vector2f{30.f, 64.f});
-    screen.setFillColor(Color(0,170,255));
+    // ✅ Position text labels on buttons (centered in each button)
+    suat_chieu.setPosition({buttons_box[0].getPosition().x + 18, 
+                            buttons_box[0].getPosition().y + 3});
+    suat_chieu.setFillColor(Color::White);
 
-    screenLbl.setFillColor(Color(180,220,255));
-    screenLbl.setPosition(screen.getPosition() + Vector2f{screen.getSize().x/2.f - 36.f, -24.f});
+    ghe_ngoi.setPosition({buttons_box[1].getPosition().x + 30, 
+                         buttons_box[1].getPosition().y + 3});
+    ghe_ngoi.setFillColor(Color::White);
 
-    // Legend
-    legend.setFillColor(Color(200,200,210));
-    legend.setPosition(box.getPosition() + Vector2f{30.f, box.getSize().y - 46.f});
+    food.setPosition({buttons_box[2].getPosition().x + 46, 
+                     buttons_box[2].getPosition().y + 3});
+    food.setFillColor(Color::White);
 
-    // ----- Search Bar -----
-    searchBar.setSize({400.f, 40.f});
-    searchBar.setPosition({260.f, 15.f});
-    searchBar.setFillColor(sf::Color(32,32,38));
-    searchBar.setOutlineThickness(2);
-    searchBar.setOutlineColor(sf::Color(80,80,90));
+    thanh_toan.setPosition({buttons_box[3].getPosition().x + 10, 
+                           buttons_box[3].getPosition().y + 3});
+    thanh_toan.setFillColor(Color::White);
 
-    searchHint.setFillColor(sf::Color(160,160,170));
-    searchHint.setPosition(searchBar.getPosition() + sf::Vector2f{12.f, 8.f});
+    xac_nhan.setPosition({buttons_box[4].getPosition().x + 26, 
+                         buttons_box[4].getPosition().y + 3});
+    xac_nhan.setFillColor(Color::White);
 
-    moviePanel.setSize({340.f, 720.f - 90.f});
-    moviePanel.setPosition({20.f, 90.f});
-    moviePanel.setFillColor(sf::Color(24,24,28));
-    moviePanel.setOutlineThickness(2);
-    moviePanel.setOutlineColor(sf::Color(60,60,70));
-
-    movieHdr.setFillColor(sf::Color(220,220,230));
-    movieHdr.setPosition(moviePanel.getPosition() + sf::Vector2f{16.f, 12.f});
-}
-
-void BookingScreen::update(Vector2f mouse, bool mousePressed, AppState& state) {
-    if (mousePressed) {
-        for (int r = 0; r < ROWS; r++) {
-            for (int c = 0; c < COLS; c++) {
-                if (seats[r][c].rect.getGlobalBounds().contains(mouse) && !seats[r][c].booked) {
-                    seats[r][c].selected = !seats[r][c].selected;
-                    seats[r][c].rect.setFillColor(seats[r][c].selected ? Color(230,200,60) : Color(40,160,80));
-                }
-            }
-        }
-    }
+    // ✅ Setup content container (bên phải poster)
+    // Poster sẽ ở vị trí: x=168, y=126 với scale 0.36
+    // Poster size gốc ~1000x1500, scaled = ~360x540
+    content_area.setSize({982.f, 600.f});  // Container bên cạnh poster
+    content_area.setPosition({628.f, 235.f});  // Bắt đầu sau poster (168 + 360 + margin)
+    content_area.setFillColor(Color(24, 24, 28));
+    content_area.setOutlineThickness(2.f);
+    content_area.setOutlineColor(Color(60, 60, 70));
 }
 
 void BookingScreen::draw(RenderWindow& window) {
-    window.draw(box);
-    window.draw(title);
-    window.draw(screen);
-    window.draw(screenLbl);
-    window.draw(legend);
-    window.draw(searchBar);
-    window.draw(searchHint);
-    window.draw(movieHdr);
-    window.draw(moviePanel);
-    window.draw(logo);
+    HomeScreen::draw(window);
 
-    for (int r = 0; r < ROWS; r++) {
-        for (int c = 0; c < COLS; c++) {
-            window.draw(seats[r][c].rect);
+    // ✅ Draw poster first (from DetailScreen) - giữ nguyên vị trí
+    window.draw(sprite);
+
+    // ✅ Draw content area background (container bên cạnh)
+    window.draw(content_area);
+
+    // ✅ Draw content based on current step
+    drawStepContent(window);
+
+    // ✅ Draw step buttons (navigation bar)
+    for (int i = 0; i < 5; i++) 
+        window.draw(buttons_box[i]);
+
+    // ✅ Draw button labels
+    window.draw(suat_chieu);
+    window.draw(ghe_ngoi);
+    window.draw(food);
+    window.draw(thanh_toan);
+    window.draw(xac_nhan);
+}
+
+void BookingScreen::loadFromDetail(const DetailScreen& detail) {
+    tex = detail.getPosterTexture(); // copy texture
+    sprite.setTexture(tex, true); // ✅ true để reset texture rect, giữ chi tiết
+    sprite.setScale({0.3f, 0.3f}); // ✅ Giữ scale như ở DetailScreen
+    sprite.setPosition({128.f, 235.f}); // ✅ Giữ nguyên vị trí như DetailScreen (trừ margin top cho buttons)
+}
+
+void BookingScreen::handleEvent(const RenderWindow& window, const Vector2f& mousePos, bool mousePressed) {
+    if (!mousePressed) return;
+
+    // ✅ Check which step button was clicked
+    for (int i = 0; i < 5; i++) {
+        if (buttons_box[i].getGlobalBounds().contains(mousePos)) {
+            // Update current step
+            current_step = static_cast<BookingStep>(i);
+            
+            // Update button colors
+            for (int j = 0; j < 5; j++) {
+                if (j == i) {
+                    buttons_box[j].setFillColor(Color(52, 62, 209)); // Active
+                } else {
+                    buttons_box[j].setFillColor(Color(80, 80, 90)); // Inactive
+                }
+            }
+            break;
+        }
+    }
+}
+
+void BookingScreen::update(Vector2f mousePos, bool mousePressed, AppState& state) {
+    // ✅ Gọi HomeScreen::update để các nút CineXine, Đặt vé, Đăng nhập hoạt động
+    HomeScreen::update(mousePos, mousePressed, state);
+    
+    // TODO: Update content based on current_step
+}
+
+void BookingScreen::drawStepContent(RenderWindow& window) {
+    Font contentFont("../assets/quicksand_medium.ttf");
+    
+    // Position inside content area
+    float contentX = content_area.getPosition().x + 30.f;
+    float contentY = content_area.getPosition().y + 30.f;
+    
+    switch (current_step) {
+        case BookingStep::SELECT_DATE: {
+            Text stepTitle(buttons_font, L"CHỌN SUẤT CHIẾU & NGÀY", 32);
+            stepTitle.setPosition({contentX, contentY});
+            stepTitle.setFillColor(Color::White);
+            window.draw(stepTitle);
+            
+            Text stepDesc(contentFont, L"Vui lòng chọn ngày và giờ chiếu phù hợp", 20);
+            stepDesc.setPosition({contentX, contentY + 50});
+            stepDesc.setFillColor(Color(200, 200, 200));
+            window.draw(stepDesc);
+            
+            // TODO: Add date/time selection UI
+            break;
+        }
+        
+        case BookingStep::SELECT_SEAT: {
+            Text stepTitle(buttons_font, L"CHỌN GHẾ NGỒI", 32);
+            stepTitle.setPosition({contentX, contentY});
+            stepTitle.setFillColor(Color::White);
+            window.draw(stepTitle);
+            
+            Text stepDesc(contentFont, L"Chọn ghế bạn muốn đặt", 20);
+            stepDesc.setPosition({contentX, contentY + 50});
+            stepDesc.setFillColor(Color(200, 200, 200));
+            window.draw(stepDesc);
+            
+            // TODO: Add seat selection grid
+            break;
+        }
+        
+        case BookingStep::SELECT_SNACK: {
+            Text stepTitle(buttons_font, L"CHỌN ĐỒ ĂN & NƯỚC UỐNG", 32);
+            stepTitle.setPosition({contentX, contentY});
+            stepTitle.setFillColor(Color::White);
+            window.draw(stepTitle);
+            
+            Text stepDesc(contentFont, L"Thêm bắp rang bơ, nước ngọt...", 20);
+            stepDesc.setPosition({contentX, contentY + 50});
+            stepDesc.setFillColor(Color(200, 200, 200));
+            window.draw(stepDesc);
+            
+            // TODO: Add food selection UI
+            break;
+        }
+        
+        case BookingStep::PAYMENT: {
+            Text stepTitle(buttons_font, L"THANH TOÁN", 32);
+            stepTitle.setPosition({contentX, contentY});
+            stepTitle.setFillColor(Color::White);
+            window.draw(stepTitle);
+            
+            Text stepDesc(contentFont, L"Chọn phương thức thanh toán", 20);
+            stepDesc.setPosition({contentX, contentY + 50});
+            stepDesc.setFillColor(Color(200, 200, 200));
+            window.draw(stepDesc);
+            
+            // TODO: Add payment methods
+            break;
+        }
+        
+        case BookingStep::CONFIRM: {
+            Text stepTitle(buttons_font, L"XÁC NHẬN ĐẶT VÉ", 32);
+            stepTitle.setPosition({contentX, contentY});
+            stepTitle.setFillColor(Color::White);
+            window.draw(stepTitle);
+            
+            Text stepDesc(contentFont, L"Kiểm tra lại thông tin đặt vé", 20);
+            stepDesc.setPosition({contentX, contentY + 50});
+            stepDesc.setFillColor(Color(200, 200, 200));
+            window.draw(stepDesc);
+            
+            // TODO: Add booking summary
+            break;
         }
     }
 }

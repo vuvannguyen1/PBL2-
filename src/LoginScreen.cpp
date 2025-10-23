@@ -53,6 +53,10 @@ LoginScreen::LoginScreen(const Font& font, AuthService& authRef)
     passDisplay.setFillColor(Color::Black);
 
     msg.setFillColor(Color(200,60,60)); // mặc định đỏ
+
+    // caret setup: thin vertical bar similar to a native text cursor
+    caret.setSize({2.f, 20.f});
+    caret.setFillColor(Color::Black);
 }
 
 std::wstring LoginScreen::bullets(std::size_t n) { return std::wstring(n, L'\u2022'); }
@@ -77,6 +81,11 @@ bool LoginScreen::update(Vector2f mouse, bool mousePressed, const Event& event, 
             if (auth.verify(u, p)) {
                 msg.setFillColor(Color(60, 160, 90));
                 msg.setString(L"Đăng nhập thành công.");
+
+                // ensure button flow matches Enter key flow
+                loginSuccess = true;
+                loggedUser = u;
+                loginClock.restart();
             } else {
                 msg.setFillColor(Color(200, 60, 60));
                 msg.setString(L"Sai tài khoản hoặc mật khẩu.");
@@ -175,39 +184,30 @@ void LoginScreen::draw(RenderWindow& window) {
     window.draw(closeX);
     window.draw(msg);
 
+    // Prepare displays (set strings regardless of drawing placeholders)
+    emailDisplay.setString(emailInput);
+    emailDisplay.setPosition({emailBox.getPosition().x + 12.f, emailBox.getPosition().y + 10.f});
+
+    passDisplay.setString(bullets(passInput.size()));
+    passDisplay.setPosition({passBox.getPosition().x + 12.f, passBox.getPosition().y + 10.f});
+
     // placeholder / text thật
-    if (emailInput.empty()) {
-        window.draw(emailPH);
-    } else {
-        emailDisplay.setString(emailInput);
-        emailDisplay.setPosition({emailBox.getPosition().x + 12.f, emailBox.getPosition().y + 10.f});
-        window.draw(emailDisplay);
-    }
+    if (emailInput.empty()) window.draw(emailPH); else window.draw(emailDisplay);
+    if (passInput.empty()) window.draw(passPH); else window.draw(passDisplay);
 
-    if (passInput.empty()) {
-        window.draw(passPH);
-    } else {
-        passDisplay.setString(bullets(passInput.size()));
-        passDisplay.setPosition({passBox.getPosition().x + 12.f, passBox.getPosition().y + 10.f});
-        window.draw(passDisplay);
-    }
-    
+    // Draw a thin rectangle caret instead of a '|' text glyph
     if (caretVisible) {
-        sf::Text caret(emailDisplay.getFont(), "|", 18);
-        caret.setFillColor(sf::Color::Black);
-
         if (emailActive) {
-            // Lấy vị trí cuối text email
-            float x = emailBox.getPosition().x + 12.f +
-                    emailDisplay.getLocalBounds().size.x;
-            float y = emailBox.getPosition().y + 10.f;
-            caret.setPosition({x, y});
+            Vector2f textPos = emailDisplay.getPosition();
+            FloatRect bounds = emailDisplay.getLocalBounds();
+            caret.setSize({2.f, static_cast<float>(emailDisplay.getCharacterSize()) + 4.f});
+            caret.setPosition({textPos.x + bounds.size.x + 2.f, textPos.y - 2.f});
             window.draw(caret);
         } else if (passActive) {
-            float x = passBox.getPosition().x + 12.f +
-                    passDisplay.getLocalBounds().size.x;
-            float y = passBox.getPosition().y + 10.f;
-            caret.setPosition({x, y});
+            Vector2f textPos = passDisplay.getPosition();
+            FloatRect bounds = passDisplay.getLocalBounds();
+            caret.setSize({2.f, static_cast<float>(passDisplay.getCharacterSize()) + 4.f});
+            caret.setPosition({textPos.x + bounds.size.x + 2.f, textPos.y - 2.f});
             window.draw(caret);
         }
     }

@@ -1,6 +1,7 @@
 #include "App.h"
 #include "DetailScreen.h"
 #include "Movie.h"
+#include "BookingScreen.h"
 #include <fstream>
 #include <sstream>
 
@@ -11,7 +12,8 @@ App::App() :
     slider(font, window),
     auth("../data/users.csv"),
     login(font, auth),
-    registerScreen(font, auth)
+    registerScreen(font, auth),
+    booking(font)
     { 
         window.setFramerateLimit(60);
         Image icon("../assets/icon.png");
@@ -22,7 +24,6 @@ App::App() :
 
         vector<string> paths = getMoviePosterPaths("../data/movies.csv");        
         slider.loadPosters(paths, font);
-
 }
 
 void App::run() {
@@ -79,28 +80,52 @@ void App::render() {
     window.clear(Color::Black);
 
     switch (state) {
-        case AppState::HOME:
+        case AppState::HOME: {
             home.draw(window);
             slider.draw(window);
             home.drawDropdown(window);
             break;
+        }
 
-        case AppState::LOGIN:
+        case AppState::LOGIN: {
             home.draw(window);
             slider.draw(window);
             login.draw(window);
             break;
+        }
 
-        case AppState::REGISTER:
+        case AppState::REGISTER: {
             home.draw(window);
             slider.draw(window);
             registerScreen.draw(window);
             break;
+        }
 
         case AppState::MOVIE_DETAILS: {
-            DetailScreen detail(font, slider.getSelectedIndex(), currentUser);
-            detail.update(mousePos, mousePressed, state);
-            detail.draw(window);
+            static DetailScreen* detailScreen = nullptr;
+            int currentIndex = slider.getSelectedIndex();
+            
+            // Chỉ tạo mới khi chuyển state hoặc đổi phim
+            if (previousState != AppState::MOVIE_DETAILS || previousMovieIndex != currentIndex) {
+                delete detailScreen;
+                detailScreen = new DetailScreen(font, currentIndex, currentUser);
+                previousMovieIndex = currentIndex;
+            }
+            
+            detailScreen->update(mousePos, mousePressed, state);
+            detailScreen->draw(window);
+
+            if (state == AppState::BOOKING && detailScreen != nullptr) {
+                booking.loadFromDetail(*detailScreen);
+                booking.setLoggedUser(currentUser);
+            }
+            break;
+        }
+
+        case AppState::BOOKING: {
+            booking.handleEvent(window, mousePos, mousePressed);
+            booking.update(mousePos, mousePressed, state);
+            booking.draw(window);
             break;
         }
 
@@ -108,5 +133,6 @@ void App::render() {
             break;
     }
 
+    previousState = state;
     window.display();
 }

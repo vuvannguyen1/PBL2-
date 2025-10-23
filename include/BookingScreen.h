@@ -1,36 +1,34 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "HomeScreen.h"
-using namespace sf;
+#include "DetailScreen.h"
 
-struct MovieCard {
-    sf::RectangleShape box;
-    sf::Text title;
-    bool selected = false;
-
-    MovieCard(const Font& font, const String& name) 
-        : title(font, name, 20) {
-        title.setFillColor(Color(230, 230, 240));
-    }
+enum class BookingStep {
+    SELECT_DATE,
+    SELECT_SEAT,
+    SELECT_SNACK,
+    PAYMENT,
+    CONFIRM
 };
 
-struct Seat {
-    RectangleShape rect;
-    bool booked;
-    bool selected;
-};
-
-class BookingScreen {
+class BookingScreen : public HomeScreen {
 private:
-    static const int ROWS = 8;
-    static const int COLS = 12;
+    Font buttons_font;
+    BookingStep current_step;
+    Text suat_chieu, ghe_ngoi, food, thanh_toan, xac_nhan;
+    RectangleShape buttons_box[5];
+    Texture tex;
+    Sprite sprite;
 
-    Seat seats[ROWS][COLS]; 
-    RectangleShape box, screen, searchBar, moviePanel;
-    Text title, screenLbl, legend, searchHint, movieHdr, logo;
+    RectangleShape content_area;
 
+    // Helper function to draw content based on step
+    void drawStepContent(RenderWindow&);
 public:
-    BookingScreen(const Font&);
-    void update(Vector2f, bool, AppState&);
+    BookingScreen(Font&);
+    void handleEvent(const RenderWindow&, const Vector2f&, bool);
+    void update(Vector2f, bool, AppState&); // ✅ Thêm tham số giống HomeScreen
     void draw(RenderWindow&);
+
+    void loadFromDetail(const DetailScreen&);
 };
