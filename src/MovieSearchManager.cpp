@@ -194,10 +194,11 @@ vector<SearchResult> MovieSearchManager::searchMovies(const string& query, int l
     string normalizedQuery = normalizeString(query);
     
     // Try prefix search with Trie first
-    vector<string> suggestions = trie.getSuggestions(normalizedQuery, limit * 3);
+    StringArray suggestions = trie.getSuggestions(normalizedQuery, limit * 3);
     
     // Convert suggestions to SearchResult with movie indices
-    for (const string& suggestion : suggestions) {
+    for (int i = 0; i < suggestions.size; i++) {
+        const char* suggestion = suggestions.get(i);
         if (titleToIndexMap.find(suggestion) != titleToIndexMap.end()) {
             const vector<int>& indices = titleToIndexMap[suggestion];
             for (int idx : indices) {

@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <locale>
 #include <codecvt>
+#include <cstring>
 
 // Map Vietnamese characters to lowercase without diacritics
 string normalizeString(const string& str) {
@@ -164,14 +165,102 @@ string normalizeString(const string& str) {
     return result;
 }
 
-TrieNode::TrieNode() : isEnd(false) {}
+// ===== ChildNode Implementation =====
+ChildNode::ChildNode(unsigned char k, TrieNode* c) 
+    : key(k), child(c), next(nullptr) {}
+
+// ===== TrieNode Implementation =====
+TrieNode::TrieNode() : isEnd(false), childrenHead(nullptr) {}
 
 TrieNode::~TrieNode() {
-    for (auto& pair : children) {
-        delete pair.second;
+    ChildNode* current = childrenHead;
+    while (current != nullptr) {
+        ChildNode* temp = current;
+        current = current->next;
+        delete temp->child;  // Recursively delete
+        delete temp;
     }
 }
 
+TrieNode* TrieNode::findChild(unsigned char key) {
+    ChildNode* current = childrenHead;
+    while (current != nullptr) {
+        if (current->key == key) {
+            return current->child;
+        }
+        current = current->next;
+    }
+    return nullptr;
+}
+
+TrieNode* TrieNode::addChild(unsigned char key) {
+    // Check if already exists
+    TrieNode* existing = findChild(key);
+    if (existing != nullptr) {
+        return existing;
+    }
+    
+    // Create new child
+    TrieNode* newChild = new TrieNode();
+    ChildNode* newNode = new ChildNode(key, newChild);
+    
+    // Add to front of list (O(1))
+    newNode->next = childrenHead;
+    childrenHead = newNode;
+    
+    return newChild;
+}
+
+// ===== StringArray Implementation =====
+StringArray::StringArray() : data(nullptr), size(0), capacity(0) {}
+
+StringArray::~StringArray() {
+    clear();
+}
+
+void StringArray::add(const string& str) {
+    add(str.c_str());
+}
+
+void StringArray::add(const char* str) {
+    if (size >= capacity) {
+        int newCapacity = (capacity == 0) ? 10 : capacity * 2;
+        char** newData = new char*[newCapacity];
+        
+        for (int i = 0; i < size; i++) {
+            newData[i] = data[i];
+        }
+        
+        delete[] data;
+        data = newData;
+        capacity = newCapacity;
+    }
+    
+    // Copy string
+    int len = strlen(str);
+    data[size] = new char[len + 1];
+    strcpy(data[size], str);
+    size++;
+}
+
+const char* StringArray::get(int index) const {
+    if (index >= 0 && index < size) {
+        return data[index];
+    }
+    return nullptr;
+}
+
+void StringArray::clear() {
+    for (int i = 0; i < size; i++) {
+        delete[] data[i];
+    }
+    delete[] data;
+    data = nullptr;
+    size = 0;
+    capacity = 0;
+}
+
+// ===== Trie Implementation =====
 Trie::Trie() {
     root = new TrieNode();
 }
@@ -186,14 +275,9 @@ void Trie::insert(const string& word) {
     string normalized = normalizeString(word);
     TrieNode* current = root;
     
-    // Insert từng byte (hỗ trợ UTF-8)
     for (size_t i = 0; i < normalized.length(); i++) {
         unsigned char c = (unsigned char)normalized[i];
-        
-        if (current->children.find(c) == current->children.end()) {
-            current->children[c] = new TrieNode();
-        }
-        current = current->children[c];
+        current = current->addChild(c);
     }
     current->isEnd = true;
 }
@@ -206,13 +290,13 @@ bool Trie::search(const string& word) {
     
     for (size_t i = 0; i < normalized.length(); i++) {
         unsigned char c = (unsigned char)normalized[i];
+        current = current->findChild(c);
         
-        if (current->children.find(c) == current->children.end()) {
+        if (current == nullptr) {
             return false;
         }
-        current = current->children[c];
     }
-    return current != nullptr && current->isEnd;
+    return current->isEnd;
 }
 
 bool Trie::startsWith(const string& prefix) {
@@ -223,49 +307,59 @@ bool Trie::startsWith(const string& prefix) {
     
     for (size_t i = 0; i < normalized.length(); i++) {
         unsigned char c = (unsigned char)normalized[i];
+        current = current->findChild(c);
         
-        if (current->children.find(c) == current->children.end()) {
+        if (current == nullptr) {
             return false;
         }
-        current = current->children[c];
     }
-    return current != nullptr;
+    return true;
 }
 
-void Trie::dfs(TrieNode* node, string current, vector<string>& results, int limit) {
-    if (results.size() >= (size_t)limit) return;
+void Trie::dfs(TrieNode* node, char* current, int currentLen, StringArray& results, int limit) {
+    if (results.size >= limit) return;
     
     if (node->isEnd) {
-        results.push_back(current);
+        current[currentLen] = '\0';  // Null terminate
+        results.add(current);
     }
     
-    // Duyệt qua tất cả children (hỗ trợ UTF-8)
-    for (auto& pair : node->children) {
-        if (results.size() >= (size_t)limit) break;
-        unsigned char c = pair.first;
-        TrieNode* child = pair.second;
-        dfs(child, current + (char)c, results, limit);
+    // Duyệt qua tất cả children trong linked list
+    ChildNode* child = node->childrenHead;
+    while (child != nullptr && results.size < limit) {
+        current[currentLen] = (char)child->key;
+        dfs(child->child, current, currentLen + 1, results, limit);
+        child = child->next;
     }
 }
 
-vector<string> Trie::getSuggestions(const string& prefix, int limit) {
-    vector<string> results;
+StringArray Trie::getSuggestions(const string& prefix, int limit) {
+    StringArray results;
+    
     if (prefix.empty()) return results;
     
     string normalized = normalizeString(prefix);
     TrieNode* current = root;
     
-    // Navigate to the prefix node (byte by byte)
+    // Navigate to the prefix node
     for (size_t i = 0; i < normalized.length(); i++) {
         unsigned char c = (unsigned char)normalized[i];
+        current = current->findChild(c);
         
-        if (current->children.find(c) == current->children.end()) {
-            return results; // Prefix not found
+        if (current == nullptr) {
+            return results;  // Prefix not found
         }
-        current = current->children[c];
     }
     
     // DFS to find all words with this prefix
-    dfs(current, normalized, results, limit);
+    char buffer[256];  // Buffer for building words
+    
+    // Copy prefix to buffer
+    for (size_t i = 0; i < normalized.length(); i++) {
+        buffer[i] = normalized[i];
+    }
+    
+    dfs(current, buffer, normalized.length(), results, limit);
+    
     return results;
 }
