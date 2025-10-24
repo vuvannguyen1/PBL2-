@@ -1,8 +1,14 @@
 #include "BookingScreen.h"
+#include <locale>
+#include <codecvt>
+#include <ctime>
+#include <chrono>
+#include <set>
 
 BookingScreen::BookingScreen(Font& font) : 
     HomeScreen(font),
-    buttons_font("../assets/BEBAS_NEUE_ZSMALL.ttf"), 
+    buttons_font("../assets/BEBAS_NEUE_ZSMALL.ttf"),
+    detailFont("../assets/quicksand_medium.ttf"),
     current_step(BookingStep::SELECT_DATE),
     suat_chieu(buttons_font, L"SUẤT CHIẾU", 36),
     ghe_ngoi(buttons_font, L"GHẾ NGỒI", 36),
@@ -10,7 +16,12 @@ BookingScreen::BookingScreen(Font& font) :
     thanh_toan(buttons_font, L"THANH TOÁN", 36),
     xac_nhan(buttons_font, L"XÁC NHẬN", 36),
     tex("../assets/trangchumau1.jpg"),
-    sprite(tex)
+    sprite(tex),
+    currentMovieId(-1),
+    selectedShowtimeIndex(-1),
+    confirmButton(buttons_font, L"XÁC NHẬN", 150.f, 50.f, 24),
+    backButton(buttons_font, L"QUAY LẠI", 150.f, 50.f, 24),
+    hasConfirmedShowtime(false)
 {
     // ✅ Setup step buttons (navigation bar) - Centered at top
     float startX = 278.f;  // Center: (1728 - (5*180 + 4*10)) / 2
@@ -63,25 +74,126 @@ BookingScreen::BookingScreen(Font& font) :
     content_area.setFillColor(Color(24, 24, 28));
     content_area.setOutlineThickness(2.f);
     content_area.setOutlineColor(Color(60, 60, 70));
+
+    // prepare empty button vectors
+    dateButtons.clear();
+    timeButtons.clear();
+    
+    // ✅ Setup action buttons (Xác nhận & Quay lại)
+    // Vị trí: góc phải dưới của content_area
+    float btnY = content_area.getPosition().y + content_area.getSize().y - 70.f;
+    
+    // Nút Xác nhận (bên phải)
+    confirmButton.setPosition(
+        content_area.getPosition().x + content_area.getSize().x - 192.f, 
+        btnY
+    );
+    confirmButton.setNormalColor(Color(52, 150, 52)); // Xanh lá
+    confirmButton.setHoverColor(Color(70, 180, 70));
+    confirmButton.setDisabledColor(Color(60, 60, 60));
+    confirmButton.setOutlineThickness(2.f);
+    confirmButton.setOutlineColor(Color(100, 200, 100));
+    
+    // Nút Quay lại (bên trái nút Xác nhận)
+    backButton.setPosition(
+        content_area.getPosition().x + content_area.getSize().x - 362.f,
+        btnY
+    );
+    backButton.setNormalColor(Color(150, 52, 52)); // Đỏ
+    backButton.setHoverColor(Color(180, 70, 70));
+    backButton.setDisabledColor(Color(60, 60, 60));
+    backButton.setOutlineThickness(2.f);
+    backButton.setOutlineColor(Color(200, 100, 100));
+    
+    // ✅ Khởi tạo dữ liệu ghế - sẽ được load từ seat_map khi chọn suất chiếu
+    occupiedSeats.clear();
+    selectedSeats.clear();
+}
+
+// ✅ NEW: Tự động tạo suất chiếu cho 30 ngày với giờ chiếu đa dạng
+vector<Showtime> BookingScreen::generateShowtimesForNext30Days(int movieId) {
+    vector<Showtime> showtimes;
+    
+    auto now = std::chrono::system_clock::now();
+    time_t currentTime = std::chrono::system_clock::to_time_t(now);
+    
+    // ✅ Định nghĩa nhiều bộ giờ chiếu khác nhau
+    vector<vector<string>> timeVariants = {
+        {"09:00", "11:30", "14:00", "16:30", "19:00", "21:30", "22:00", "23:30"},  // Variant 1
+        {"10:00", "12:00", "14:30", "17:00", "19:30", "21:00", "22:30", "00:00"},  // Variant 2
+        {"09:30", "11:00", "13:30", "16:00", "18:30", "20:00", "22:00", "23:00"},  // Variant 3
+        {"10:30", "13:00", "15:00", "17:30", "19:00", "21:00", "22:00", "23:30"},  // Variant 4
+        {"08:30", "11:00", "14:00", "16:00", "18:00", "20:30", "22:30", "00:30"}   // Variant 5
+    };
+    
+    // ✅ Định nghĩa bộ phòng chiếu tương ứng
+    vector<vector<string>> roomVariants = {
+        {"Phòng 1", "Phòng 2", "Phòng 1", "Phòng 3", "Phòng 2", "Phòng 1", "Phòng 3", "Phòng 2"},
+        {"Phòng 2", "Phòng 1", "Phòng 3", "Phòng 2", "Phòng 1", "Phòng 3", "Phòng 1", "Phòng 2"},
+        {"Phòng 3", "Phòng 1", "Phòng 2", "Phòng 1", "Phòng 3", "Phòng 2", "Phòng 1", "Phòng 3"},
+        {"Phòng 1", "Phòng 3", "Phòng 2", "Phòng 3", "Phòng 1", "Phòng 2", "Phòng 3", "Phòng 1"},
+        {"Phòng 2", "Phòng 3", "Phòng 1", "Phòng 2", "Phòng 3", "Phòng 1", "Phòng 2", "Phòng 3"}
+    };
+    
+    // Tạo suất chiếu cho 30 ngày
+    for (int day = 0; day < 30; day++) {
+        time_t futureTime = currentTime + (day * 24 * 60 * 60);
+        tm* futureDate = localtime(&futureTime);
+        
+        char dateBuffer[11];
+        strftime(dateBuffer, sizeof(dateBuffer), "%Y-%m-%d", futureDate);
+        string dateStr(dateBuffer);
+        
+        // ✅ Bỏ qua 2 ngày cuối (ngày 4 và 5 trong 5 ngày đầu)
+        int dayInCycle = day % 5;
+        if (dayInCycle == 3 || dayInCycle == 4) {
+            continue; // Không tạo suất chiếu cho 2 ngày này
+        }
+        
+        // ✅ Chọn variant dựa vào ngày (xoay vòng 5 bộ)
+        int variantIndex = day % 5;
+        vector<string> times = timeVariants[variantIndex];
+        vector<string> rooms = roomVariants[variantIndex];
+        
+        for (size_t i = 0; i < times.size(); i++) {
+            // ✅ Giá động: suất sáng sớm (< 12h) 75k, trưa-chiều (12-18h) 85k, tối (>18h) 95k
+            int price = 85000; // Mặc định
+            int hour = 0;
+            if (sscanf(times[i].c_str(), "%d:", &hour) == 1) {
+                if (hour < 12) price = 75000;       // Sáng
+                else if (hour >= 18) price = 95000; // Tối
+                else price = 85000;                 // Trưa-chiều
+            }
+            
+            // ✅ Số ghế trống ngẫu nhiên (80-100)
+            int availableSeats = 80 + (day * 7 + i * 3) % 21; // Pseudo-random 80-100
+            
+            Showtime show;
+            show.movie_id = movieId;
+            show.date = dateStr;
+            show.time = times[i];
+            show.room = rooms[i];
+            show.available_seats = availableSeats;
+            show.total_seats = 100;
+            show.price = price;
+            showtimes.push_back(show);
+        }
+    }
+    
+    return showtimes;
 }
 
 void BookingScreen::draw(RenderWindow& window) {
     HomeScreen::draw(window);
 
-    // ✅ Draw poster first (from DetailScreen) - giữ nguyên vị trí
     window.draw(sprite);
-
-    // ✅ Draw content area background (container bên cạnh)
     window.draw(content_area);
 
-    // ✅ Draw content based on current step
     drawStepContent(window);
 
-    // ✅ Draw step buttons (navigation bar)
     for (int i = 0; i < 5; i++) 
         window.draw(buttons_box[i]);
 
-    // ✅ Draw button labels
     window.draw(suat_chieu);
     window.draw(ghe_ngoi);
     window.draw(food);
@@ -90,30 +202,286 @@ void BookingScreen::draw(RenderWindow& window) {
 }
 
 void BookingScreen::loadFromDetail(const DetailScreen& detail) {
-    tex = detail.getPosterTexture(); // copy texture
-    sprite.setTexture(tex, true); // ✅ true để reset texture rect, giữ chi tiết
-    sprite.setScale({0.3f, 0.3f}); // ✅ Giữ scale như ở DetailScreen
-    sprite.setPosition({128.f, 235.f}); // ✅ Giữ nguyên vị trí như DetailScreen (trừ margin top cho buttons)
+    try {
+        tex = detail.getPosterTexture();
+        sprite.setTexture(tex, true);
+        sprite.setScale({0.3f, 0.3f});
+        sprite.setPosition({128.f, 235.f});
+        
+        currentMovieId = detail.getCurrentMovieId();
+        allShowtimes = generateShowtimesForNext30Days(currentMovieId);
+        availableDates.clear();
+        selectedDate = "";
+        selectedShowtimeIndex = -1;
+        hasConfirmedShowtime = false;
+        current_step = BookingStep::SELECT_DATE;
+        selectedSeats.clear(); // Reset ghế đã chọn
+        
+        // ✅ Get current date and time
+        auto now = std::chrono::system_clock::now();
+        time_t currentTime = std::chrono::system_clock::to_time_t(now);
+        tm* localTime = localtime(&currentTime);
+        
+        char currentDate[11];
+        strftime(currentDate, sizeof(currentDate), "%Y-%m-%d", localTime);
+        string todayStr(currentDate);
+        
+        int currentHour = localTime->tm_hour;
+        int currentMinute = localTime->tm_min;
+        
+        // ✅ Generate next 5 days starting from today
+        availableDates.clear();
+        for (int i = 0; i < 5; i++) {
+            time_t futureTime = currentTime + (i * 24 * 60 * 60); // Add i days
+            tm* futureDate = localtime(&futureTime);
+            
+            // Format: YYYY-MM-DD for internal storage
+            char dateBuffer[11];
+            strftime(dateBuffer, sizeof(dateBuffer), "%Y-%m-%d", futureDate);
+            availableDates.push_back(string(dateBuffer));
+        }
+        
+        // Set first date as selected
+        if (!availableDates.empty()) {
+            selectedDate = availableDates[0];
+        }
+        
+        // ✅ Filter showtimes for selected date
+        updateShowtimesForSelectedDate(currentHour, currentMinute, todayStr);
+
+        // build date/time buttons
+        buildDateButtons();
+        buildTimeButtons();
+        
+    } catch (const exception& e) {
+        // Silent error handling
+    }
+}
+
+void BookingScreen::buildDateButtons() {
+    dateButtons.clear();
+    float startX = content_area.getPosition().x + 30.f;
+    float startY = content_area.getPosition().y + 120.f;
+    float buttonW = 150.f; 
+    float buttonH = 50.f; 
+    float spacing = 20.f;
+    
+    for (size_t i = 0; i < availableDates.size(); ++i) {
+        // ✅ Convert YYYY-MM-DD to DD - MM - YYYY for display
+        string dateStr = availableDates[i];
+        int year, month, day;
+        if (sscanf(dateStr.c_str(), "%d-%d-%d", &year, &month, &day) == 3) {
+            char displayDate[20];
+            snprintf(displayDate, sizeof(displayDate), "%02d - %02d - %04d", day, month, year);
+            
+            wstring_convert<codecvt_utf8<wchar_t>> conv;
+            wstring label = conv.from_bytes(displayDate);
+            
+            dateButtons.emplace_back(buttons_font, label, buttonW, buttonH, 18);
+            dateButtons.back().setPosition(startX + i * (buttonW + spacing), startY);
+            dateButtons.back().setNormalColor(Color(60, 60, 70));
+            dateButtons.back().setHoverColor(Color(100, 100, 120));
+            dateButtons.back().setDisabledColor(Color(40, 40, 45));
+            dateButtons.back().setOutlineThickness(2.f);
+            if (availableDates[i] == selectedDate) dateButtons.back().setSelected(true);
+        }
+    }
+}
+
+void BookingScreen::buildTimeButtons() {
+    timeButtons.clear();
+    float startX = content_area.getPosition().x + 30.f;
+    float startY = content_area.getPosition().y + 220.f;
+    float buttonW = 100.f; 
+    float buttonH = 60.f; 
+    float spacing = 15.f;
+    // limit to 8 slots
+    for (size_t i = 0; i < showtimesForSelectedDate.size() && i < 8; ++i) {
+        wstring_convert<codecvt_utf8<wchar_t>> conv;
+        wstring label = conv.from_bytes(showtimesForSelectedDate[i].time);
+        timeButtons.emplace_back(buttons_font, label, buttonW, buttonH, 20);
+        timeButtons.back().setPosition(startX + i * (buttonW + spacing), startY + (i/8)*(buttonH+spacing));
+        // disabled state if past
+        // determine past state
+        auto now = std::chrono::system_clock::now();
+        time_t currentTime = std::chrono::system_clock::to_time_t(now);
+        tm* localTime = localtime(&currentTime);
+        char curDateBuf[11]; 
+        strftime(curDateBuf, sizeof(curDateBuf), "%Y-%m-%d", localTime);
+        bool isPast = false;
+        if (showtimesForSelectedDate[i].date == string(curDateBuf)) {
+            int hh, mm; 
+            if (sscanf(showtimesForSelectedDate[i].time.c_str(), "%d:%d", &hh, &mm)==2) {
+                if (hh < localTime->tm_hour || (hh==localTime->tm_hour && mm < localTime->tm_min+30)) 
+                    isPast = true;
+            }
+        }
+        timeButtons.back().setDisabled(isPast);
+    }
+}
+
+void BookingScreen::updateShowtimesForSelectedDate(int currentHour, int currentMinute, const string& todayStr) {
+    showtimesForSelectedDate.clear();
+    
+    for (const auto& show : allShowtimes) {
+        if (show.movie_id != currentMovieId || show.date != selectedDate) continue;
+        
+        // If selected date is today, filter by time
+        if (show.date == todayStr) {
+            int showHour, showMinute;
+            if (sscanf(show.time.c_str(), "%d:%d", &showHour, &showMinute) == 2) {
+                // Skip if showtime has passed (add 30 min buffer)
+                if (showHour < currentHour || 
+                    (showHour == currentHour && showMinute < currentMinute + 30)) {
+                    continue;
+                }
+            }
+        }
+        
+        showtimesForSelectedDate.push_back(show);
+    }
 }
 
 void BookingScreen::handleEvent(const RenderWindow& window, const Vector2f& mousePos, bool mousePressed) {
     if (!mousePressed) return;
 
-    // ✅ Check which step button was clicked
-    for (int i = 0; i < 5; i++) {
-        if (buttons_box[i].getGlobalBounds().contains(mousePos)) {
-            // Update current step
-            current_step = static_cast<BookingStep>(i);
+    // ✅ KHÔNG cho phép click vào step buttons nếu chưa xác nhận suất chiếu
+    // (trừ step SELECT_DATE - luôn được phép)
+    
+    // ✅ Handle action buttons (Xác nhận & Quay lại)
+    confirmButton.update(mousePos);
+    backButton.update(mousePos);
+    
+    if (confirmButton.isClicked(mousePos, mousePressed) && !confirmButton.getDisabled()) {
+        // Logic xác nhận theo từng bước
+        if (current_step == BookingStep::SELECT_DATE) {
+            // Kiểm tra đã chọn suất chiếu chưa
+            if (selectedShowtimeIndex >= 0 && !selectedDate.empty()) {
+                hasConfirmedShowtime = true;
+                current_step = BookingStep::SELECT_SEAT;
+                
+                // ✅ Load occupied seats từ seat_map của suất chiếu đã chọn
+                if (selectedShowtimeIndex < (int)showtimesForSelectedDate.size()) {
+                    loadOccupiedSeatsFromSeatMap(showtimesForSelectedDate[selectedShowtimeIndex].seat_map);
+                }
+                
+                // Update step button colors
+                buttons_box[0].setFillColor(Color(80, 80, 90));
+                buttons_box[1].setFillColor(Color(52, 62, 209));
+            }
+        } else if (current_step == BookingStep::SELECT_SEAT) {
+            // ✅ Chỉ chuyển sang bước tiếp theo, CHƯA lưu vào file
+            current_step = BookingStep::SELECT_SNACK;
+            buttons_box[1].setFillColor(Color(80, 80, 90));
+            buttons_box[2].setFillColor(Color(52, 62, 209));
+        } else if (current_step == BookingStep::SELECT_SNACK) {
+            current_step = BookingStep::PAYMENT;
+            buttons_box[2].setFillColor(Color(80, 80, 90));
+            buttons_box[3].setFillColor(Color(52, 62, 209));
+        } else if (current_step == BookingStep::PAYMENT) {
+            // ✅ CHỈ KHI THANH TOÁN mới lưu ghế vào file (đánh dấu X)
+            saveSelectedSeatsToSeatMap();
             
-            // Update button colors
-            for (int j = 0; j < 5; j++) {
-                if (j == i) {
-                    buttons_box[j].setFillColor(Color(52, 62, 209)); // Active
-                } else {
-                    buttons_box[j].setFillColor(Color(80, 80, 90)); // Inactive
+            current_step = BookingStep::CONFIRM;
+            buttons_box[3].setFillColor(Color(80, 80, 90));
+            buttons_box[4].setFillColor(Color(52, 62, 209));
+        }
+        return;
+    }
+    
+    if (backButton.isClicked(mousePos, mousePressed) && !backButton.getDisabled()) {
+        // ✅ Quay về step trước đó
+        if (current_step == BookingStep::SELECT_SEAT) {
+            current_step = BookingStep::SELECT_DATE;
+            hasConfirmedShowtime = false;
+            selectedSeats.clear(); // ✅ Reset ghế khi quay lại chọn suất
+            buttons_box[0].setFillColor(Color(52, 62, 209));
+            buttons_box[1].setFillColor(Color(80, 80, 90));
+        } else if (current_step == BookingStep::SELECT_SNACK) {
+            current_step = BookingStep::SELECT_SEAT;
+            buttons_box[1].setFillColor(Color(52, 62, 209));
+            buttons_box[2].setFillColor(Color(80, 80, 90));
+        } else if (current_step == BookingStep::PAYMENT) {
+            current_step = BookingStep::SELECT_SNACK;
+            buttons_box[2].setFillColor(Color(52, 62, 209));
+            buttons_box[3].setFillColor(Color(80, 80, 90));
+        } else if (current_step == BookingStep::CONFIRM) {
+            current_step = BookingStep::PAYMENT;
+            buttons_box[3].setFillColor(Color(52, 62, 209));
+            buttons_box[4].setFillColor(Color(80, 80, 90));
+        }
+        return;
+    }
+    
+    // ✅ Date buttons (chỉ khi ở SELECT_DATE step)
+    if (current_step == BookingStep::SELECT_DATE) {
+        for (size_t i = 0; i < dateButtons.size(); ++i) {
+            dateButtons[i].update(mousePos);
+            if (dateButtons[i].isClicked(mousePos, mousePressed)) {
+                selectedDate = availableDates[i];
+                selectedShowtimeIndex = -1; // Reset lựa chọn giờ
+                selectedSeats.clear(); // ✅ Reset ghế đã chọn khi đổi ngày
+                // rebuild time buttons for this date
+                // compute current time
+                auto now = std::chrono::system_clock::now();
+                time_t currentTime = std::chrono::system_clock::to_time_t(now);
+                tm* localTime = localtime(&currentTime);
+                char curDateBuf[11]; 
+                strftime(curDateBuf, sizeof(curDateBuf), "%Y-%m-%d", localTime);
+                updateShowtimesForSelectedDate(localTime->tm_hour, localTime->tm_min, string(curDateBuf));
+                buildTimeButtons();
+                // update selection state
+                for (size_t j = 0; j < dateButtons.size(); ++j) dateButtons[j].setSelected(j == i);
+                break;
+            }
+        }
+
+        // Time buttons (chỉ khi ở SELECT_DATE step)
+        for (size_t i = 0; i < timeButtons.size(); ++i) {
+            timeButtons[i].update(mousePos);
+            if (timeButtons[i].isClicked(mousePos, mousePressed)) {
+                // if button disabled ignore
+                if (timeButtons[i].getDisabled()) continue;
+                selectedShowtimeIndex = (int)i;
+                selectedSeats.clear(); // ✅ Reset ghế đã chọn khi đổi suất chiếu
+                // mark selection visual
+                for (size_t j = 0; j < timeButtons.size(); ++j) timeButtons[j].setSelected(j == i);
+                break;
+            }
+        }
+    }
+    
+    // ✅ Seat selection (chỉ khi ở SELECT_SEAT step)
+    if (current_step == BookingStep::SELECT_SEAT) {
+        // Tính toán vị trí sơ đồ ghế - PHẢI KHỚP HOÀN TOÀN VỚI drawSeatSelection
+        float seatStartX = content_area.getPosition().x + 30.f;
+        float seatStartY = content_area.getPosition().y + 30.f;
+        float seatSize = 36.f;
+        float seatSpacing = 7.f;
+        
+        for (int row = 0; row < SEAT_ROWS; row++) {
+            for (int col = 0; col < SEAT_COLS; col++) {
+                char rowLabel = 'A' + row;
+                string seatID = string(1, rowLabel) + to_string(col + 1);
+                
+                // Bỏ qua ghế đã được đặt
+                if (isSeatOccupied(seatID)) continue;
+                
+                float x = seatStartX + col * (seatSize + seatSpacing);
+                float y = seatStartY + 100 + row * (seatSize + seatSpacing);
+                
+                FloatRect seatRect({x, y}, {seatSize, seatSize});
+                if (seatRect.contains(mousePos)) {
+                    // Toggle selection
+                    auto it = find(selectedSeats.begin(), selectedSeats.end(), seatID);
+                    if (it != selectedSeats.end()) {
+                        selectedSeats.erase(it); // Bỏ chọn
+                    } else {
+                        selectedSeats.push_back(seatID); // Chọn
+                    }
+                    return;
                 }
             }
-            break;
         }
     }
 }
@@ -121,30 +489,51 @@ void BookingScreen::handleEvent(const RenderWindow& window, const Vector2f& mous
 void BookingScreen::update(Vector2f mousePos, bool mousePressed, AppState& state) {
     // ✅ Gọi HomeScreen::update để các nút CineXine, Đặt vé, Đăng nhập hoạt động
     HomeScreen::update(mousePos, mousePressed, state);
+    // Update button hover states so hover effect appears even without click
+    for (auto &btn : dateButtons) btn.update(mousePos);
+    for (auto &btn : timeButtons) btn.update(mousePos);
     
-    // TODO: Update content based on current_step
+    // ✅ Update action buttons - cả 2 nút đều update
+    confirmButton.update(mousePos);
+    backButton.update(mousePos);
+    
+    // ✅ Logic enable/disable
+    if (current_step == BookingStep::SELECT_DATE) {
+        // Xác nhận: chỉ disabled khi chưa chọn suất
+        confirmButton.setDisabled(selectedShowtimeIndex < 0);
+        // Quay lại: luôn disabled ở step đầu
+        backButton.setDisabled(true);
+    } else if (current_step == BookingStep::SELECT_SEAT) {
+        // Xác nhận: chỉ enabled khi đã chọn ít nhất 1 ghế
+        confirmButton.setDisabled(selectedSeats.empty());
+        backButton.setDisabled(false);
+    } else {
+        // Các step khác: Xác nhận luôn enabled, Quay lại luôn enabled
+        confirmButton.setDisabled(false);
+        backButton.setDisabled(false);
+    }
 }
 
 void BookingScreen::drawStepContent(RenderWindow& window) {
-    Font contentFont("../assets/quicksand_medium.ttf");
-    
     // Position inside content area
     float contentX = content_area.getPosition().x + 30.f;
     float contentY = content_area.getPosition().y + 30.f;
     
     switch (current_step) {
         case BookingStep::SELECT_DATE: {
-            Text stepTitle(buttons_font, L"CHỌN SUẤT CHIẾU & NGÀY", 32);
+            Text stepTitle(buttons_font, L"CHỌN NGÀY & SUẤT CHIẾU", 32);
             stepTitle.setPosition({contentX, contentY});
             stepTitle.setFillColor(Color::White);
             window.draw(stepTitle);
             
-            Text stepDesc(contentFont, L"Vui lòng chọn ngày và giờ chiếu phù hợp", 20);
+            Text stepDesc(detailFont, L"Vui lòng chọn ngày và suất chiếu phù hợp", 20);
             stepDesc.setPosition({contentX, contentY + 50});
             stepDesc.setFillColor(Color(200, 200, 200));
             window.draw(stepDesc);
             
-            // TODO: Add date/time selection UI
+            drawDateSelection(window);
+            drawTimeSelection(window);
+            drawActionButtons(window); // Vẽ nút Xác nhận
             break;
         }
         
@@ -154,12 +543,9 @@ void BookingScreen::drawStepContent(RenderWindow& window) {
             stepTitle.setFillColor(Color::White);
             window.draw(stepTitle);
             
-            Text stepDesc(contentFont, L"Chọn ghế bạn muốn đặt", 20);
-            stepDesc.setPosition({contentX, contentY + 50});
-            stepDesc.setFillColor(Color(200, 200, 200));
-            window.draw(stepDesc);
-            
-            // TODO: Add seat selection grid
+            drawSeatSelection(window);  // Vẽ sơ đồ ghế
+            drawSeatSummary(window);    // Vẽ thông tin bên phải
+            drawActionButtons(window); // Vẽ nút Quay lại
             break;
         }
         
@@ -169,11 +555,12 @@ void BookingScreen::drawStepContent(RenderWindow& window) {
             stepTitle.setFillColor(Color::White);
             window.draw(stepTitle);
             
-            Text stepDesc(contentFont, L"Thêm bắp rang bơ, nước ngọt...", 20);
+            Text stepDesc(detailFont, L"Thêm bắp rang bơ, nước ngọt...", 20);
             stepDesc.setPosition({contentX, contentY + 50});
             stepDesc.setFillColor(Color(200, 200, 200));
             window.draw(stepDesc);
             
+            drawActionButtons(window);
             // TODO: Add food selection UI
             break;
         }
@@ -184,11 +571,12 @@ void BookingScreen::drawStepContent(RenderWindow& window) {
             stepTitle.setFillColor(Color::White);
             window.draw(stepTitle);
             
-            Text stepDesc(contentFont, L"Chọn phương thức thanh toán", 20);
+            Text stepDesc(detailFont, L"Chọn phương thức thanh toán", 20);
             stepDesc.setPosition({contentX, contentY + 50});
             stepDesc.setFillColor(Color(200, 200, 200));
             window.draw(stepDesc);
             
+            drawActionButtons(window);
             // TODO: Add payment methods
             break;
         }
@@ -199,13 +587,374 @@ void BookingScreen::drawStepContent(RenderWindow& window) {
             stepTitle.setFillColor(Color::White);
             window.draw(stepTitle);
             
-            Text stepDesc(contentFont, L"Kiểm tra lại thông tin đặt vé", 20);
+            Text stepDesc(detailFont, L"Kiểm tra lại thông tin đặt vé", 20);
             stepDesc.setPosition({contentX, contentY + 50});
             stepDesc.setFillColor(Color(200, 200, 200));
             window.draw(stepDesc);
             
+            drawActionButtons(window);
             // TODO: Add booking summary
             break;
+        }
+    }
+}
+
+void BookingScreen::drawDateSelection(RenderWindow& window) {
+    if (availableDates.empty()) {
+        Text noDates(detailFont, L"Không có ngày phù hợp", 18);
+        noDates.setPosition({content_area.getPosition().x + 30.f, content_area.getPosition().y + 120.f});
+        noDates.setFillColor(Color(200, 100, 100));
+        window.draw(noDates);
+        return;
+    }
+
+    for (auto &btn : dateButtons) 
+        btn.draw(window);
+}
+
+void BookingScreen::drawTimeSelection(RenderWindow& window) {
+    if (timeButtons.empty()) {
+        Text noShowtimes(detailFont, L"Chưa có suất chiếu cho ngày này!", 18);
+        noShowtimes.setPosition({content_area.getPosition().x + 30.f, content_area.getPosition().y + 220.f});
+        noShowtimes.setFillColor(Color(200, 100, 100));
+        window.draw(noShowtimes);
+        return;
+    }
+
+    for (auto &btn : timeButtons) 
+        btn.draw(window);
+}
+
+void BookingScreen::drawActionButtons(RenderWindow& window) {
+    // ✅ Luôn vẽ cả 2 nút ở mọi bước
+    backButton.draw(window);
+    confirmButton.draw(window);
+}
+
+bool BookingScreen::isSeatOccupied(const string& seat) const {
+    return find(occupiedSeats.begin(), occupiedSeats.end(), seat) != occupiedSeats.end();
+}
+
+bool BookingScreen::isSeatSelected(const string& seat) const {
+    return find(selectedSeats.begin(), selectedSeats.end(), seat) != selectedSeats.end();
+}
+
+// ✅ Load occupied seats từ seat_map (bitmap 81 ký tự)
+void BookingScreen::loadOccupiedSeatsFromSeatMap(const string& seat_map) {
+    occupiedSeats.clear();
+    
+    if (seat_map.length() != 81) {
+        // Nếu seat_map không hợp lệ, return
+        return;
+    }
+    
+    for (int i = 0; i < 81; i++) {
+        if (seat_map[i] == '0') { // 0 = đã đặt
+            int row = i / 9;
+            int col = i % 9;
+            char rowLabel = 'A' + row;
+            string seatID = string(1, rowLabel) + to_string(col + 1);
+            occupiedSeats.push_back(seatID);
+        }
+    }
+}
+
+// ✅ Lưu selected seats vào seat_map và ghi file
+void BookingScreen::saveSelectedSeatsToSeatMap() {
+    if (selectedShowtimeIndex < 0 || selectedShowtimeIndex >= (int)showtimesForSelectedDate.size()) {
+        return;
+    }
+    
+    Showtime& showtime = showtimesForSelectedDate[selectedShowtimeIndex];
+    
+    // Tạo seat_map mới từ occupied seats hiện tại
+    string seat_map = string(81, '1'); // Mặc định tất cả trống
+    
+    // Đánh dấu các ghế đã occupied
+    for (const auto& seat : occupiedSeats) {
+        char rowLabel = seat[0];
+        int col = stoi(seat.substr(1)) - 1;
+        int row = rowLabel - 'A';
+        int index = row * 9 + col;
+        if (index >= 0 && index < 81) {
+            seat_map[index] = '0';
+        }
+    }
+    
+    // Đánh dấu các ghế vừa chọn (cũng là occupied)
+    for (const auto& seat : selectedSeats) {
+        char rowLabel = seat[0];
+        int col = stoi(seat.substr(1)) - 1;
+        int row = rowLabel - 'A';
+        int index = row * 9 + col;
+        if (index >= 0 && index < 81) {
+            seat_map[index] = '0';
+        }
+    }
+    
+    // Lưu vào file
+    saveSeatMap(showtime.movie_id, showtime.date, showtime.time, showtime.room, seat_map);
+    
+    // Cập nhật lại occupied seats để bao gồm ghế vừa chọn
+    occupiedSeats.insert(occupiedSeats.end(), selectedSeats.begin(), selectedSeats.end());
+    selectedSeats.clear();
+}
+
+void BookingScreen::drawSeatSelection(RenderWindow& window) {
+    float seatStartX = content_area.getPosition().x + 30.f;
+    float seatStartY = content_area.getPosition().y + 30.f;
+    float seatSize = 36.f;
+    float seatSpacing = 7.f;
+    
+    // ✅ Vẽ màn hình (Screen) - Thu nhỏ cho 9x9
+    RectangleShape screen({380.f, 8.f});
+    screen.setPosition({seatStartX, seatStartY + 65.f});
+    screen.setFillColor(Color(200, 200, 200));
+    window.draw(screen);
+    
+    Text screenText(detailFont, L"MÀN HÌNH", 16);
+    screenText.setPosition({screen.getPosition().x + 150, screen.getPosition().y - 20});
+    screenText.setFillColor(Color(200, 200, 200));
+    window.draw(screenText);
+    
+    // ✅ Lấy vị trí chuột để kiểm tra hover
+    Vector2f mousePos = Vector2f(Mouse::getPosition(window));
+    
+    // ✅ Vẽ các ghế
+    for (int row = 0; row < SEAT_ROWS; row++) {
+        // Nhãn hàng (A, B, C...) - BỎ ĐI không vẽ nữa
+        char rowLabel = 'A' + row;
+        
+        for (int col = 0; col < SEAT_COLS; col++) {
+            string seatID = string(1, rowLabel) + to_string(col + 1);
+            
+            float x = seatStartX + col * (seatSize + seatSpacing);
+            float y = seatStartY + 100 + row * (seatSize + seatSpacing);
+            
+            RectangleShape seat({seatSize, seatSize});
+            seat.setPosition({x, y});
+            
+            // ✅ Kiểm tra hover
+            bool isHovered = FloatRect({x, y}, {seatSize, seatSize}).contains(mousePos);
+            
+            // ✅ Màu sắc ghế
+            if (isSeatOccupied(seatID)) {
+                seat.setFillColor(Color(80, 80, 80)); // Đã đặt - Xám
+                seat.setOutlineThickness(1.f);
+                seat.setOutlineColor(Color(100, 100, 100));
+                window.draw(seat);
+                
+                // Vẽ dấu X - Căn giữa
+                Text xMark(buttons_font, "X", 28);
+                FloatRect textBounds = xMark.getLocalBounds();
+                xMark.setPosition({
+                    x + (seatSize - textBounds.size.x) / 2.f - textBounds.position.x,
+                    y + (seatSize - textBounds.size.y) / 2.f - textBounds.position.y
+                });
+                xMark.setFillColor(Color(150, 150, 150));
+                window.draw(xMark);
+            } else if (isSeatSelected(seatID)) {
+                seat.setFillColor(Color(52, 150, 52)); // Đã chọn - Xanh lá
+                seat.setOutlineThickness(2.f);
+                seat.setOutlineColor(Color(100, 255, 100));
+                window.draw(seat);
+            } else {
+                // ✅ Ghế trống - Thêm hiệu ứng hover
+                if (isHovered) {
+                    seat.setFillColor(Color(100, 100, 120)); // Hover - Sáng hơn
+                    seat.setOutlineThickness(2.f);
+                    seat.setOutlineColor(Color(150, 150, 180));
+                } else {
+                    seat.setFillColor(Color(60, 60, 70)); // Trống - Xám đậm
+                    seat.setOutlineThickness(1.f);
+                    seat.setOutlineColor(Color(100, 100, 110));
+                }
+                window.draw(seat);
+            }
+        }
+    }
+    
+    // ✅ Legend (Chú thích) - Điều chỉnh vị trí cho 9x9
+    float legendX = content_area.getPosition().x + 30.f;
+    float legendY = seatStartY + SEAT_ROWS * (seatSize + seatSpacing) + 130.f;
+    
+    // Ghế trống
+    RectangleShape legend1({30.f, 30.f});
+    legend1.setPosition({legendX, legendY});
+    legend1.setFillColor(Color(60, 60, 70));
+    legend1.setOutlineThickness(1.f);
+    legend1.setOutlineColor(Color(100, 100, 110));
+    window.draw(legend1);
+    
+    Text legend1Text(detailFont, L"Trống", 16);
+    legend1Text.setPosition({legendX + 40.f, legendY + 5.f});
+    legend1Text.setFillColor(Color::White);
+    window.draw(legend1Text);
+    
+    // Ghế đã chọn
+    RectangleShape legend2({30.f, 30.f});
+    legend2.setPosition({legendX + 140.f, legendY});
+    legend2.setFillColor(Color(52, 150, 52));
+    legend2.setOutlineThickness(2.f);
+    legend2.setOutlineColor(Color(100, 255, 100));
+    window.draw(legend2);
+    
+    Text legend2Text(detailFont, L"Đã chọn", 16);
+    legend2Text.setPosition({legendX + 180.f, legendY + 5.f});
+    legend2Text.setFillColor(Color::White);
+    window.draw(legend2Text);
+    
+    // Ghế đã đặt
+    RectangleShape legend3({30.f, 30.f});
+    legend3.setPosition({legendX + 290.f, legendY});
+    legend3.setFillColor(Color(80, 80, 80));
+    legend3.setOutlineThickness(1.f);
+    legend3.setOutlineColor(Color(100, 100, 100));
+    window.draw(legend3);
+    
+    Text xMarkLegend(buttons_font, "X", 20);
+    xMarkLegend.setPosition({legendX + 301.f, legendY + 2.f});
+    xMarkLegend.setFillColor(Color(150, 150, 150));
+    window.draw(xMarkLegend);
+    
+    Text legend3Text(detailFont, L"Đã đặt", 16);
+    legend3Text.setPosition({legendX + 330.f, legendY + 5.f});
+    legend3Text.setFillColor(Color::White);
+    window.draw(legend3Text);
+}
+
+void BookingScreen::drawSeatSummary(RenderWindow& window) {
+    // ✅ Hiển thị thông tin ghế đã chọn bên phải - Điều chỉnh cho 9x9
+    float summaryX = content_area.getPosition().x + 530.f;
+    float summaryY = content_area.getPosition().y + 30.f;
+    
+    // Background box - Thu nhỏ lại
+    RectangleShape summaryBox({410.f, 380.f});
+    summaryBox.setPosition({summaryX, summaryY + 100});
+    summaryBox.setFillColor(Color(30, 30, 35));
+    summaryBox.setOutlineThickness(2.f);
+    summaryBox.setOutlineColor(Color(60, 60, 70));
+    window.draw(summaryBox);
+    
+    // Title
+    Text title(buttons_font, L"THÔNG TIN ĐẶT VÉ", 24);
+    title.setPosition({summaryX + 130.f, summaryY + 45.f});
+    title.setFillColor(Color(255, 200, 100));
+    window.draw(title);
+    
+    // Suất chiếu
+    if (selectedShowtimeIndex >= 0 && selectedShowtimeIndex < (int)showtimesForSelectedDate.size()) {
+        const auto& showtime = showtimesForSelectedDate[selectedShowtimeIndex];
+        
+        Text dateLabel(detailFont, L"Ngày chiếu:", 16);
+        dateLabel.setPosition({summaryX + 20.f, summaryY + 120.f});
+        dateLabel.setFillColor(Color(200, 200, 200));
+        window.draw(dateLabel);
+        
+        // ✅ Chuyển đổi format từ YYYY-MM-DD sang DD - MM - YYYY
+        string formattedDate = showtime.date;
+        if (formattedDate.length() == 10) { // Format: YYYY-MM-DD
+            string year = formattedDate.substr(0, 4);
+            string month = formattedDate.substr(5, 2);
+            string day = formattedDate.substr(8, 2);
+            formattedDate = day + " - " + month + " - " + year; // DD - MM - YYYY
+        }
+        
+        wstring_convert<codecvt_utf8<wchar_t>> conv;
+        Text dateValue(detailFont, conv.from_bytes(formattedDate), 16);
+        dateValue.setPosition({summaryX + 160.f, summaryY + 120.f});
+        dateValue.setFillColor(Color::White);
+        window.draw(dateValue);
+        
+        Text timeLabel(detailFont, L"Giờ chiếu:", 16);
+        timeLabel.setPosition({summaryX + 20.f, summaryY + 150.f});
+        timeLabel.setFillColor(Color(200, 200, 200));
+        window.draw(timeLabel);
+        
+        Text timeValue(detailFont, conv.from_bytes(showtime.time), 16);
+        timeValue.setPosition({summaryX + 160.f, summaryY + 150.f});
+        timeValue.setFillColor(Color::White);
+        window.draw(timeValue);
+        
+        Text roomLabel(detailFont, L"Phòng:", 16);
+        roomLabel.setPosition({summaryX + 20.f, summaryY + 180.f});
+        roomLabel.setFillColor(Color(200, 200, 200));
+        window.draw(roomLabel);
+        
+        Text roomValue(detailFont, conv.from_bytes(showtime.room), 16);
+        roomValue.setPosition({summaryX + 160.f, summaryY + 180.f});
+        roomValue.setFillColor(Color::White);
+        window.draw(roomValue);
+    }
+    
+    // Danh sách ghế đã chọn
+    Text seatsLabel(buttons_font, L"GHẾ ĐÃ CHỌN:", 20);
+    seatsLabel.setPosition({summaryX + 20.f, summaryY + 220.f});
+    seatsLabel.setFillColor(Color(255, 200, 100));
+    window.draw(seatsLabel);
+    
+    if (selectedSeats.empty()) {
+        Text noSeats(detailFont, L"Chưa chọn ghế nào", 16);
+        noSeats.setPosition({summaryX + 20.f, summaryY + 260.f});
+        noSeats.setFillColor(Color(200, 100, 100));
+        window.draw(noSeats);
+    } 
+    else {
+        // ✅ Hiển thị danh sách ghế theo chiều dọc (3 hàng), sau đó sang cột mới
+        const int MAX_SEATS_DISPLAY = 11;
+        const int ROWS_PER_COL = 3; // ✅ 3 ghế theo chiều dọc
+        float startX = summaryX + 20.f;
+        float startY = summaryY + 260.f; // ✅ Khớp với vị trí "Chưa chọn ghế nào"
+        float colWidth = 75.f;
+        float rowHeight = 30.f;
+        
+        wstring_convert<codecvt_utf8<wchar_t>> conv;
+        size_t seatsToShow = min((size_t)MAX_SEATS_DISPLAY, selectedSeats.size());
+        
+        for (size_t i = 0; i < seatsToShow; i++) {
+            int col = i / ROWS_PER_COL; // ✅ Chia cho 3 để biết cột nào
+            int row = i % ROWS_PER_COL; // ✅ Chia dư 3 để biết hàng nào (0, 1, 2)
+            
+            Text seatItem(detailFont, conv.from_bytes("• Ghế " + selectedSeats[i]), 16);
+            seatItem.setPosition({startX + col * colWidth, startY + row * rowHeight});
+            seatItem.setFillColor(Color(100, 255, 100));
+            window.draw(seatItem);
+        }
+        
+        // Nếu có nhiều hơn 11 ghế, hiển thị "..." ở vị trí ghế thứ 12
+        if (selectedSeats.size() > MAX_SEATS_DISPLAY) {
+            int col = MAX_SEATS_DISPLAY / ROWS_PER_COL;
+            int row = MAX_SEATS_DISPLAY % ROWS_PER_COL;
+            
+            Text moreSeats(detailFont, L"...", 16);
+            moreSeats.setPosition({startX + col * colWidth, startY + row * rowHeight});
+            moreSeats.setFillColor(Color::White);
+            window.draw(moreSeats);
+        }
+        
+        // Tổng tiền
+        if (selectedShowtimeIndex >= 0 && selectedShowtimeIndex < (int)showtimesForSelectedDate.size()) {
+            int pricePerSeat = showtimesForSelectedDate[selectedShowtimeIndex].price;
+            int totalPrice = pricePerSeat * selectedSeats.size();
+            
+            // Line separator
+            RectangleShape line({300.f, 2.f});
+            line.setPosition({summaryX + 20.f, summaryY + 375.f});
+            line.setFillColor(Color(100, 100, 100));
+            window.draw(line);
+            
+            Text totalLabel(buttons_font, L"TỔNG TIỀN:", 20);
+            totalLabel.setPosition({summaryX + 20.f, summaryY + 395.f});
+            totalLabel.setFillColor(Color::White);
+            window.draw(totalLabel);
+            
+            wstring_convert<codecvt_utf8<wchar_t>> conv;
+            char priceStr[32];
+            snprintf(priceStr, sizeof(priceStr), "%d VNĐ", totalPrice);
+            Text totalValue(buttons_font, conv.from_bytes(priceStr), 22);
+            totalValue.setPosition({summaryX + 160.f, summaryY + 395.f});
+            totalValue.setFillColor(Color(255, 200, 100));
+            window.draw(totalValue);
         }
     }
 }

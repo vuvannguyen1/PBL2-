@@ -76,4 +76,11 @@ public:
 
     const Texture& getPosterTexture() const;
     const Sprite& getPosterSprite() const;
+    int getCurrentMovieId() const { 
+        try {
+            return !currentMovie.film_id.empty() ? stoi(currentMovie.film_id) : 1;
+        } catch (...) {
+            return 1; // Default to movie 1
+        }
+    }
 };
