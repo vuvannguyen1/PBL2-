@@ -100,25 +100,41 @@ bool LoginScreen::update(Vector2f mouse, bool mousePressed, const Event& event, 
             if (emailActive && !emailInput.empty()) emailInput.pop_back();
             else if (passActive && !passInput.empty()) passInput.pop_back();
         } else if (code == Keyboard::Key::Enter) {                   // xác nhận
-            std::string u(emailInput.begin(), emailInput.end());
-            std::string p(passInput.begin(), passInput.end());
-            if (auth.verify(u, p)) {
+            std::string email(emailInput.begin(), emailInput.end());
+            std::string password(passInput.begin(), passInput.end());
+            
+            // Validate email format first
+            if (!Validator::isValidEmail(email)) {
+                msg.setFillColor(Color(200,60,60));
+                msg.setString(L"Email không hợp lệ.");
+                return false;
+            }
+            
+            // Verify credentials
+            if (auth.verify(email, password)) {
                 msg.setFillColor(Color(60, 160, 90));
                 msg.setString(L"Đăng nhập thành công.");
                 
                 loginSuccess = true;
-                loggedUser = u;
+                loggedUser = email;
                 loginClock.restart();
             } else {
                 msg.setFillColor(Color(200,60,60));
-                msg.setString(L"Sai tài khoản hoặc mật khẩu.");
+                
+                // More specific error message
+                if (!auth.emailExists(email)) {
+                    msg.setString(L"Email không tồn tại.");
+                } else {
+                    msg.setString(L"Mật khẩu không đúng.");
+                }
             }
         }
     }
 
     if (event.is<Event::TextEntered>()) {
         char32_t unicode = event.getIf<Event::TextEntered>()->unicode;
-        if (unicode >= 32 && unicode <= 126) { // printable ASCII
+        // Allow Vietnamese and Unicode (skip control chars and Delete)
+        if (unicode >= 32 && unicode != 127) {
             if (emailActive && emailInput.size() < 48) emailInput.push_back((wchar_t)unicode);
             else if (passActive && passInput.size() < 48)  passInput.push_back((wchar_t)unicode);
         }

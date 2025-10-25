@@ -1,99 +1,131 @@
 #include "AuthService.h"
 #include <fstream>
 #include <sstream>
-#include <random>
-#include <iomanip>
 #include <filesystem>
 
 using namespace std;
 
-AuthService::AuthService(const string& csvPath) : m_path(csvPath) {
-    ensureFile();
-    load();
-}
-
-void AuthService::ensureFile() {
+AuthService::AuthService(const string& filePath) : filePath(filePath) {
     namespace fs = filesystem;
-    fs::path p(m_path);
+    fs::path p(filePath);
     fs::create_directories(p.parent_path());
-    if (!fs::exists(p)) {
-        ofstream f(m_path, ios::out | ios::trunc);
-        // có thể ghi header nếu muốn
-        // f << "username,salt,hash\n";
-    }
+    
+    loadUsers();
 }
 
-static uint64_t fnv1a64(const string& s) {
-    const uint64_t FNV_OFFSET = 1469598103934665603ull;
-    const uint64_t FNV_PRIME  = 1099511628211ull;
-    uint64_t h = FNV_OFFSET;
-    for (unsigned char c : s) { h ^= c; h *= FNV_PRIME; }
-    return h;
+AuthService::~AuthService() {
+    saveUsers();
 }
 
-string AuthService::fnv1a64_hex(const string& s) {
-    uint64_t x = fnv1a64(s);
-    ostringstream oss; oss << hex << setw(16) << setfill('0') << x;
-    return oss.str();
-}
-
-string AuthService::hashPw(const string& salt, const string& pw) {
-    return fnv1a64_hex(salt + ":" + pw); // demo hash
-}
-
-string AuthService::randomSalt(size_t n) {
-    static random_device rd; static mt19937_64 gen(rd());
-    static const char* hexchars = "0123456789abcdef";
-    uniform_int_distribution<int> dist(0,15);
-    string s; s.reserve(n);
-    for (size_t i=0;i<n;++i) s.push_back(hexchars[dist(gen)]);
-    return s;
-}
-
-void AuthService::load() {
-    m_db.clear();
-    ifstream fin(m_path);
+void AuthService::loadUsers() {
+    ifstream file(filePath);
+    if (!file.is_open()) return;
+    
     string line;
-    while (getline(fin, line)) {
+    // Skip header if exists
+    getline(file, line);
+    
+    while (getline(file, line)) {
         if (line.empty()) continue;
-        if (line.rfind("username",0)==0) continue; // skip header
-        string u,s,h; stringstream ss(line);
-        if (!getline(ss,u,',')) continue;
-        if (!getline(ss,s,',')) continue;
-        if (!getline(ss,h,',')) continue;
-        if (!u.empty()) m_db[u] = {s,h};
+        
+        stringstream ss(line);
+        User user;
+        
+        string regTimeStr;
+        getline(ss, user.email, ',');
+        getline(ss, user.passwordHash, ',');
+        getline(ss, user.fullName, ',');
+        getline(ss, user.birthDate, ',');
+        getline(ss, user.phone, ',');
+        getline(ss, regTimeStr, ',');
+        
+        if (!user.email.empty() && !user.passwordHash.empty()) {
+            try {
+                user.registeredAt = stoll(regTimeStr);
+            } catch (...) {
+                user.registeredAt = time(nullptr);
+            }
+            
+            userByEmail.insert(user.email, user);
+        }
     }
+    
+    file.close();
 }
 
-void AuthService::save() const {
-    ofstream fout(m_path, ios::out|ios::trunc);
-    for (auto& [u,sh] : m_db) {
-        fout << u << "," << sh.first << "," << sh.second << "\n";
-    }
+void AuthService::saveUsers() {
+    ofstream file(filePath, ios::out | ios::trunc);
+    if (!file.is_open()) return;
+    
+    // Write header
+    file << "email,passwordHash,fullName,birthDate,phone,registeredAt\n";
+    
+    // Write all users
+    userByEmail.forEach([&](const string& email, User& user) {
+        file << user.email << ","
+             << user.passwordHash << ","
+             << user.fullName << ","
+             << user.birthDate << ","
+             << user.phone << ","
+             << user.registeredAt << "\n";
+    });
+    
+    file.close();
 }
 
-bool AuthService::registerUser(const string& username, const string& password) {
-    if (username.empty() || password.empty()) return false;
-    if (m_db.count(username)) return false;
-    string salt = randomSalt();
-    string h = hashPw(salt, password);
-    m_db[username] = {salt, h};
-    save();
+bool AuthService::registerUser(const string& email, const string& password,
+                               const string& fullName, const string& birthDate,
+                               const string& phone) {
+    // Validate inputs
+    if (email.empty() || password.empty()) return false;
+    if (!Validator::isValidEmail(email)) return false;
+    if (!Validator::isStrongPassword(password)) return false;
+    
+    if (!phone.empty() && !Validator::isValidPhone(phone)) return false;
+    if (!birthDate.empty() && !Validator::isValidDate(birthDate)) return false;
+    
+    // Check if email already exists
+    if (emailExists(email)) return false;
+    
+    // Create new user
+    User newUser;
+    newUser.email = email;
+    newUser.passwordHash = PasswordHasher::hashPassword(password);
+    newUser.fullName = fullName;
+    newUser.birthDate = birthDate;
+    newUser.phone = phone;
+    newUser.registeredAt = time(nullptr);
+    
+    // Insert into hash table
+    userByEmail.insert(email, newUser);
+    
+    // Save to file
+    saveUsers();
+    
     return true;
 }
 
-bool AuthService::verify(const string& username, const string& password) const {
-    auto it = m_db.find(username);
-    if (it == m_db.end()) return false;
-    const auto& [salt, h] = it->second;
-    return hashPw(salt, password) == h;
+bool AuthService::verify(const string& email, const string& password) {
+    // Find user
+    User* user = userByEmail.find(email);
+    if (!user) {
+        return false;
+    }
+    
+    // Verify password
+    return PasswordHasher::verifyPassword(password, user->passwordHash);
+}
+
+User* AuthService::getUser(const string& email) {
+    return userByEmail.find(email);
+}
+
+bool AuthService::emailExists(const string& email) {
+    return userByEmail.exists(email);
 }
 
 void AuthService::ensureSampleUser() {
-    if (!m_db.count("testuser")) {
-        string salt = "abcd";
-        string h = hashPw(salt, "123456"); // 9f9a27ce22a2f9c4
-        m_db["testuser"] = {salt, h};
-        save();
+    if (!emailExists("test@gmail.com")) {
+        registerUser("test@gmail.com", "Test1234", "Test User", "01/01/2000", "0901234567");
     }
 }

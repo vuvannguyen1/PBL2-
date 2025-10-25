@@ -1,34 +1,49 @@
 #pragma once
 #include <string>
-#include <unordered_map>
-#include <utility>
+#include <ctime>
+#include "HashTable.h"
+#include "PasswordHasher.h"
+#include "Validator.h"
 using namespace std;
+
+struct User {
+    string email;
+    string passwordHash;
+    string fullName;
+    string birthDate;
+    string phone;
+    time_t registeredAt;
+    
+    User() : registeredAt(0) {}
+    User(const string& e, const string& h) 
+        : email(e), passwordHash(h), registeredAt(time(nullptr)) {}
+};
 
 class AuthService {
 public:
-    explicit AuthService(const string&);
+    explicit AuthService(const string& filePath);
+    ~AuthService();
 
-    // tạo file & thư mục nếu chưa có
-    void ensureFile();
+    // Registration with validation
+    bool registerUser(const string& email, const string& password, 
+                     const string& fullName = "", const string& birthDate = "", 
+                     const string& phone = "");
 
-    // đăng ký: false nếu username đã tồn tại hoặc rỗng
-    bool registerUser(const string&, const string&);
+    // Login verification
+    bool verify(const string& email, const string& password);
 
-    // xác thực đăng nhập
-    bool verify(const string&, const string&) const;
-
-    // tạo sẵn user mẫu testuser/123456 nếu chưa có
+    // User management
+    User* getUser(const string& email);
+    bool emailExists(const string& email);
+    
+    // Load/Save
+    void loadUsers();
+    void saveUsers();
+    
+    // Create sample user for testing
     void ensureSampleUser();
 
 private:
-    string m_path;
-    // username -> (salt, hash)
-    unordered_map<string, pair<string, string>> m_db;
-
-    void load();
-    void save() const;
-
-    static string randomSalt(size_t n = 16);
-    static string hashPw(const string&, const string&);
-    static string fnv1a64_hex(const string&);
+    string filePath;
+    HashTable<string, User> userByEmail;  // email -> User (O(1) lookup)
 };

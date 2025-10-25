@@ -17,7 +17,6 @@ App::App() :
         Image icon("../assets/icon.png");
         window.setIcon(icon);
 
-        auth.ensureFile();
         auth.ensureSampleUser();
 
         vector<string> paths = getMoviePosterPaths("../data/movies.csv");        

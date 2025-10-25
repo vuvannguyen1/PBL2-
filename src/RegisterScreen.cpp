@@ -80,6 +80,14 @@ wstring RegisterScreen::bullets(size_t n) {
 }
 
 bool RegisterScreen::validateInputs() {
+    // Field 0: Full name
+    // Field 1: Birthdate
+    // Field 2: Email
+    // Field 3: Phone
+    // Field 4: Password
+    // Field 5: Confirm password
+    
+    // Check empty fields
     for (int i = 0; i < 6; i++) {
         if (inputs[i].empty()) {
             msg.setFillColor(Color(200, 60, 60));
@@ -88,16 +96,49 @@ bool RegisterScreen::validateInputs() {
         }
     }
 
-    if (inputs[4] != inputs[5]) {
+    // Validate birthdate (Field 1)
+    string birthDate(inputs[1].begin(), inputs[1].end());
+    if (!Validator::isValidDate(birthDate)) {
         msg.setFillColor(Color(200, 60, 60));
-        msg.setString(L"Mật khẩu xác nhận không khớp.");
+        msg.setString(L"Ngày sinh không hợp lệ (dd/mm/yyyy).");
         return false;
     }
 
+    // Validate email (Field 2)
     string email(inputs[2].begin(), inputs[2].end());
-    if (auth.verify(email, "dummy")) {
+    if (!Validator::isValidEmail(email)) {
+        msg.setFillColor(Color(200, 60, 60));
+        msg.setString(L"Email không hợp lệ.");
+        return false;
+    }
+
+    // Check if email exists
+    if (auth.emailExists(email)) {
         msg.setFillColor(Color(200, 60, 60));
         msg.setString(L"Email đã được sử dụng.");
+        return false;
+    }
+
+    // Validate phone (Field 3)
+    string phone(inputs[3].begin(), inputs[3].end());
+    if (!Validator::isValidPhone(phone)) {
+        msg.setFillColor(Color(200, 60, 60));
+        msg.setString(L"Số điện thoại không hợp lệ (10 số, bắt đầu bằng 0).");
+        return false;
+    }
+
+    // Validate password strength (Field 4)
+    string password(inputs[4].begin(), inputs[4].end());
+    if (!Validator::isStrongPassword(password)) {
+        msg.setFillColor(Color(200, 60, 60));
+        msg.setString(L"Mật khẩu phải có ít nhất 8 ký tự, chữ hoa, chữ thường và số.");
+        return false;
+    }
+
+    // Check password confirmation (Field 5)
+    if (inputs[4] != inputs[5]) {
+        msg.setFillColor(Color(200, 60, 60));
+        msg.setString(L"Mật khẩu xác nhận không khớp.");
         return false;
     }
 
@@ -132,17 +173,20 @@ bool RegisterScreen::update(Vector2f mouse, bool mousePressed, const Event& even
 
         if (registerBtn.getGlobalBounds().contains(mouse)) {
             if (validateInputs()) {
+                string fullName(inputs[0].begin(), inputs[0].end());
+                string birthDate(inputs[1].begin(), inputs[1].end());
                 string email(inputs[2].begin(), inputs[2].end());
+                string phone(inputs[3].begin(), inputs[3].end());
                 string password(inputs[4].begin(), inputs[4].end());
 
-                if (auth.registerUser(email, password)) {
+                if (auth.registerUser(email, password, fullName, birthDate, phone)) {
                     msg.setFillColor(Color(60, 160, 90));
                     msg.setString(L"Đăng ký thành công! Đang chuyển sang đăng nhập...");
                     showSuccessMessage = true;
                     messageTimer.restart();
                 } else {
                     msg.setFillColor(Color(200, 60, 60));
-                    msg.setString(L"Đăng ký thất bại. Email có thể đã tồn tại.");
+                    msg.setString(L"Đăng ký thất bại. Vui lòng thử lại.");
                 }
             }
         } else if (backBtn.getGlobalBounds().contains(mouse)) {
@@ -167,10 +211,13 @@ bool RegisterScreen::update(Vector2f mouse, bool mousePressed, const Event& even
             }
         } else if (code == Keyboard::Key::Enter) {
             if (validateInputs()) {
+                string fullName(inputs[0].begin(), inputs[0].end());
+                string birthDate(inputs[1].begin(), inputs[1].end());
                 string email(inputs[2].begin(), inputs[2].end());
+                string phone(inputs[3].begin(), inputs[3].end());
                 string password(inputs[4].begin(), inputs[4].end());
 
-                if (auth.registerUser(email, password)) {
+                if (auth.registerUser(email, password, fullName, birthDate, phone)) {
                     msg.setFillColor(Color(60, 160, 90));
                     msg.setString(L"Đăng ký thành công! Đang chuyển sang đăng nhập...");
                     showSuccessMessage = true;
@@ -182,7 +229,8 @@ bool RegisterScreen::update(Vector2f mouse, bool mousePressed, const Event& even
 
     if (event.is<Event::TextEntered>() && activeField >= 0) {
         char32_t unicode = event.getIf<Event::TextEntered>()->unicode;
-        if (unicode >= 32 && unicode <= 126 && inputs[activeField].size() < 50) {
+        // Allow Vietnamese and Unicode (skip control chars and Delete)
+        if (unicode >= 32 && unicode != 127 && inputs[activeField].size() < 50) {
             inputs[activeField].push_back((wchar_t)unicode);
             showCursor = true;
             cursorClock.restart();
