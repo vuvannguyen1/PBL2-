@@ -108,6 +108,9 @@ BookingScreen::BookingScreen(Font& font) :
     // ✅ Khởi tạo dữ liệu ghế - sẽ được load từ seat_map khi chọn suất chiếu
     occupiedSeats.clear();
     selectedSeats.clear();
+    
+    // ✅ Khởi tạo menu đồ ăn
+    initializeSnackMenu();
 }
 
 // ✅ NEW: Tự động tạo suất chiếu cho 30 ngày với giờ chiếu đa dạng
@@ -456,8 +459,8 @@ void BookingScreen::handleEvent(const RenderWindow& window, const Vector2f& mous
         // Tính toán vị trí sơ đồ ghế - PHẢI KHỚP HOÀN TOÀN VỚI drawSeatSelection
         float seatStartX = content_area.getPosition().x + 30.f;
         float seatStartY = content_area.getPosition().y + 30.f;
-        float seatSize = 36.f;
-        float seatSpacing = 7.f;
+        float seatSize = 30.f;
+        float seatSpacing = 6.f;
         
         for (int row = 0; row < SEAT_ROWS; row++) {
             for (int col = 0; col < SEAT_COLS; col++) {
@@ -467,8 +470,8 @@ void BookingScreen::handleEvent(const RenderWindow& window, const Vector2f& mous
                 // Bỏ qua ghế đã được đặt
                 if (isSeatOccupied(seatID)) continue;
                 
-                float x = seatStartX + col * (seatSize + seatSpacing);
-                float y = seatStartY + 100 + row * (seatSize + seatSpacing);
+                float x = seatStartX + 65 + col * (seatSize + seatSpacing);
+                float y = seatStartY + 161 + row * (seatSize + seatSpacing);
                 
                 FloatRect seatRect({x, y}, {seatSize, seatSize});
                 if (seatRect.contains(mousePos)) {
@@ -484,6 +487,25 @@ void BookingScreen::handleEvent(const RenderWindow& window, const Vector2f& mous
             }
         }
     }
+    
+    // ✅ Snack selection (chỉ khi ở SELECT_SNACK step)
+    if (current_step == BookingStep::SELECT_SNACK) {
+        for (size_t i = 0; i < snackItems.size(); i++) {
+            // Nút cộng (+)
+            if (plusButtons[i].isClicked(mousePos, mousePressed)) {
+                snackItems[i].quantity++;
+                return;
+            }
+            
+            // Nút trừ (-)
+            if (minusButtons[i].isClicked(mousePos, mousePressed) && !minusButtons[i].getDisabled()) {
+                if (snackItems[i].quantity > 0) {
+                    snackItems[i].quantity--;
+                }
+                return;
+            }
+        }
+    }
 }
 
 void BookingScreen::update(Vector2f mousePos, bool mousePressed, AppState& state) {
@@ -492,6 +514,10 @@ void BookingScreen::update(Vector2f mousePos, bool mousePressed, AppState& state
     // Update button hover states so hover effect appears even without click
     for (auto &btn : dateButtons) btn.update(mousePos);
     for (auto &btn : timeButtons) btn.update(mousePos);
+    
+    // ✅ Update snack menu buttons
+    for (auto &btn : plusButtons) btn.update(mousePos);
+    for (auto &btn : minusButtons) btn.update(mousePos);
     
     // ✅ Update action buttons - cả 2 nút đều update
     confirmButton.update(mousePos);
@@ -550,34 +576,14 @@ void BookingScreen::drawStepContent(RenderWindow& window) {
         }
         
         case BookingStep::SELECT_SNACK: {
-            Text stepTitle(buttons_font, L"CHỌN ĐỒ ĂN & NƯỚC UỐNG", 32);
-            stepTitle.setPosition({contentX, contentY});
-            stepTitle.setFillColor(Color::White);
-            window.draw(stepTitle);
-            
-            Text stepDesc(detailFont, L"Thêm bắp rang bơ, nước ngọt...", 20);
-            stepDesc.setPosition({contentX, contentY + 50});
-            stepDesc.setFillColor(Color(200, 200, 200));
-            window.draw(stepDesc);
-            
+            drawSnackMenu(window); // ✅ Vẽ menu đồ ăn
             drawActionButtons(window);
-            // TODO: Add food selection UI
             break;
         }
         
         case BookingStep::PAYMENT: {
-            Text stepTitle(buttons_font, L"THANH TOÁN", 32);
-            stepTitle.setPosition({contentX, contentY});
-            stepTitle.setFillColor(Color::White);
-            window.draw(stepTitle);
-            
-            Text stepDesc(detailFont, L"Chọn phương thức thanh toán", 20);
-            stepDesc.setPosition({contentX, contentY + 50});
-            stepDesc.setFillColor(Color(200, 200, 200));
-            window.draw(stepDesc);
-            
+            drawPaymentSummary(window); // ✅ Vẽ tổng hợp thanh toán
             drawActionButtons(window);
-            // TODO: Add payment methods
             break;
         }
         
@@ -703,17 +709,65 @@ void BookingScreen::saveSelectedSeatsToSeatMap() {
 void BookingScreen::drawSeatSelection(RenderWindow& window) {
     float seatStartX = content_area.getPosition().x + 30.f;
     float seatStartY = content_area.getPosition().y + 30.f;
-    float seatSize = 36.f;
-    float seatSpacing = 7.f;
+    float seatSize = 30.f;
+    float seatSpacing = 6.f;
+    
+    // ✅ Legend (Chú thích) - Đặt ngay dưới "CHỌN GHẾ NGỒI"
+    float legendX = content_area.getPosition().x + 95.f;
+    float legendY = content_area.getPosition().y + 75.f;
+    
+    // Ghế trống
+    RectangleShape legend1({25.f, 25.f});
+    legend1.setPosition({legendX, legendY});
+    legend1.setFillColor(Color(60, 60, 70));
+    legend1.setOutlineThickness(1.f);
+    legend1.setOutlineColor(Color(100, 100, 110));
+    window.draw(legend1);
+    
+    Text legend1Text(detailFont, L"Trống", 14);
+    legend1Text.setPosition({legendX + 32.f, legendY + 4.f});
+    legend1Text.setFillColor(Color::White);
+    window.draw(legend1Text);
+    
+    // Ghế đã chọn
+    RectangleShape legend2({25.f, 25.f});
+    legend2.setPosition({legendX + 113.f, legendY});
+    legend2.setFillColor(Color(52, 150, 52));
+    legend2.setOutlineThickness(2.f);
+    legend2.setOutlineColor(Color(100, 255, 100));
+    window.draw(legend2);
+    
+    Text legend2Text(detailFont, L"Đã chọn", 14);
+    legend2Text.setPosition({legendX + 145.f, legendY + 4.f});
+    legend2Text.setFillColor(Color::White);
+    window.draw(legend2Text);
+    
+    // Ghế đã đặt
+    RectangleShape legend3({25.f, 25.f});
+    legend3.setPosition({legendX + 235.f, legendY});
+    legend3.setFillColor(Color(80, 80, 80));
+    legend3.setOutlineThickness(1.f);
+    legend3.setOutlineColor(Color(100, 100, 100));
+    window.draw(legend3);
+    
+    Text xMarkLegend(buttons_font, "X", 18);
+    xMarkLegend.setPosition({legendX + 244.f, legendY + 1.f});
+    xMarkLegend.setFillColor(Color(150, 150, 150));
+    window.draw(xMarkLegend);
+    
+    Text legend3Text(detailFont, L"Đã đặt", 14);
+    legend3Text.setPosition({legendX + 267.f, legendY + 4.f});
+    legend3Text.setFillColor(Color::White);
+    window.draw(legend3Text);
     
     // ✅ Vẽ màn hình (Screen) - Thu nhỏ cho 9x9
-    RectangleShape screen({380.f, 8.f});
-    screen.setPosition({seatStartX, seatStartY + 65.f});
+    RectangleShape screen({460.f, 8.f});
+    screen.setPosition({seatStartX, seatStartY + 105.f});
     screen.setFillColor(Color(200, 200, 200));
     window.draw(screen);
     
     Text screenText(detailFont, L"MÀN HÌNH", 16);
-    screenText.setPosition({screen.getPosition().x + 150, screen.getPosition().y - 20});
+    screenText.setPosition({screen.getPosition().x + 186, screen.getPosition().y - 20});
     screenText.setFillColor(Color(200, 200, 200));
     window.draw(screenText);
     
@@ -728,8 +782,8 @@ void BookingScreen::drawSeatSelection(RenderWindow& window) {
         for (int col = 0; col < SEAT_COLS; col++) {
             string seatID = string(1, rowLabel) + to_string(col + 1);
             
-            float x = seatStartX + col * (seatSize + seatSpacing);
-            float y = seatStartY + 100 + row * (seatSize + seatSpacing);
+            float x = seatStartX + 65 + col * (seatSize + seatSpacing);
+            float y = seatStartY + 161 + row * (seatSize + seatSpacing);
             
             RectangleShape seat({seatSize, seatSize});
             seat.setPosition({x, y});
@@ -773,54 +827,6 @@ void BookingScreen::drawSeatSelection(RenderWindow& window) {
             }
         }
     }
-    
-    // ✅ Legend (Chú thích) - Điều chỉnh vị trí cho 9x9
-    float legendX = content_area.getPosition().x + 30.f;
-    float legendY = seatStartY + SEAT_ROWS * (seatSize + seatSpacing) + 130.f;
-    
-    // Ghế trống
-    RectangleShape legend1({30.f, 30.f});
-    legend1.setPosition({legendX, legendY});
-    legend1.setFillColor(Color(60, 60, 70));
-    legend1.setOutlineThickness(1.f);
-    legend1.setOutlineColor(Color(100, 100, 110));
-    window.draw(legend1);
-    
-    Text legend1Text(detailFont, L"Trống", 16);
-    legend1Text.setPosition({legendX + 40.f, legendY + 5.f});
-    legend1Text.setFillColor(Color::White);
-    window.draw(legend1Text);
-    
-    // Ghế đã chọn
-    RectangleShape legend2({30.f, 30.f});
-    legend2.setPosition({legendX + 140.f, legendY});
-    legend2.setFillColor(Color(52, 150, 52));
-    legend2.setOutlineThickness(2.f);
-    legend2.setOutlineColor(Color(100, 255, 100));
-    window.draw(legend2);
-    
-    Text legend2Text(detailFont, L"Đã chọn", 16);
-    legend2Text.setPosition({legendX + 180.f, legendY + 5.f});
-    legend2Text.setFillColor(Color::White);
-    window.draw(legend2Text);
-    
-    // Ghế đã đặt
-    RectangleShape legend3({30.f, 30.f});
-    legend3.setPosition({legendX + 290.f, legendY});
-    legend3.setFillColor(Color(80, 80, 80));
-    legend3.setOutlineThickness(1.f);
-    legend3.setOutlineColor(Color(100, 100, 100));
-    window.draw(legend3);
-    
-    Text xMarkLegend(buttons_font, "X", 20);
-    xMarkLegend.setPosition({legendX + 301.f, legendY + 2.f});
-    xMarkLegend.setFillColor(Color(150, 150, 150));
-    window.draw(xMarkLegend);
-    
-    Text legend3Text(detailFont, L"Đã đặt", 16);
-    legend3Text.setPosition({legendX + 330.f, legendY + 5.f});
-    legend3Text.setFillColor(Color::White);
-    window.draw(legend3Text);
 }
 
 void BookingScreen::drawSeatSummary(RenderWindow& window) {
@@ -837,8 +843,8 @@ void BookingScreen::drawSeatSummary(RenderWindow& window) {
     window.draw(summaryBox);
     
     // Title
-    Text title(buttons_font, L"THÔNG TIN ĐẶT VÉ", 24);
-    title.setPosition({summaryX + 130.f, summaryY + 45.f});
+    Text title(buttons_font, L"THÔNG TIN ĐẶT VÉ", 36);
+    title.setPosition({summaryX + 120.f, summaryY + 45.f});
     title.setFillColor(Color(255, 200, 100));
     window.draw(title);
     
@@ -888,14 +894,14 @@ void BookingScreen::drawSeatSummary(RenderWindow& window) {
     }
     
     // Danh sách ghế đã chọn
-    Text seatsLabel(buttons_font, L"GHẾ ĐÃ CHỌN:", 20);
+    Text seatsLabel(buttons_font, L"GHẾ ĐÃ CHỌN:", 34);
     seatsLabel.setPosition({summaryX + 20.f, summaryY + 220.f});
     seatsLabel.setFillColor(Color(255, 200, 100));
     window.draw(seatsLabel);
     
     if (selectedSeats.empty()) {
         Text noSeats(detailFont, L"Chưa chọn ghế nào", 16);
-        noSeats.setPosition({summaryX + 20.f, summaryY + 260.f});
+        noSeats.setPosition({summaryX + 20.f, summaryY + 275.f});
         noSeats.setFillColor(Color(200, 100, 100));
         window.draw(noSeats);
     } 
@@ -904,7 +910,7 @@ void BookingScreen::drawSeatSummary(RenderWindow& window) {
         const int MAX_SEATS_DISPLAY = 11;
         const int ROWS_PER_COL = 3; // ✅ 3 ghế theo chiều dọc
         float startX = summaryX + 20.f;
-        float startY = summaryY + 260.f; // ✅ Khớp với vị trí "Chưa chọn ghế nào"
+        float startY = summaryY + 275.f; // ✅ Khớp với vị trí "Chưa chọn ghế nào"
         float colWidth = 75.f;
         float rowHeight = 30.f;
         
@@ -943,7 +949,7 @@ void BookingScreen::drawSeatSummary(RenderWindow& window) {
             line.setFillColor(Color(100, 100, 100));
             window.draw(line);
             
-            Text totalLabel(buttons_font, L"TỔNG TIỀN:", 20);
+            Text totalLabel(buttons_font, L"TỔNG TIỀN:", 36);
             totalLabel.setPosition({summaryX + 20.f, summaryY + 395.f});
             totalLabel.setFillColor(Color::White);
             window.draw(totalLabel);
@@ -951,10 +957,350 @@ void BookingScreen::drawSeatSummary(RenderWindow& window) {
             wstring_convert<codecvt_utf8<wchar_t>> conv;
             char priceStr[32];
             snprintf(priceStr, sizeof(priceStr), "%d VNĐ", totalPrice);
-            Text totalValue(buttons_font, conv.from_bytes(priceStr), 22);
+            Text totalValue(buttons_font, conv.from_bytes(priceStr), 36);
             totalValue.setPosition({summaryX + 160.f, summaryY + 395.f});
             totalValue.setFillColor(Color(255, 200, 100));
             window.draw(totalValue);
         }
+    }
+}
+
+// ✅ Khởi tạo menu đồ ăn
+void BookingScreen::initializeSnackMenu() {
+    snackItems.clear();
+    plusButtons.clear();
+    minusButtons.clear();
+    
+    // ✅ Tạo các combo với giá
+    snackItems.emplace_back("Combo 1", 65000, "../assets/elements/combo1.png");
+    snackItems.emplace_back("Combo 2", 105000, "../assets/elements/combo2.png");
+    snackItems.emplace_back("Bắp & Nước", 55000, "../assets/elements/pop_and_drink.png");
+    snackItems.emplace_back("Bắp ngô", 35000, "../assets/elements/one_pop.png");
+    snackItems.emplace_back("Nước uống", 25000, "../assets/elements/one_drink.png");
+    
+    // ✅ Load textures cho mỗi combo
+    for (auto& item : snackItems) {
+        if (!item.texture.loadFromFile(item.imagePath)) {
+            // Handle error - texture failed to load
+        }
+    }
+    
+    // ✅ Tạo nút + và - cho mỗi combo
+    for (size_t i = 0; i < snackItems.size(); i++) {
+        // Nút trừ (-)
+        minusButtons.emplace_back(buttons_font, L"-", 40.f, 40.f, 32);
+        minusButtons.back().setNormalColor(Color(150, 52, 52));
+        minusButtons.back().setHoverColor(Color(180, 70, 70));
+        minusButtons.back().setDisabledColor(Color(60, 60, 60));
+        minusButtons.back().setOutlineThickness(2.f);
+        
+        // Nút cộng (+)
+        plusButtons.emplace_back(buttons_font, L"+", 40.f, 40.f, 32);
+        plusButtons.back().setNormalColor(Color(52, 150, 52));
+        plusButtons.back().setHoverColor(Color(70, 180, 70));
+        plusButtons.back().setOutlineThickness(2.f);
+    }
+}
+
+// ✅ Vẽ menu đồ ăn
+void BookingScreen::drawSnackMenu(RenderWindow& window) {
+    Text title(buttons_font, L"CHỌN ĐỒ ĂN & THỨC UỐNG", 32);
+    title.setPosition({content_area.getPosition().x + 30.f, content_area.getPosition().y + 30.f});
+    title.setFillColor(Color::White);
+    window.draw(title);
+    
+    float startX = content_area.getPosition().x + 30.f;
+    float startY = content_area.getPosition().y + 90.f;
+    float itemWidth = 180.f;
+    float itemHeight = 220.f;
+    float spacing = 20.f;
+    
+    wstring_convert<codecvt_utf8<wchar_t>> conv;
+    
+    for (size_t i = 0; i < snackItems.size(); i++) {
+        float x = startX + (i % 5) * (itemWidth + spacing);
+        float y = startY + (i / 5) * (itemHeight + spacing);
+        
+        // ✅ Vẽ hình ảnh combo
+        float imageSize = 120.f;
+        snackItems[i].draw(window, x, y, imageSize);
+        
+        // ✅ Tên combo
+        Text nameText(detailFont, conv.from_bytes(snackItems[i].name), 16);
+        nameText.setPosition({x, y + imageSize + 5});
+        nameText.setFillColor(Color::White);
+        window.draw(nameText);
+        
+        // ✅ Giá
+        char priceStr[32];
+        snprintf(priceStr, sizeof(priceStr), "%d VNĐ", snackItems[i].price);
+        Text priceText(detailFont, conv.from_bytes(priceStr), 14);
+        priceText.setPosition({x, y + imageSize + 28});
+        priceText.setFillColor(Color(255, 200, 100));
+        window.draw(priceText);
+        
+        // ✅ Nút trừ (-)
+        minusButtons[i].setPosition(x, y + imageSize + 55);
+        minusButtons[i].setDisabled(snackItems[i].quantity == 0);
+        minusButtons[i].draw(window);
+        
+        // ✅ Số lượng (căn giữa giữa 2 nút - và +)
+        char qtyStr[8];
+        snprintf(qtyStr, sizeof(qtyStr), "%d", snackItems[i].quantity);
+        Text qtyText(buttons_font, conv.from_bytes(qtyStr), 24);
+        
+        // Căn giữa hoàn hảo: tính từ giữa khoảng trống (45 pixel) trừ đi nửa độ rộng text
+        FloatRect textBounds = qtyText.getLocalBounds();
+        float centerX = x + 65; // Giữa 2 nút (0 -> 90, giữa là 45)
+        qtyText.setPosition({
+            centerX - textBounds.size.x / 2.f - textBounds.position.x,
+            y + imageSize + 60
+        });
+        qtyText.setFillColor(Color::White);
+        window.draw(qtyText);
+        
+        // ✅ Nút cộng (+)
+        plusButtons[i].setPosition(x + 90, y + imageSize + 55);
+        plusButtons[i].draw(window);
+    }
+    
+    // ✅ Tổng tiền đồ ăn
+    int totalSnackPrice = 0;
+    for (const auto& item : snackItems) {
+        totalSnackPrice += item.price * item.quantity;
+    }
+    
+    RectangleShape separator({900.f, 2.f});
+    separator.setPosition({startX, startY + itemHeight + 80});
+    separator.setFillColor(Color(100, 100, 100));
+    window.draw(separator);
+    
+    Text totalLabel(buttons_font, L"TỔNG TIỀN ĐỒ ĂN:", 36);
+    totalLabel.setPosition({startX, startY + itemHeight + 100});
+    totalLabel.setFillColor(Color::White);
+    window.draw(totalLabel);
+    
+    char totalStr[32];
+    snprintf(totalStr, sizeof(totalStr), "%d VNĐ", totalSnackPrice);
+    Text totalText(buttons_font, conv.from_bytes(totalStr), 36);
+    totalText.setPosition({startX + 300, startY + itemHeight + 100});
+    totalText.setFillColor(Color(255, 200, 100));
+    window.draw(totalText);
+}
+
+// ✅ Vẽ tổng hợp thanh toán
+void BookingScreen::drawPaymentSummary(RenderWindow& window) {
+    float contentX = content_area.getPosition().x + 30.f;
+    float contentY = content_area.getPosition().y + 30.f;
+    
+    Text title(buttons_font, L"TỔNG HỢP THANH TOÁN", 32);
+    title.setPosition({contentX, contentY});
+    title.setFillColor(Color::White);
+    window.draw(title);
+    
+    wstring_convert<codecvt_utf8<wchar_t>> conv;
+    float startY = contentY + 70.f;
+    float lineHeight = 30.f;
+    
+    // ✅ Thông tin phim
+    if (selectedShowtimeIndex >= 0 && selectedShowtimeIndex < (int)showtimesForSelectedDate.size()) {
+        const auto& showtime = showtimesForSelectedDate[selectedShowtimeIndex];
+        
+        // Tiêu đề phim (lấy từ DetailScreen hoặc Movie data)
+        Text movieLabel(buttons_font, L"PHIM:", 24);
+        movieLabel.setPosition({contentX, startY});
+        movieLabel.setFillColor(Color(255, 200, 100));
+        window.draw(movieLabel);
+        
+        // TODO: Cần lưu tên phim trong BookingScreen, tạm thời dùng movie_id
+        char movieInfo[128];
+        snprintf(movieInfo, sizeof(movieInfo), "Phim ID: %d", showtime.movie_id);
+        Text movieValue(detailFont, conv.from_bytes(movieInfo), 20);
+        movieValue.setPosition({contentX + 150.f, startY + 3});
+        movieValue.setFillColor(Color::White);
+        window.draw(movieValue);
+        
+        startY += lineHeight + 10;
+        
+        // Ngày chiếu
+        Text dateLabel(detailFont, L"Ngày chiếu:", 18);
+        dateLabel.setPosition({contentX, startY});
+        dateLabel.setFillColor(Color(200, 200, 200));
+        window.draw(dateLabel);
+        
+        // Format ngày DD - MM - YYYY
+        string formattedDate = showtime.date;
+        if (formattedDate.length() == 10) {
+            string year = formattedDate.substr(0, 4);
+            string month = formattedDate.substr(5, 2);
+            string day = formattedDate.substr(8, 2);
+            formattedDate = day + " - " + month + " - " + year;
+        }
+        
+        Text dateValue(detailFont, conv.from_bytes(formattedDate), 18);
+        dateValue.setPosition({contentX + 150.f, startY});
+        dateValue.setFillColor(Color::White);
+        window.draw(dateValue);
+        
+        startY += lineHeight;
+        
+        // Giờ chiếu
+        Text timeLabel(detailFont, L"Giờ chiếu:", 18);
+        timeLabel.setPosition({contentX, startY});
+        timeLabel.setFillColor(Color(200, 200, 200));
+        window.draw(timeLabel);
+        
+        Text timeValue(detailFont, conv.from_bytes(showtime.time), 18);
+        timeValue.setPosition({contentX + 150.f, startY});
+        timeValue.setFillColor(Color::White);
+        window.draw(timeValue);
+        
+        startY += lineHeight;
+        
+        // Phòng chiếu
+        Text roomLabel(detailFont, L"Phòng:", 18);
+        roomLabel.setPosition({contentX, startY});
+        roomLabel.setFillColor(Color(200, 200, 200));
+        window.draw(roomLabel);
+        
+        Text roomValue(detailFont, conv.from_bytes(showtime.room), 18);
+        roomValue.setPosition({contentX + 150.f, startY});
+        roomValue.setFillColor(Color::White);
+        window.draw(roomValue);
+        
+        startY += lineHeight + 20;
+        
+        // ✅ Ghế ngồi
+        Text seatsLabel(buttons_font, L"GHẾ NGỒI:", 24);
+        seatsLabel.setPosition({contentX, startY});
+        seatsLabel.setFillColor(Color(255, 200, 100));
+        window.draw(seatsLabel);
+        
+        startY += 35;
+        
+        // Hiển thị danh sách ghế (tối đa 3 hàng x 4 cột)
+        const int ROWS_PER_COL = 3;
+        float seatStartX = contentX + 20.f;
+        float seatColWidth = 70.f;
+        float seatRowHeight = 25.f;
+        
+        for (size_t i = 0; i < selectedSeats.size() && i < 12; i++) {
+            int col = i / ROWS_PER_COL;
+            int row = i % ROWS_PER_COL;
+            
+            Text seatText(detailFont, conv.from_bytes("• " + selectedSeats[i]), 16);
+            seatText.setPosition({seatStartX + col * seatColWidth, startY + row * seatRowHeight});
+            seatText.setFillColor(Color(100, 255, 100));
+            window.draw(seatText);
+        }
+        
+        if (selectedSeats.size() > 12) {
+            Text moreSeats(detailFont, L"...", 16);
+            moreSeats.setPosition({seatStartX + 280, startY});
+            moreSeats.setFillColor(Color::White);
+            window.draw(moreSeats);
+        }
+        
+        startY += 90;
+        
+        // ✅ Đồ ăn & thức uống
+        Text snackLabel(buttons_font, L"ĐỒ ĂN & NƯỚC:", 24);
+        snackLabel.setPosition({contentX, startY});
+        snackLabel.setFillColor(Color(255, 200, 100));
+        window.draw(snackLabel);
+        
+        startY += 35;
+        
+        int totalSnackPrice = 0;
+        bool hasSnacks = false;
+        
+        for (const auto& item : snackItems) {
+            if (item.quantity > 0) {
+                hasSnacks = true;
+                char snackInfo[128];
+                int itemTotal = item.price * item.quantity;
+                snprintf(snackInfo, sizeof(snackInfo), "%s x %d", item.name.c_str(), item.quantity);
+                
+                Text snackText(detailFont, conv.from_bytes(snackInfo), 16);
+                snackText.setPosition({contentX + 20.f, startY});
+                snackText.setFillColor(Color::White);
+                window.draw(snackText);
+                
+                char priceStr[32];
+                snprintf(priceStr, sizeof(priceStr), "%d VNĐ", itemTotal);
+                Text priceText(detailFont, conv.from_bytes(priceStr), 16);
+                priceText.setPosition({contentX + 400.f, startY});
+                priceText.setFillColor(Color(255, 200, 100));
+                window.draw(priceText);
+                
+                totalSnackPrice += itemTotal;
+                startY += 25;
+            }
+        }
+        
+        if (!hasSnacks) {
+            Text noSnacks(detailFont, L"Không chọn đồ ăn", 16);
+            noSnacks.setPosition({contentX + 20.f, startY});
+            noSnacks.setFillColor(Color(150, 150, 150));
+            window.draw(noSnacks);
+            startY += 25;
+        }
+        
+        startY += 15;
+        
+        // ✅ Tổng tiền
+        RectangleShape separator({900.f, 3.f});
+        separator.setPosition({contentX, startY});
+        separator.setFillColor(Color(100, 100, 100));
+        window.draw(separator);
+        
+        startY += 20;
+        
+        // Tiền vé
+        int ticketPrice = showtime.price * selectedSeats.size();
+        
+        Text ticketLabel(detailFont, L"Tiền vé:", 20);
+        ticketLabel.setPosition({contentX, startY});
+        ticketLabel.setFillColor(Color::White);
+        window.draw(ticketLabel);
+        
+        char ticketStr[32];
+        snprintf(ticketStr, sizeof(ticketStr), "%d VNĐ", ticketPrice);
+        Text ticketValue(detailFont, conv.from_bytes(ticketStr), 20);
+        ticketValue.setPosition({contentX + 400.f, startY});
+        ticketValue.setFillColor(Color::White);
+        window.draw(ticketValue);
+        
+        startY += 30;
+        
+        // Tiền đồ ăn
+        Text snackPriceLabel(detailFont, L"Tiền đồ ăn:", 20);
+        snackPriceLabel.setPosition({contentX, startY});
+        snackPriceLabel.setFillColor(Color::White);
+        window.draw(snackPriceLabel);
+        
+        char snackStr[32];
+        snprintf(snackStr, sizeof(snackStr), "%d VNĐ", totalSnackPrice);
+        Text snackPriceValue(detailFont, conv.from_bytes(snackStr), 20);
+        snackPriceValue.setPosition({contentX + 400.f, startY});
+        snackPriceValue.setFillColor(Color::White);
+        window.draw(snackPriceValue);
+        
+        startY += 40;
+        
+        // TỔNG CỘNG
+        int grandTotal = ticketPrice + totalSnackPrice;
+        
+        Text totalLabel(buttons_font, L"TỔNG CỘNG:", 28);
+        totalLabel.setPosition({contentX, startY});
+        totalLabel.setFillColor(Color(255, 200, 100));
+        window.draw(totalLabel);
+        
+        char totalStr[32];
+        snprintf(totalStr, sizeof(totalStr), "%d VNĐ", grandTotal);
+        Text totalValue(buttons_font, conv.from_bytes(totalStr), 32);
+        totalValue.setPosition({contentX + 400.f, startY - 5});
+        totalValue.setFillColor(Color(100, 255, 100));
+        window.draw(totalValue);
     }
 }

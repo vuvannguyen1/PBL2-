@@ -14,6 +14,30 @@ enum class BookingStep {
     CONFIRM
 };
 
+// ✅ Struct cho món ăn/combo
+struct SnackItem {
+    string name;
+    int price;
+    string imagePath;
+    Texture texture;
+    int quantity; // Số lượng đã chọn
+    
+    SnackItem(const string& n, int p, const string& img) 
+        : name(n), price(p), imagePath(img), quantity(0) {
+        // Texture sẽ được load sau
+    }
+    
+    // Helper để vẽ sprite
+    void draw(RenderWindow& window, float x, float y, float size) {
+        Sprite sprite(texture);
+        sprite.setPosition({x, y});
+        float scaleX = size / texture.getSize().x;
+        float scaleY = size / texture.getSize().y;
+        sprite.setScale({scaleX, scaleY});
+        window.draw(sprite);
+    }
+};
+
 class BookingScreen : public HomeScreen {
 private:
     Font buttons_font;
@@ -45,6 +69,11 @@ private:
     static const int SEAT_ROWS = 9; // A-I
     static const int SEAT_COLS = 9; // 1-9
     vector<string> occupiedSeats; // Ghế đã được đặt (từ database/showtime)
+    
+    // ✅ Snack menu data
+    vector<SnackItem> snackItems;
+    vector<Button> plusButtons;  // Nút + cho mỗi combo
+    vector<Button> minusButtons; // Nút - cho mỗi combo
 
     void drawStepContent(RenderWindow&);
     void drawDateSelection(RenderWindow&);
@@ -52,12 +81,15 @@ private:
     void drawActionButtons(RenderWindow&); // Vẽ nút Xác nhận/Quay lại
     void drawSeatSelection(RenderWindow&); // Vẽ sơ đồ ghế
     void drawSeatSummary(RenderWindow&);   // Vẽ thông tin ghế đã chọn
+    void drawSnackMenu(RenderWindow&);     // ✅ Vẽ menu đồ ăn
+    void drawPaymentSummary(RenderWindow&); // ✅ Vẽ tổng hợp thanh toán
     bool isSeatOccupied(const string& seat) const;
     bool isSeatSelected(const string& seat) const;
     void loadOccupiedSeatsFromSeatMap(const string& seat_map); // ✅ Load ghế đã đặt từ bitmap
     void saveSelectedSeatsToSeatMap(); // ✅ Lưu ghế đã chọn vào file
     void buildDateButtons();
     void buildTimeButtons();
+    void initializeSnackMenu(); // ✅ Khởi tạo menu đồ ăn
     void updateShowtimesForSelectedDate(int, int, const string&);
 
     vector<Showtime> generateShowtimesForNext30Days(int);

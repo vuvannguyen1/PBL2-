@@ -24,10 +24,10 @@ void Button::setPosition(float x, float y) {
 void Button::setPosition(Vector2f pos) {
     box.setPosition(pos);
     
-    // Center text in box
+    // Center text in box - Căn giữa chính xác
     FloatRect textBounds = text.getLocalBounds();
-    float textX = pos.x + (box.getSize().x - textBounds.size.x) / 2.f;
-    float textY = pos.y + (box.getSize().y - textBounds.size.y) / 2.f - 5.f;
+    float textX = pos.x + (box.getSize().x - textBounds.size.x) / 2.f - textBounds.position.x;
+    float textY = pos.y + (box.getSize().y - textBounds.size.y) / 2.f - textBounds.position.y;
     text.setPosition({textX, textY});
 }
 
