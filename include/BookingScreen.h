@@ -63,6 +63,8 @@ private:
     Button confirmButton;
     Button backButton;
     bool hasConfirmedShowtime; // Đã xác nhận suất chiếu chưa
+    bool shouldReturnHome; // ✅ Flag để quay về home
+    string bookingCode; // ✅ Mã vé được tạo 1 lần duy nhất
     
     // ✅ Seat selection data
     vector<string> selectedSeats; // Danh sách ghế đã chọn (VD: "A1", "B5")
@@ -83,6 +85,7 @@ private:
     void drawSeatSummary(RenderWindow&);   // Vẽ thông tin ghế đã chọn
     void drawSnackMenu(RenderWindow&);     // ✅ Vẽ menu đồ ăn
     void drawPaymentSummary(RenderWindow&); // ✅ Vẽ tổng hợp thanh toán
+    void drawConfirmation(RenderWindow&);   // ✅ Vẽ xác nhận đặt vé thành công
     bool isSeatOccupied(const string& seat) const;
     bool isSeatSelected(const string& seat) const;
     void loadOccupiedSeatsFromSeatMap(const string& seat_map); // ✅ Load ghế đã đặt từ bitmap
@@ -90,6 +93,7 @@ private:
     void buildDateButtons();
     void buildTimeButtons();
     void initializeSnackMenu(); // ✅ Khởi tạo menu đồ ăn
+    void resetBookingData(); // ✅ Reset toàn bộ dữ liệu đặt vé
     void updateShowtimesForSelectedDate(int, int, const string&);
 
     vector<Showtime> generateShowtimesForNext30Days(int);

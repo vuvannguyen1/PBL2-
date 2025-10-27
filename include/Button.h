@@ -23,6 +23,7 @@ public:
     // ✅ Setters
     void setPosition(float x, float y);
     void setPosition(Vector2f pos);
+    void setText(const wstring& label); // ✅ Thêm setText
     void setNormalColor(const Color& color);
     void setHoverColor(const Color& color);
     void setDisabledColor(const Color& color);

@@ -21,7 +21,8 @@ BookingScreen::BookingScreen(Font& font) :
     selectedShowtimeIndex(-1),
     confirmButton(buttons_font, L"XÁC NHẬN", 150.f, 50.f, 24),
     backButton(buttons_font, L"QUAY LẠI", 150.f, 50.f, 24),
-    hasConfirmedShowtime(false)
+    hasConfirmedShowtime(false),
+    shouldReturnHome(false)
 {
     // ✅ Setup step buttons (navigation bar) - Centered at top
     float startX = 278.f;  // Center: (1728 - (5*180 + 4*10)) / 2
@@ -385,9 +386,18 @@ void BookingScreen::handleEvent(const RenderWindow& window, const Vector2f& mous
             // ✅ CHỈ KHI THANH TOÁN mới lưu ghế vào file (đánh dấu X)
             saveSelectedSeatsToSeatMap();
             
+            // ✅ Tạo mã vé 1 lần duy nhất
+            srand(time(0));
+            char code[32];
+            snprintf(code, sizeof(code), "CX%04d%02d%02d", rand() % 10000, (rand() % 12) + 1, (rand() % 28) + 1);
+            bookingCode = code;
+            
             current_step = BookingStep::CONFIRM;
             buttons_box[3].setFillColor(Color(80, 80, 90));
             buttons_box[4].setFillColor(Color(52, 62, 209));
+        } else if (current_step == BookingStep::CONFIRM) {
+            // ✅ Về trang chủ sau khi đặt vé thành công
+            shouldReturnHome = true;
         }
         return;
     }
@@ -509,6 +519,13 @@ void BookingScreen::handleEvent(const RenderWindow& window, const Vector2f& mous
 }
 
 void BookingScreen::update(Vector2f mousePos, bool mousePressed, AppState& state) {
+    // ✅ Kiểm tra flag quay về home
+    if (shouldReturnHome) {
+        resetBookingData(); // ✅ Reset toàn bộ trước khi về home
+        state = AppState::HOME;
+        return;
+    }
+    
     // ✅ Gọi HomeScreen::update để các nút CineXine, Đặt vé, Đăng nhập hoạt động
     HomeScreen::update(mousePos, mousePressed, state);
     // Update button hover states so hover effect appears even without click
@@ -523,18 +540,26 @@ void BookingScreen::update(Vector2f mousePos, bool mousePressed, AppState& state
     confirmButton.update(mousePos);
     backButton.update(mousePos);
     
-    // ✅ Logic enable/disable
+    // ✅ Logic enable/disable và đổi label nút
     if (current_step == BookingStep::SELECT_DATE) {
         // Xác nhận: chỉ disabled khi chưa chọn suất
         confirmButton.setDisabled(selectedShowtimeIndex < 0);
+        confirmButton.setText(L"XÁC NHẬN");
         // Quay lại: luôn disabled ở step đầu
         backButton.setDisabled(true);
     } else if (current_step == BookingStep::SELECT_SEAT) {
         // Xác nhận: chỉ enabled khi đã chọn ít nhất 1 ghế
         confirmButton.setDisabled(selectedSeats.empty());
+        confirmButton.setText(L"XÁC NHẬN");
         backButton.setDisabled(false);
+    } else if (current_step == BookingStep::CONFIRM) {
+        // Step cuối: Nút "Về trang chủ"
+        confirmButton.setText(L"VỀ TRANG CHỦ");
+        confirmButton.setDisabled(false);
+        backButton.setDisabled(true); // Không cho quay lại sau khi đặt vé thành công
     } else {
         // Các step khác: Xác nhận luôn enabled, Quay lại luôn enabled
+        confirmButton.setText(L"XÁC NHẬN");
         confirmButton.setDisabled(false);
         backButton.setDisabled(false);
     }
@@ -588,18 +613,8 @@ void BookingScreen::drawStepContent(RenderWindow& window) {
         }
         
         case BookingStep::CONFIRM: {
-            Text stepTitle(buttons_font, L"XÁC NHẬN ĐẶT VÉ", 32);
-            stepTitle.setPosition({contentX, contentY});
-            stepTitle.setFillColor(Color::White);
-            window.draw(stepTitle);
-            
-            Text stepDesc(detailFont, L"Kiểm tra lại thông tin đặt vé", 20);
-            stepDesc.setPosition({contentX, contentY + 50});
-            stepDesc.setFillColor(Color(200, 200, 200));
-            window.draw(stepDesc);
-            
+            drawConfirmation(window); // ✅ Vẽ xác nhận thành công
             drawActionButtons(window);
-            // TODO: Add booking summary
             break;
         }
     }
@@ -703,7 +718,7 @@ void BookingScreen::saveSelectedSeatsToSeatMap() {
     
     // Cập nhật lại occupied seats để bao gồm ghế vừa chọn
     occupiedSeats.insert(occupiedSeats.end(), selectedSeats.begin(), selectedSeats.end());
-    selectedSeats.clear();
+    // ✅ KHÔNG xóa selectedSeats ở đây vì cần hiển thị trong màn hình confirmation
 }
 
 void BookingScreen::drawSeatSelection(RenderWindow& window) {
@@ -1302,5 +1317,183 @@ void BookingScreen::drawPaymentSummary(RenderWindow& window) {
         totalValue.setPosition({contentX + 400.f, startY - 5});
         totalValue.setFillColor(Color(100, 255, 100));
         window.draw(totalValue);
+    }
+}
+
+// ✅ Vẽ màn hình xác nhận đặt vé thành công
+void BookingScreen::drawConfirmation(RenderWindow& window) {
+    float contentX = content_area.getPosition().x + 30.f;
+    float contentY = content_area.getPosition().y + 30.f;
+    
+    wstring_convert<codecvt_utf8<wchar_t>> conv;
+    
+    // ✅ Tiêu đề thành công (không có icon)
+    Text successTitle(buttons_font, L"ĐẶT VÉ THÀNH CÔNG!", 36);
+    FloatRect titleBounds = successTitle.getLocalBounds();
+    successTitle.setPosition({contentX + (900.f - titleBounds.size.x) / 2.f, contentY + 20.f});
+    successTitle.setFillColor(Color(100, 255, 100));
+    window.draw(successTitle);
+    
+    // ✅ Thông báo
+    Text successMsg(detailFont, L"Vé đã được đặt thành công. Mã vé sẽ được gửi qua email/SMS.", 18);
+    FloatRect msgBounds = successMsg.getLocalBounds();
+    successMsg.setPosition({contentX + (900.f - msgBounds.size.x) / 2.f, contentY + 70.f});
+    successMsg.setFillColor(Color(200, 200, 200));
+    window.draw(successMsg);
+    
+    float startY = contentY + 110.f;
+    
+    // ✅ Thông tin đặt vé
+    if (selectedShowtimeIndex >= 0 && selectedShowtimeIndex < (int)showtimesForSelectedDate.size()) {
+        const auto& showtime = showtimesForSelectedDate[selectedShowtimeIndex];
+        
+        // Box chứa thông tin - giảm chiều cao sau khi xóa tổng tiền
+        RectangleShape infoBox({850.f, 280.f});
+        infoBox.setPosition({contentX + 25.f, startY});
+        infoBox.setFillColor(Color(40, 40, 45));
+        infoBox.setOutlineThickness(2.f);
+        infoBox.setOutlineColor(Color(100, 100, 100));
+        window.draw(infoBox);
+        
+        float infoX = contentX + 50.f;
+        float infoY = startY + 20.f;
+        float lineHeight = 35.f;
+        
+        // ✅ Mã đặt vé (đã được tạo sẵn khi chuyển sang CONFIRM)
+        Text codeLabel(buttons_font, L"MÃ ĐẶT VÉ:", 24);
+        codeLabel.setPosition({infoX, infoY});
+        codeLabel.setFillColor(Color(255, 200, 100));
+        window.draw(codeLabel);
+        
+        Text codeValue(buttons_font, conv.from_bytes(bookingCode), 26);
+        codeValue.setPosition({infoX + 550.f, infoY});
+        codeValue.setFillColor(Color(100, 255, 100));
+        window.draw(codeValue);
+        
+        infoY += lineHeight + 10;
+        
+        // Phim
+        Text movieLabel(detailFont, L"Phim:", 18);
+        movieLabel.setPosition({infoX, infoY});
+        movieLabel.setFillColor(Color(200, 200, 200));
+        window.draw(movieLabel);
+        
+        char movieInfo[128];
+        snprintf(movieInfo, sizeof(movieInfo), "Movie ID: %d", showtime.movie_id);
+        Text movieValue(detailFont, conv.from_bytes(movieInfo), 18);
+        movieValue.setPosition({infoX + 550.f, infoY});
+        movieValue.setFillColor(Color::White);
+        window.draw(movieValue);
+        
+        infoY += lineHeight;
+        
+        // Ngày chiếu
+        Text dateLabel(detailFont, L"Ngày chiếu:", 18);
+        dateLabel.setPosition({infoX, infoY});
+        dateLabel.setFillColor(Color(200, 200, 200));
+        window.draw(dateLabel);
+        
+        string formattedDate = showtime.date;
+        if (formattedDate.length() == 10) {
+            string year = formattedDate.substr(0, 4);
+            string month = formattedDate.substr(5, 2);
+            string day = formattedDate.substr(8, 2);
+            formattedDate = day + " - " + month + " - " + year;
+        }
+        
+        Text dateValue(detailFont, conv.from_bytes(formattedDate), 18);
+        dateValue.setPosition({infoX + 550.f, infoY});
+        dateValue.setFillColor(Color::White);
+        window.draw(dateValue);
+        
+        infoY += lineHeight;
+        
+        // Giờ chiếu
+        Text timeLabel(detailFont, L"Giờ chiếu:", 18);
+        timeLabel.setPosition({infoX, infoY});
+        timeLabel.setFillColor(Color(200, 200, 200));
+        window.draw(timeLabel);
+        
+        Text timeValue(detailFont, conv.from_bytes(showtime.time), 18);
+        timeValue.setPosition({infoX + 550.f, infoY});
+        timeValue.setFillColor(Color::White);
+        window.draw(timeValue);
+        
+        infoY += lineHeight;
+        
+        // Phòng
+        Text roomLabel(detailFont, L"Phòng:", 18);
+        roomLabel.setPosition({infoX, infoY});
+        roomLabel.setFillColor(Color(200, 200, 200));
+        window.draw(roomLabel);
+        
+        Text roomValue(detailFont, conv.from_bytes(showtime.room), 18);
+        roomValue.setPosition({infoX + 550.f, infoY});
+        roomValue.setFillColor(Color::White);
+        window.draw(roomValue);
+        
+        infoY += lineHeight;
+        
+        // Ghế
+        Text seatsLabel(detailFont, L"Ghế ngồi:", 18);
+        seatsLabel.setPosition({infoX, infoY});
+        seatsLabel.setFillColor(Color(200, 200, 200));
+        window.draw(seatsLabel);
+        
+        string seatsList;
+        for (size_t i = 0; i < selectedSeats.size(); i++) {
+            seatsList += selectedSeats[i];
+            if (i < selectedSeats.size() - 1) seatsList += ", ";
+        }
+        
+        Text seatsValue(detailFont, conv.from_bytes(seatsList), 18);
+        seatsValue.setPosition({infoX + 550.f, infoY});
+        seatsValue.setFillColor(Color::White);
+        window.draw(seatsValue);
+        
+        infoY += lineHeight;
+        
+        // Số lượng vé
+        Text qtyLabel(detailFont, L"Số lượng:", 18);
+        qtyLabel.setPosition({infoX, infoY});
+        qtyLabel.setFillColor(Color(200, 200, 200));
+        window.draw(qtyLabel);
+        
+        char qtyStr[32];
+        snprintf(qtyStr, sizeof(qtyStr), "%zu vé", selectedSeats.size());
+        Text qtyValue(detailFont, conv.from_bytes(qtyStr), 18);
+        qtyValue.setPosition({infoX + 550.f, infoY});
+        qtyValue.setFillColor(Color::White);
+        window.draw(qtyValue);
+    }
+    
+    // ✅ Hướng dẫn - điều chỉnh vị trí
+    Text instructionText(detailFont, L"Vui lòng đến rạp trước 15 phút để nhận vé. Cảm ơn quý khách!", 16);
+    FloatRect instBounds = instructionText.getLocalBounds();
+    instructionText.setPosition({contentX + (900.f - instBounds.size.x) / 2.f, contentY + 420.f});
+    instructionText.setFillColor(Color(150, 150, 150));
+    window.draw(instructionText);
+}
+
+// ✅ Reset toàn bộ dữ liệu đặt vé khi về trang chủ
+void BookingScreen::resetBookingData() {
+    current_step = BookingStep::SELECT_DATE;
+    hasConfirmedShowtime = false;
+    shouldReturnHome = false;
+    bookingCode.clear();
+    selectedDate.clear();
+    selectedShowtimeIndex = -1;
+    selectedSeats.clear();
+    occupiedSeats.clear();
+    
+    // ✅ Reset tất cả snack về 0
+    for (auto& item : snackItems) {
+        item.quantity = 0;
+    }
+    
+    // Reset màu buttons
+    buttons_box[0].setFillColor(Color(52, 62, 209));
+    for (int i = 1; i < 5; ++i) {
+        buttons_box[i].setFillColor(Color(80, 80, 90));
     }
 }
