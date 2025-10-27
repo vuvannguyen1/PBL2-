@@ -3,6 +3,7 @@
 
 #include <string>
 #include <cctype>
+#include <ctime>
 using namespace std;
 
 class Validator {
@@ -74,7 +75,7 @@ public:
             
             if (month < 1 || month > 12) return false;
             if (day < 1 || day > 31) return false;
-            if (year < 1900 || year > 2100) return false; // Extend year range
+            if (year < 1900 || year > 2100) return false;
             
             // Check days in month
             int daysInMonth[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
@@ -83,7 +84,27 @@ public:
             bool isLeap = (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
             if (isLeap) daysInMonth[1] = 29;
             
-            return day <= daysInMonth[month - 1];
+            if (day > daysInMonth[month - 1]) return false;
+            
+            // ✅ Kiểm tra ngày sinh phải là quá khứ (không được là tương lai)
+            time_t now = time(nullptr);
+            tm* localTime = localtime(&now);
+            int currentYear = localTime->tm_year + 1900;
+            int currentMonth = localTime->tm_mon + 1;
+            int currentDay = localTime->tm_mday;
+            
+            // So sánh năm
+            if (year > currentYear) return false;
+            if (year == currentYear) {
+                // Cùng năm, kiểm tra tháng
+                if (month > currentMonth) return false;
+                if (month == currentMonth) {
+                    // Cùng tháng, kiểm tra ngày
+                    if (day > currentDay) return false;
+                }
+            }
+            
+            return true;
         } catch (...) {
             return false;
         }

@@ -3,7 +3,6 @@
 #include <codecvt>
 #include <sstream>
 
-// Helper function to wrap text to fit within a maximum width
 wstring wrapText(const wstring& text, const Font& font, unsigned int fontSize, float maxWidth) {
     if (text.empty()) return text;
     
@@ -11,7 +10,6 @@ wstring wrapText(const wstring& text, const Font& font, unsigned int fontSize, f
     wstring wrappedText = L"";
     wstring currentLine = L"";
     
-    // Split by existing newlines first
     wstring remainingText = text;
     size_t pos = 0;
     
@@ -76,16 +74,19 @@ DetailScreen::DetailScreen(Font& font, int movieIndex, const string& username) :
     descriptionText(detailFont, L"", 19),
     detailHeader(titleFont, L"MÔ TẢ", 40),
     synopsisHeader(titleFont, L"NỘI DUNG PHIM", 40),
-    icon1("../assets/genres.png"),
+    icon1("../assets/elements/genres.png"),
     genreIcon(icon1),
-    icon2("../assets/duration_time.png"),
+    icon2("../assets/elements/duration_time.png"),
     durationIcon(icon2),
-    icon3("../assets/country.png"),
+    icon3("../assets/elements/country.png"),
     countryIcon(icon3),
-    icon4("../assets/language.png"),
+    icon4("../assets/elements/language.png"),
     languageIcon(icon4),
-    icon5("../assets/ageRating.png"),
-    ageRatingIcon(icon5)
+    icon5("../assets/elements/ageRating.png"),
+    ageRatingIcon(icon5),
+
+    bookingButton({200, 45}),
+    bookingText(titleFont, L"ĐẶT VÉ NGAY", 32)
 {
     setLoggedUser(username);
     loadMovieData(movieIndex);
@@ -150,21 +151,23 @@ DetailScreen::DetailScreen(Font& font, int movieIndex, const string& username) :
 
     poster.setPosition({168, 126});
     poster.setScale({0.36f, 0.36f});
+
+    bookingButton.setPosition({poster.getGlobalBounds().size.x + poster.getGlobalBounds().position.x + 60, poster.getGlobalBounds().size.y + poster.getGlobalBounds().position.y - 50});
+    bookingButton.setFillColor(Color(255, 255, 255, 220));
+    bookingButton.setOutlineThickness(2.f);
+    bookingButton.setOutlineColor(Color(200, 200, 200));
+
+    bookingText.setPosition({bookingButton.getGlobalBounds().position.x + 40, bookingButton.getGlobalBounds().position.y + 5});
+    bookingText.setFillColor(Color::Black);
 }
 
 void DetailScreen::loadMovieData(int movieIndex) {
-    // Load all movies from CSV
     allMovies = loadMoviesFromCSV("../data/movies.csv");
-    
-    if (allMovies.empty()) {
-        cout << "❌ Không thể tải dữ liệu phim từ CSV!" << endl;
-        return;
-    }
-    
+
     // Get the selected movie (validate index)
-    if (movieIndex >= 0 && movieIndex < allMovies.size()) {
+    if (movieIndex >= 0 && movieIndex < allMovies.size())
         currentMovie = allMovies[movieIndex];
-    } else {
+    else {
         cout << "⚠️ Chỉ số phim không hợp lệ: " << movieIndex << endl;
         if (!allMovies.empty()) {
             currentMovie = allMovies[0]; // Fallback to first movie
@@ -172,7 +175,7 @@ void DetailScreen::loadMovieData(int movieIndex) {
             return;
         }
     }
-    
+
     // Convert string to wstring for SFML Text
     wstring_convert<codecvt_utf8<wchar_t>> converter;
     
@@ -227,14 +230,26 @@ void DetailScreen::loadMovieData(int movieIndex) {
     } else {
         cout << "⚠️ Không thể tải poster: " << currentMovie.poster_path << endl;
     }
+
+    // FloatRect descBounds = descriptionText.getGlobalBounds();
+    // float bookingX = bookingButton.getPosition().x;
+    // float bookingY = descriptionText.getPosition().y + descBounds.size.y + 22.f;
+    // bookingButton.setPosition({bookingX, bookingY});
 }
 
 void DetailScreen::update(Vector2f mouse, bool mousePressed, AppState& state) {
     HomeScreen::update(mouse, mousePressed, state);
-}
+// <<<<<<< HEAD
+// }
 
-void DetailScreen::update(Vector2f mouse, bool mousePressed, AppState& state, const Event* event) {
-    HomeScreen::update(mouse, mousePressed, state, event);
+// void DetailScreen::update(Vector2f mouse, bool mousePressed, AppState& state, const Event* event) {
+//     HomeScreen::update(mouse, mousePressed, state, event);
+// =======
+    bool hovered = isButtonHovered(mouse);
+    highlightButton(hovered);
+    if (isButtonClicked(mouse, mousePressed)) 
+        state = AppState::BOOKING;
+// >>>>>>> feature-datvengay
 } 
 
 void DetailScreen::draw(RenderWindow& window) {
@@ -267,4 +282,32 @@ void DetailScreen::draw(RenderWindow& window) {
     window.draw(descriptionText);
     
     window.draw(poster);
+    window.draw(bookingButton);
+    window.draw(bookingText);
+}
+
+bool DetailScreen::isButtonHovered(Vector2f mousePos) const {
+    return bookingButton.getGlobalBounds().contains(mousePos);
+}
+
+bool DetailScreen::isButtonClicked(Vector2f mousePos, bool mousePressed) const {
+    return mousePressed && isButtonHovered(mousePos);
+}
+
+void DetailScreen::highlightButton(bool hovered) {
+    if (hovered) {
+        bookingButton.setFillColor(Color(52, 62, 209, 255));
+        bookingText.setFillColor(Color::White);
+    } else {
+        bookingButton.setFillColor(Color(255, 255, 255, 235));
+        bookingText.setFillColor(Color::Black);
+    }
+}
+
+const Texture& DetailScreen::getPosterTexture() const {
+    return posterTexture;
+}
+
+const Sprite& DetailScreen::getPosterSprite() const {
+    return poster;
 }

@@ -7,15 +7,10 @@ using namespace std;
 
 class AccountScreen {
 private:
-    // UI Components
     Text welcomeText;
     RectangleShape logoutBtn;
     Text logoutBtnText;
-    
-    // User data
     string currentUser;
-    
-    // Hover effect
     bool isLogoutHovered = false;
     
 public:

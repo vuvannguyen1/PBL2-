@@ -8,13 +8,8 @@ using namespace std;
 
 class LoginScreen {
 public:
-    // constructor: truyền Font và AuthService
     LoginScreen(const Font&, AuthService&);
-
-    // update: trả về true nếu người dùng bấm ra ngoài / đóng form
     bool update(Vector2f, bool, const Event&, string&, AppState&);
-
-    // draw giao diện
     void draw(RenderWindow&);
 
 private:
@@ -29,6 +24,9 @@ private:
     wstring emailInput, passInput;
     bool emailActive = false;
     bool passActive = false;
+
+    // Thin blinking caret to mimic a real text cursor
+    RectangleShape caret;
 
     wstring bullets(size_t n);
     Clock caretClock;

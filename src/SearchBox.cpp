@@ -162,11 +162,27 @@ void SearchBox::draw(RenderWindow& window) {
         window.draw(suggestionBox);
         
         suggestionTexts.clear();
+        float maxTextWidth = suggestionBox.getSize().x - 30.f; // Trừ padding 2 bên
+        
         for (size_t i = 0; i < suggestions.size(); i++) {
             Text suggestionText(font);
             suggestionText.setCharacterSize(16);
+            
             // Convert string to SFML String with UTF-8 support
-            suggestionText.setString(String::fromUtf8(suggestions[i].title.begin(), suggestions[i].title.end()));
+            String originalText = String::fromUtf8(suggestions[i].title.begin(), suggestions[i].title.end());
+            suggestionText.setString(originalText);
+            
+            // ✅ Kiểm tra độ dài text và cắt nếu quá dài
+            FloatRect textBounds = suggestionText.getLocalBounds();
+            if (textBounds.size.x > maxTextWidth) {
+                // Cắt text và thêm "..."
+                String truncatedText = originalText;
+                while (textBounds.size.x > maxTextWidth && truncatedText.getSize() > 0) {
+                    truncatedText.erase(truncatedText.getSize() - 1);
+                    suggestionText.setString(truncatedText + "...");
+                    textBounds = suggestionText.getLocalBounds();
+                }
+            }
             
             Vector2f pos = suggestionBox.getPosition();
             suggestionText.setPosition(Vector2f(pos.x + 15.f, pos.y + 10.f + i * 40.f));
